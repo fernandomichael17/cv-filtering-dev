@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Dashboard & Simulator CV Filtering</title>
+    <link rel="stylesheet" href="style.css?v=2">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- ═══════════════════════════════════════════════════════════════
+         TAMPILAN LOGIN (SIMULATOR UTAMA)
+         ═══════════════════════════════════════════════════════════════ -->
+    <div id="login-view" class="view active">
+        <div class="login-card">
+            <h2>Portal CV Filtering & Job Portal</h2>
+            <p class="subtitle">Silakan pilih role untuk menyimulasikan sistem</p>
+            
+            <div class="role-selector">
+                <button id="btn-select-hrd" class="btn-role active" onclick="switchLoginRole('hrd')">HRD / Rekruter</button>
+                <button id="btn-select-candidate" class="btn-role" onclick="switchLoginRole('candidate')">Kandidat Pelamar</button>
+            </div>
+
+            <!-- Login HRD Form -->
+            <div id="form-hrd-login" class="login-form-container active">
+                <form onsubmit="handleLoginHRD(event)">
+                    <div class="form-group">
+                        <label for="hrd-email">Email HRD</label>
+                        <input type="email" id="hrd-email" value="hrd@company.com" required placeholder="hrd@company.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="hrd-password">Password</label>
+                        <input type="password" id="hrd-password" value="hrd123" required placeholder="••••••••">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Masuk sebagai HRD</button>
+                </form>
+            </div>
+
+            <!-- Login Kandidat Form -->
+            <div id="form-candidate-login" class="login-form-container">
+                <form onsubmit="handleLoginCandidate(event)">
+                    <div class="form-group">
+                        <label for="cand-select">Pilih Kandidat (Dummy / Hasil Registrasi)</label>
+                        <select id="cand-select" class="form-control">
+                            <!-- Diisi dinamis dari SQLite portal.db -->
+                        </select>
+                    </div>
+                    <p class="info-text">Atau, Anda dapat melakukan registrasi kandidat baru terlebih dahulu.</p>
+                    <button type="submit" class="btn btn-primary btn-block">Simulasikan Login Kandidat</button>
+                </form>
+                <hr class="divider">
+                <button class="btn btn-secondary btn-block" onclick="showRegisterPage()">Daftar Akun & CV Baru</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         TAMPILAN PORTAL REGISTRASI KANDIDAT BARU (FORM WIZARD)
+         ═══════════════════════════════════════════════════════════════ -->
+    <div id="register-view" class="view">
+        <div class="container container-small">
+            <div class="card">
+                <div class="card-header">
+                    <button class="btn-back" onclick="goToLogin()">&larr; Kembali ke Login</button>
+                    <h3>Registrasi Akun & CV Baru</h3>
+                    <p>Data akan disimpan ke database SQLite portal.db dan disinkronkan ke PostgreSQL backend.</p>
+                </div>
+                
+                <div class="card-body">
+                    <form id="form-register-candidate" onsubmit="handleRegisterSubmit(event)">
+                        <!-- Tahap 1: Data Akun & Profil Utama -->
+                        <div class="section-title">1. Akun & Profil Utama</div>
+                        <div class="grid grid-2">
+                            <div class="form-group">
+                                <label for="reg-name">Nama Lengkap</label>
+                                <input type="text" id="reg-name" required placeholder="Andi Pratama">
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-email">Email</label>
+                                <input type="email" id="reg-email" required placeholder="andi.pratama@mail.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-password">Password</label>
+                                <input type="password" id="reg-password" value="kandidat123" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-phone">Nomor Telepon</label>
+                                <input type="text" id="reg-phone" required placeholder="0812...">
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-gender">Jenis Kelamin</label>
+                                <select id="reg-gender">
+                                    <option value="Laki-laki">Laki-laki</option>
+                                    <option value="Perempuan">Perempuan</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-dob">Tanggal Lahir</label>
+                                <input type="date" id="reg-dob" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-city">Kota Domisili</label>
+                                <input type="text" id="reg-city" required placeholder="Jakarta">
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-address">Alamat Lengkap</label>
+                                <input type="text" id="reg-address" required placeholder="Jl. Sudirman No. 10">
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-linkedin">Link LinkedIn</label>
+                                <input type="text" id="reg-linkedin" placeholder="https://linkedin.com/in/username">
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-instagram">Link Instagram</label>
+                                <input type="text" id="reg-instagram" placeholder="https://instagram.com/username">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-3">
+                            <div class="form-group">
+                                <label for="reg-fresh">Fresh Graduate?</label>
+                                <select id="reg-fresh">
+                                    <option value="false">Tidak</option>
+                                    <option value="true">Ya</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-outside">Bersedia di luar JKT?</label>
+                                <select id="reg-outside">
+                                    <option value="true">Ya</option>
+                                    <option value="false">Tidak</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-avail">Ketersediaan</label>
+                                <input type="text" id="reg-avail" value="Immediately" placeholder="Immediately / 1 month notice">
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-2">
+                            <div class="form-group">
+                                <label for="reg-income">Gaji Saat Ini (IDR)</label>
+                                <input type="number" id="reg-income" value="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-expected">Ekspektasi Gaji (IDR)</label>
+                                <input type="number" id="reg-expected" value="5000000">
+                            </div>
+                        </div>
+
+                        <!-- Tahap 2: Pendidikan -->
+                        <div class="section-title">2. Riwayat Pendidikan</div>
+                        <div id="education-list-container">
+                            <div class="education-item nested-form-item">
+                                <div class="grid grid-2">
+                                    <div class="form-group">
+                                        <label>Nama Institusi / Universitas</label>
+                                        <input type="text" class="edu-inst" required placeholder="Universitas Indonesia">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Jurusan</label>
+                                        <input type="text" class="edu-major" required placeholder="Teknik Informatika">
+                                    </div>
+                                </div>
+                                <div class="grid grid-4">
+                                    <div class="form-group">
+                                        <label>Tahun Lulus</label>
+                                        <input type="number" class="edu-year" required value="2024">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>IPK / Nilai</label>
+                                        <input type="number" step="0.01" class="edu-score" required value="3.50">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Tahun Mulai</label>
+                                        <input type="number" class="edu-startyear" required value="2020">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Tahun Akhir</label>
+                                        <input type="number" class="edu-endyear" required value="2024">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-outline btn-small" onclick="addEducationField()">+ Tambah Pendidikan</button>
+
+                        <!-- Tahap 3: Pelatihan / Sertifikasi -->
+                        <div class="section-title">3. Pelatihan & Sertifikasi</div>
+                        <div id="training-list-container">
+                            <div class="training-item nested-form-item">
+                                <div class="grid grid-2">
+                                    <div class="form-group">
+                                        <label>Nama Pelatihan / Sertifikasi</label>
+                                        <input type="text" class="train-name" placeholder="React Developer Certification">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Nomor Sertifikat</label>
+                                        <input type="text" class="train-cert" placeholder="CERT-12345">
+                                    </div>
+                                </div>
+                                <div class="grid grid-2">
+                                    <div class="form-group">
+                                        <label>Tahun Mulai</label>
+                                        <input type="number" class="train-start" value="2024">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Tahun Selesai</label>
+                                        <input type="number" class="train-end" value="2024">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-outline btn-small" onclick="addTrainingField()">+ Tambah Sertifikasi</button>
+
+                        <!-- Tahap 4: Pengalaman Kerja -->
+                        <div class="section-title">4. Riwayat Pengalaman Kerja</div>
+                        <div id="experience-list-container">
+                            <div class="experience-item nested-form-item">
+                                <div class="grid grid-2">
+                                    <div class="form-group">
+                                        <label>Nama Perusahaan</label>
+                                        <input type="text" class="exp-company" placeholder="PT Teknologi Nusantara">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Posisi / Level Jabatan</label>
+                                        <input type="text" class="exp-level" placeholder="Backend Engineer">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Deskripsi Pekerjaan / Jobdesk</label>
+                                    <textarea class="exp-jobdesk" rows="3" placeholder="Membangun API menggunakan Node.js dan PostgreSQL..."></textarea>
+                                </div>
+                                <div class="grid grid-4">
+                                    <div class="form-group">
+                                        <label>Gaji Bulanan (IDR)</label>
+                                        <input type="number" class="exp-salary" value="0">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Pekerjaan Saat Ini?</label>
+                                        <select class="exp-current">
+                                            <option value="false">Tidak</option>
+                                            <option value="true">Ya</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Tahun Mulai</label>
+                                        <input type="number" class="exp-startyear" value="2023">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Tahun Selesai</label>
+                                        <input type="number" class="exp-endyear" value="2024">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-outline btn-small" onclick="addExperienceField()">+ Tambah Pengalaman</button>
+
+                        <div class="form-footer">
+                            <button type="submit" class="btn btn-primary btn-large">Daftarkan Akun & CV</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         TAMPILAN PORTAL UTAMA HRD / MANAGEMENT
+         ═══════════════════════════════════════════════════════════════ -->
+    <div id="hrd-view" class="view flex-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h3>Dashboard HRD</h3>
+                <span class="badge badge-light">Management View</span>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="#" class="nav-item active" onclick="switchHrdTab('overview')">Overview</a>
+                <a href="#" class="nav-item" onclick="switchHrdTab('funnel')">Pipeline Funnel</a>
+                <a href="#" class="nav-item" onclick="switchHrdTab('results')">Hasil Seleksi</a>
+                <a href="#" class="nav-item" onclick="switchHrdTab('eliminated')">Tereliminasi</a>
+                <a href="#" class="nav-item" onclick="switchHrdTab('schema')">ERD SQLite Portal</a>
+                <a href="#" class="nav-item" onclick="switchHrdTab('settings')">Pengaturan API Key</a>
+            </nav>
+            <div class="sidebar-footer">
+                <p class="user-info">Login: hrd@company.com</p>
+                <button class="btn btn-outline btn-small btn-block" onclick="handleLogout()">Keluar</button>
+            </div>
+        </aside>
+
+        <!-- Main Content HRD -->
+        <main class="main-content">
+            <!-- HEADER -->
+            <header class="content-header">
+                <div class="header-title">
+                    <h2 id="hrd-tab-title">Overview Sistem</h2>
+                    <p id="hrd-tab-desc">Pantau status penyaringan CV berbasis LLM.</p>
+                </div>
+                <div class="job-selector-container">
+                    <label for="hrd-job-select">Pilih Lowongan Kerja:</label>
+                    <select id="hrd-job-select" onchange="loadJobData()">
+                        <!-- Diisi dinamis -->
+                    </select>
+                </div>
+            </header>
+
+            <!-- TAB 1: OVERVIEW -->
+            <section id="hrd-tab-content-overview" class="tab-content active">
+                <!-- STATS CARD -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-title">Total Kandidat Melamar</div>
+                        <div class="stat-value" id="stat-total-candidates">0</div>
+                        <div class="stat-desc">Diambil dari database pendaftar</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Lolos Seleksi Akhir</div>
+                        <div class="stat-value text-success" id="stat-passed-candidates">0</div>
+                        <div class="stat-desc">Mencapai kecocokan &gt;= 85%</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Waktu Pemrosesan</div>
+                        <div class="stat-value" id="stat-duration">0.0s</div>
+                        <div class="stat-desc">Total durasi komputasi pipeline</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Estimasi Hemat Waktu HR</div>
+                        <div class="stat-value text-primary" id="stat-saved-hours">0 menit</div>
+                        <div class="stat-desc">Dibandingkan review manual (5 mnt/CV)</div>
+                    </div>
+                </div>
+
+                <!-- ACTIONS & PARSING DETAILS -->
+                <div class="grid grid-2" style="margin-top: 24px;">
+                    <!-- Detail Lowongan -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Kualifikasi Lowongan (Hasil LLM JD Parser)</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>Tags Jabatan:</label>
+                                <div id="job-tags-list" class="tag-container">
+                                    <span class="placeholder-text">Pilih lowongan untuk melihat tag...</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Spesifikasi Terstruktur (Parsed Requirements):</label>
+                                <pre id="job-parsed-requirements" class="json-code">Pilih lowongan untuk melihat detail kualifikasi...</pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pemicu Filter & Status -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Picu Pipeline Penyaringan</h4>
+                        </div>
+                        <div class="card-body">
+                            <p class="description">Jalankan proses penyaringan otomatis terhadap seluruh kandidat yang melamar lowongan ini.</p>
+                            
+                            <div class="action-buttons">
+                                <button class="btn btn-primary" onclick="runFiltering('registered')">Filter Pelamar Terdaftar</button>
+                                <button class="btn btn-secondary" onclick="runFiltering('mixmatch')">Mix-Match Seluruh DB</button>
+                            </div>
+
+                            <hr class="divider">
+
+                            <h5>Status Pemrosesan Terakhir:</h5>
+                            <div id="filtering-status-box" class="status-box status-idle">
+                                <div class="status-indicator"></div>
+                                <span id="filtering-status-text">Sistem siap memproses filter</span>
+                            </div>
+                            
+                            <div style="margin-top: 15px;">
+                                <label><strong>Tambah Lowongan Pekerjaan Baru (SQLite):</strong></label>
+                                <button class="btn btn-outline btn-block" style="margin-top: 5px;" onclick="showAddJobModal()">+ Buat Lowongan Baru</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: FUNNEL PIPELINE -->
+            <section id="hrd-tab-content-funnel" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Visualisasi Corong Seleksi (Funnel Analysis)</h4>
+                        <p>Menggambarkan eliminasi kandidat di setiap tahapan otomatisasi.</p>
+                    </div>
+                    <div class="card-body flex-center-column">
+                        <!-- Funnel Chart SVG -->
+                        <div id="funnel-container" class="funnel-svg-wrapper">
+                            <!-- Dirender secara dinamis oleh JavaScript -->
+                        </div>
+                        
+                        <div class="funnel-legend">
+                            <div class="legend-item"><span class="legend-color" style="background: #e9ecef;"></span> Total Pelamar</div>
+                            <div class="legend-item"><span class="legend-color" style="background: #dee2e6;"></span> Lolos Administrasi (Hard Filter)</div>
+                            <div class="legend-item"><span class="legend-color" style="background: #ced4da;"></span> Lolos Kecocokan Skill</div>
+                            <div class="legend-item"><span class="legend-color" style="background: #aab2bd;"></span> Lolos Semantic (Taksonomi Akhir)</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 3: HASIL SELEKSI -->
+            <section id="hrd-tab-content-results" class="tab-content">
+                <div class="card">
+                    <div class="card-header flex-space-between">
+                        <h4>Daftar Kandidat Lolos Seleksi</h4>
+                        <span class="badge badge-success" id="badge-results-count">0 Lolos</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Nama</th>
+                                        <th>Score</th>
+                                        <th>Kategori</th>
+                                        <th>Tags CV</th>
+                                        <th>Keyakinan LLM</th>
+                                        <th>Alasan Kecocokan</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-results-body">
+                                    <!-- Diisi dinamis -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 4: KANDIDAT TERELIMINASI -->
+            <section id="hrd-tab-content-eliminated" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Transparansi Eliminasi Kandidat</h4>
+                        <p>Daftar kandidat yang gugur beserta alasan dan tahap eliminasinya.</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Nama Kandidat</th>
+                                        <th>Tahap Eliminasi</th>
+                                        <th>Alasan Tereliminasi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-eliminated-body">
+                                    <!-- Diisi dinamis -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 5: SCHEMA ERD SQLITE -->
+            <section id="hrd-tab-content-schema" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Struktur Skema Database SQLite (portal.db)</h4>
+                        <p>Representasi visual database ERD portal kandidat yang terhubung langsung dengan backend.</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="erd-diagram-wrapper" id="erd-diagram-container">
+                            <!-- Dirender secara dinamis oleh JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 6: SETTINGS -->
+            <section id="hrd-tab-content-settings" class="tab-content">
+                <div class="card container-small">
+                    <div class="card-header">
+                        <h4>Konfigurasi Kunci API (X-API-KEY)</h4>
+                        <p>Kunci ini disimpan secara lokal di browser Anda untuk keperluan request ke server.</p>
+                    </div>
+                    <div class="card-body">
+                        <form onsubmit="saveApiKeys(event)">
+                            <div class="form-group">
+                                <label for="key-job">API Key: Job Parser</label>
+                                <input type="text" id="key-job" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="key-extract">API Key: Candidate Extract Tagger</label>
+                                <input type="text" id="key-extract" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="key-filter">API Key: Filtering Module</label>
+                                <input type="text" id="key-filter" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="key-mix">API Key: Mix-Match Module</label>
+                                <input type="text" id="key-mix" class="form-control">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Simpan API Keys</button>
+                            <button type="button" class="btn btn-outline" onclick="loadDefaultKeys()">Isi Default Dev (.env)</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         TAMPILAN PORTAL PORTAL KANDIDAT
+         ═══════════════════════════════════════════════════════════════ -->
+    <div id="candidate-view" class="view flex-container">
+        <!-- Sidebar Kandidat -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h3>Portal Kandidat</h3>
+                <span class="badge badge-light" id="cand-nav-name">Nama Kandidat</span>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="#" class="nav-item active" onclick="switchCandTab('resume')">Resume Saya</a>
+                <a href="#" class="nav-item" onclick="switchCandTab('applications')">Lamaran Pekerjaan</a>
+            </nav>
+            <div class="sidebar-footer">
+                <p class="user-info" id="cand-nav-email">email@kandidat.com</p>
+                <button class="btn btn-outline btn-small btn-block" onclick="handleLogout()">Keluar</button>
+            </div>
+        </aside>
+
+        <!-- Main Content Kandidat -->
+        <main class="main-content">
+            <!-- HEADER -->
+            <header class="content-header">
+                <div class="header-title">
+                    <h2 id="cand-tab-title">Resume & Hasil Analisis</h2>
+                    <p id="cand-tab-desc">Lihat profil dan tag skill hasil analisis AI.</p>
+                </div>
+            </header>
+
+            <!-- TAB 1: RESUME SAYA -->
+            <section id="cand-tab-content-resume" class="tab-content active">
+                <div class="grid grid-3">
+                    <!-- Bio Card -->
+                    <div class="card col-span-2">
+                        <div class="card-header">
+                            <h4>Profil Pribadi</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="cand-profile-header">
+                                <div class="cand-avatar" id="cand-avatar-initial">A</div>
+                                <div>
+                                    <h3 id="cand-profile-fullname">Andi Pratama</h3>
+                                    <p id="cand-profile-location">Jakarta, Indonesia</p>
+                                </div>
+                            </div>
+                            
+                            <hr class="divider">
+                            
+                            <div class="profile-details-grid">
+                                <div><strong>Email:</strong> <span id="cand-profile-email">andi@mail.com</span></div>
+                                <div><strong>Telepon:</strong> <span id="cand-profile-phone">0812...</span></div>
+                                <div><strong>Jenis Kelamin:</strong> <span id="cand-profile-gender">Laki-laki</span></div>
+                                <div><strong>Tgl Lahir:</strong> <span id="cand-profile-dob">1996-05-15</span></div>
+                                <div><strong>Fresh Graduate:</strong> <span id="cand-profile-fg">Tidak</span></div>
+                                <div><strong>Ekspektasi Gaji:</strong> <span id="cand-profile-salary">Rp 15.000.000</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- LLM Tags Extraction Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Analisis AI: CV Tags & Skills</h4>
+                        </div>
+                        <div class="card-body">
+                            <button class="btn btn-primary btn-block" id="btn-extract-tags" onclick="extractTagsSelf()">Jalankan Ekstraksi AI</button>
+                            
+                            <div id="cand-extraction-status" class="status-box status-idle" style="margin-top: 12px;">
+                                <span id="cand-extraction-text">Belum diekstrak</span>
+                            </div>
+
+                            <hr class="divider">
+
+                            <div class="form-group">
+                                <label><strong>CV Tags (LLM Summary):</strong></label>
+                                <div id="cand-cv-tags-list" class="tag-container" style="margin-top: 5px;">
+                                    <span class="placeholder-text">Klik tombol di atas untuk ekstrak tag CV...</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label><strong>Keahlian Hard Skills:</strong></label>
+                                <p id="cand-skills-hard" class="skills-text">Belum di-parse</p>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label><strong>Keahlian Soft Skills:</strong></label>
+                                <p id="cand-skills-soft" class="skills-text">Belum di-parse</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pendidikan & Pengalaman -->
+                <div class="grid grid-2" style="margin-top: 24px;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Riwayat Pendidikan</h4>
+                        </div>
+                        <div class="card-body" id="cand-edu-timeline">
+                            <!-- Diisi dinamis -->
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Riwayat Pengalaman Kerja</h4>
+                        </div>
+                        <div class="card-body" id="cand-exp-timeline">
+                            <!-- Diisi dinamis -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: APPLICATIONS -->
+            <section id="cand-tab-content-applications" class="tab-content">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Daftar Lamaran Kerja & Status Seleksi</h4>
+                        <p>Pantau hasil filter otomatisasi kecocokan CV Anda terhadap lowongan yang dilamar.</p>
+                    </div>
+                    <div class="card-body">
+                        <div style="margin-bottom: 20px;">
+                            <h5>Melamar Lowongan Baru:</h5>
+                            <div class="flex-row">
+                                <select id="cand-apply-job-select" class="form-control" style="max-width: 300px;">
+                                    <!-- Diisi dinamis lowongan -->
+                                </select>
+                                <button class="btn btn-primary" onclick="submitApplicationSelf()" style="margin-left: 10px;">Lamar Lowongan</button>
+                            </div>
+                        </div>
+
+                        <hr class="divider">
+
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Lowongan Pekerjaan</th>
+                                        <th>Tanggal Melamar</th>
+                                        <th>Status Lamaran</th>
+                                        <th>Skor Analisis AI</th>
+                                        <th>Umpan Balik / Catatan</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-cand-applications">
+                                    <!-- Diisi dinamis -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         MODAL JENDELA POPUP (TAMBAH LOWONGAN KERJA)
+         ═══════════════════════════════════════════════════════════════ -->
+    <div id="add-job-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Tambah Lowongan Pekerjaan Baru (SQLite Portal)</h3>
+                <button class="btn-close-modal" onclick="hideAddJobModal()">&times;</button>
+            </div>
+            <form onsubmit="handleAddJobSubmit(event)">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="new-job-title">Nama Posisi / Pekerjaan</label>
+                        <input type="text" id="new-job-title" required placeholder="Data Analyst">
+                    </div>
+                    <div class="form-group">
+                        <label for="new-job-desc">Deskripsi Lowongan</label>
+                        <textarea id="new-job-desc" rows="4" required placeholder="Tulis deskripsi tugas utama..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-job-spec">Persyaratan / Spesifikasi Kualifikasi</label>
+                        <textarea id="new-job-spec" rows="4" required placeholder="Pendidikan S1 Informatika. Mampu Python dan SQL..."></textarea>
+                    </div>
+                    <div class="grid grid-2">
+                        <div class="form-group">
+                            <label for="new-job-level">Level Jabatan</label>
+                            <input type="text" id="new-job-level" value="Staff">
+                        </div>
+                        <div class="form-group">
+                            <label for="new-job-mp">Jumlah Tenaga Kerja</label>
+                            <input type="number" id="new-job-mp" value="1">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="hideAddJobModal()">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan & Sinkronisasi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- SCRIPT UTAMA -->
+    <script src="app.js?v=2"></script>
+</body>
+</html>

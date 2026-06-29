@@ -1,0 +1,29 @@
+# Exclude virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Exclude local Git repository
+.git/
+.gitignore
+
+# Exclude sensitive environment configurations
+.env
+.env.docker
+.env.example
+
+# Exclude caches and logs
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+logs/
+*.log
+
+# Exclude editor and OS settings
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

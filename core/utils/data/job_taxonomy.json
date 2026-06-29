@@ -1,0 +1,3526 @@
+{
+    "0110": {
+        "name": "Commissioned Armed Forces Officers",
+        "aliases": []
+    },
+    "0210": {
+        "name": "Non-commissioned Armed Forces Officers",
+        "aliases": []
+    },
+    "0310": {
+        "name": "Armed Forces Occupations, Other Ranks",
+        "aliases": []
+    },
+    "1111": {
+        "name": "Legislators",
+        "aliases": []
+    },
+    "1112": {
+        "name": "Senior Government Officials",
+        "aliases": [
+            "pejabat pemerintah",
+            "government official"
+        ]
+    },
+    "1113": {
+        "name": "Traditional Chiefs and Heads of Villages",
+        "aliases": [
+            "kepala desa",
+            "lurah",
+            "village head"
+        ]
+    },
+    "1114": {
+        "name": "Senior Officials of Special-interest Organizations",
+        "aliases": [
+            "ketua organisasi",
+            "chairman"
+        ]
+    },
+    "1120": {
+        "name": "Managing Directors and Chief Executives",
+        "aliases": [
+            "direktur",
+            "direktur utama",
+            "managing director",
+            "ceo",
+            "chief executive officer"
+        ]
+    },
+    "1211": {
+        "name": "Finance Managers",
+        "aliases": [
+            "manajer keuangan",
+            "finance manager",
+            "kepala keuangan",
+            "finance accounting manager",
+            "fat manager",
+            "manajer keuangan dan akuntansi"
+        ]
+    },
+    "1212": {
+        "name": "Human Resource Managers",
+        "aliases": [
+            "manajer hrd",
+            "manajer sdm",
+            "hr manager",
+            "kepala hrd"
+        ]
+    },
+    "1213": {
+        "name": "Policy and Planning Managers",
+        "aliases": [
+            "policy manager",
+            "manajer perencanaan",
+            "strategic planner"
+        ]
+    },
+    "1219": {
+        "name": "Business Services and Administration Managers Not Elsewhere Classified",
+        "aliases": [
+            "operations manager",
+            "manajer operasional",
+            "general manager",
+            "branch manager",
+            "kepala cabang",
+            "area manager",
+            "regional manager",
+            "business manager",
+            "ga manager",
+            "manajer ga",
+            "general affair manager",
+            "general affairs manager",
+            "head of ga",
+            "head of general affairs"
+        ]
+    },
+    "1221": {
+        "name": "Sales and Marketing Managers",
+        "aliases": [
+            "manajer pemasaran",
+            "manajer penjualan",
+            "sales manager"
+        ]
+    },
+    "1222": {
+        "name": "Advertising and Public Relations Managers",
+        "aliases": [
+            "pr manager",
+            "manajer hubungan masyarakat",
+            "manajer humas",
+            "advertising manager"
+        ]
+    },
+    "1223": {
+        "name": "Research and Development Managers",
+        "aliases": [
+            "engineering manager",
+            "vp engineering",
+            "r&d manager",
+            "manajer riset",
+            "head of engineering"
+        ]
+    },
+    "1311": {
+        "name": "Agricultural and Forestry Production Managers",
+        "aliases": [
+            "manajer pertanian",
+            "farm manager",
+            "plantation manager",
+            "manajer perkebunan"
+        ]
+    },
+    "1312": {
+        "name": "Aquaculture and Fisheries Production Managers",
+        "aliases": [
+            "manajer perikanan",
+            "fisheries manager",
+            "aquaculture manager"
+        ]
+    },
+    "1321": {
+        "name": "Manufacturing Managers",
+        "aliases": [
+            "manajer pabrik",
+            "factory manager",
+            "plant manager",
+            "production manager",
+            "manajer produksi",
+            "manufacturing manager"
+        ]
+    },
+    "1322": {
+        "name": "Mining Managers",
+        "aliases": [
+            "manajer tambang",
+            "mine manager",
+            "mining superintendent"
+        ]
+    },
+    "1323": {
+        "name": "Construction Managers",
+        "aliases": [
+            "site manager",
+            "manajer konstruksi",
+            "kepala proyek",
+            "construction manager",
+            "project manager konstruksi",
+            "site manager proyek",
+            "manajer site",
+            "project manager"
+        ]
+    },
+    "1324": {
+        "name": "Supply, Distribution and Related Managers",
+        "aliases": [
+            "supply chain manager",
+            "logistics manager",
+            "manajer logistik",
+            "manajer rantai pasok",
+            "warehouse manager",
+            "manajer gudang",
+            "distribution manager",
+            "manajer distribusi",
+            "head of supply chain",
+            "head of logistics",
+            "kepala logistik",
+            "manajer pengiriman",
+            "shipping manager"
+        ]
+    },
+    "1330": {
+        "name": "Information and Communications Technology Services Managers",
+        "aliases": [
+            "manajer it",
+            "it manager",
+            "cto",
+            "cio",
+            "chief technology officer"
+        ]
+    },
+    "1341": {
+        "name": "Child Care Services Managers",
+        "aliases": [
+            "manajer penitipan anak",
+            "daycare manager"
+        ]
+    },
+    "1342": {
+        "name": "Health Services Managers",
+        "aliases": [
+            "manajer rumah sakit",
+            "hospital manager",
+            "manajer klinik",
+            "clinic manager",
+            "healthcare manager"
+        ]
+    },
+    "1343": {
+        "name": "Aged Care Services Managers",
+        "aliases": [
+            "manajer panti jompo",
+            "aged care manager"
+        ]
+    },
+    "1344": {
+        "name": "Social Welfare Managers",
+        "aliases": [
+            "manajer kesejahteraan sosial",
+            "social welfare manager"
+        ]
+    },
+    "1345": {
+        "name": "Education Managers",
+        "aliases": [
+            "kepala sekolah",
+            "school principal",
+            "manajer pendidikan",
+            "education manager"
+        ]
+    },
+    "1346": {
+        "name": "Financial and Insurance Services Branch Managers",
+        "aliases": [
+            "branch manager bank",
+            "manajer cabang bank",
+            "kepala cabang bank"
+        ]
+    },
+    "1349": {
+        "name": "Professional Services Managers Not Elsewhere Classified",
+        "aliases": [
+            "manajer hukum",
+            "legal manager",
+            "compliance manager",
+            "manajer kepatuhan"
+        ]
+    },
+    "1411": {
+        "name": "Hotel Managers",
+        "aliases": [
+            "hotel manager",
+            "manajer hotel",
+            "general manager hotel",
+            "resort manager"
+        ]
+    },
+    "1412": {
+        "name": "Restaurant Managers",
+        "aliases": [
+            "restaurant manager",
+            "manajer restoran",
+            "f&b manager",
+            "food and beverage manager",
+            "manajer f&b",
+            "outlet manager"
+        ]
+    },
+    "1420": {
+        "name": "Retail and Wholesale Trade Managers",
+        "aliases": [
+            "retail manager",
+            "store manager",
+            "manajer toko",
+            "manajer ritel",
+            "kepala toko",
+            "shop manager"
+        ]
+    },
+    "1431": {
+        "name": "Sports, Recreation and Cultural Centre Managers",
+        "aliases": [
+            "manajer olahraga",
+            "sports manager",
+            "gym manager",
+            "manajer gym"
+        ]
+    },
+    "1439": {
+        "name": "Services Managers Not Elsewhere Classified",
+        "aliases": [
+            "service manager",
+            "manajer layanan"
+        ]
+    },
+    "2111": {
+        "name": "Physicists and Astronomers",
+        "aliases": [
+            "fisikawan",
+            "physicist",
+            "astronomer"
+        ]
+    },
+    "2112": {
+        "name": "Meteorologists",
+        "aliases": [
+            "ahli meteorologi",
+            "meteorologist",
+            "prakirawan cuaca"
+        ]
+    },
+    "2113": {
+        "name": "Chemists",
+        "aliases": [
+            "ahli kimia",
+            "chemist",
+            "kimia analis"
+        ]
+    },
+    "2114": {
+        "name": "Geologists and Geophysicists",
+        "aliases": [
+            "geologist",
+            "geophysicist",
+            "ahli geologi",
+            "ahli geofisika"
+        ]
+    },
+    "2120": {
+        "name": "Mathematicians, Actuaries and Statisticians",
+        "aliases": [
+            "data scientist",
+            "data analyst",
+            "business intelligence",
+            "bi analyst",
+            "reporting analyst",
+            "ilmuwan data",
+            "analis data",
+            "actuarist",
+            "aktuaris",
+            "statistician",
+            "statistisi"
+        ]
+    },
+    "2131": {
+        "name": "Biologists, Botanists, Zoologists and Related Professionals",
+        "aliases": [
+            "biologist",
+            "ahli biologi",
+            "biolog",
+            "marine biologist"
+        ]
+    },
+    "2132": {
+        "name": "Farming, Forestry and Fisheries Advisers",
+        "aliases": [
+            "penyuluh pertanian",
+            "agricultural advisor",
+            "agronomist"
+        ]
+    },
+    "2133": {
+        "name": "Environmental Protection Professionals",
+        "aliases": [
+            "environmental specialist",
+            "ahli lingkungan",
+            "environmental consultant",
+            "analis lingkungan",
+            "sustainability analyst",
+            "esg analyst",
+            "sustainability officer",
+            "environmental officer",
+            "carbon credit specialist"
+        ]
+    },
+    "2141": {
+        "name": "Industrial and Production Engineers",
+        "aliases": [
+            "industrial engineer",
+            "insinyur industri",
+            "teknik industri",
+            "process engineer",
+            "production engineer",
+            "manufacturing engineer"
+        ]
+    },
+    "2142": {
+        "name": "Civil Engineers",
+        "aliases": [
+            "civil engineer",
+            "insinyur sipil",
+            "teknik sipil",
+            "structural engineer",
+            "ahli teknik sipil",
+            "staf teknik sipil",
+            "staff teknik sipil",
+            "quantity surveyor",
+            "qs",
+            "estimasi biaya konstruksi",
+            "estimator konstruksi",
+            "structural designer",
+            "insinyur struktur",
+            "site engineer",
+            "project engineer",
+            "land acquisition specialist",
+            "land acquisition officer",
+            "pembebasan lahan",
+            "staf akuisisi lahan",
+            "akuisisi lahan",
+            "pengawas proyek sipil",
+            "cost estimator",
+            "estimator biaya",
+            "drafter",
+            "cad drafter",
+            "drafter autocad",
+            "staf drafter",
+            "staff drafter",
+            "mep engineer",
+            "qc civil",
+            "qc engineer konstruksi",
+            "project controller"
+        ]
+    },
+    "2143": {
+        "name": "Environmental Engineers",
+        "aliases": [
+            "environmental engineer",
+            "insinyur lingkungan",
+            "teknik lingkungan"
+        ]
+    },
+    "2144": {
+        "name": "Mechanical Engineers",
+        "aliases": [
+            "mechanical engineer",
+            "insinyur mesin",
+            "teknik mesin",
+            "mep engineer",
+            "staf mep",
+            "staff mep",
+            "hvac engineer",
+            "mechanical supervisor",
+            "maintenance engineer"
+        ]
+    },
+    "2145": {
+        "name": "Chemical Engineers",
+        "aliases": [
+            "chemical engineer",
+            "insinyur kimia"
+        ]
+    },
+    "2146": {
+        "name": "Mining Engineers, Metallurgists and Related Professionals",
+        "aliases": [
+            "mining engineer",
+            "insinyur pertambangan",
+            "metallurgist",
+            "ahli metalurgi"
+        ]
+    },
+    "2149": {
+        "name": "Engineering Professionals Not Elsewhere Classified",
+        "aliases": [
+            "robotics engineer"
+        ]
+    },
+    "2151": {
+        "name": "Electrical Engineers",
+        "aliases": [
+            "electrical engineer",
+            "insinyur listrik",
+            "teknik elektro",
+            "power engineer",
+            "electrical supervisor",
+            "staf elektrikal",
+            "staff electrical",
+            "instrumentation engineer",
+            "arus kuat",
+            "arus lemah"
+        ]
+    },
+    "2152": {
+        "name": "Electronics Engineers",
+        "aliases": [
+            "embedded engineer",
+            "firmware engineer",
+            "iot engineer"
+        ]
+    },
+    "2153": {
+        "name": "Telecommunications Engineers",
+        "aliases": [
+            "telecommunications engineer",
+            "insinyur telekomunikasi",
+            "rf engineer",
+            "telco engineer",
+            "network planner"
+        ]
+    },
+    "2161": {
+        "name": "Building Architects",
+        "aliases": [
+            "arsitek",
+            "arsitek bangunan",
+            "architect",
+            "building architect",
+            "arsitek proyek",
+            "project architect",
+            "arsitektur",
+            "solutions architect",
+            "cloud architect",
+            "enterprise architect"
+        ]
+    },
+    "2162": {
+        "name": "Landscape Architects",
+        "aliases": [
+            "landscape architect",
+            "arsitek lanskap",
+            "arsitek lansekap"
+        ]
+    },
+    "2163": {
+        "name": "Product and Garment Designers",
+        "aliases": [
+            "garment designer",
+            "fashion designer",
+            "desainer produk",
+            "desainer fashion",
+            "desainer busana"
+        ]
+    },
+    "2164": {
+        "name": "Town and Traffic Planners",
+        "aliases": [
+            "urban planner",
+            "perencana kota",
+            "town planner",
+            "traffic planner"
+        ]
+    },
+    "2165": {
+        "name": "Cartographers and Surveyors",
+        "aliases": [
+            "surveyor",
+            "juru ukur",
+            "surveyor tanah",
+            "land surveyor",
+            "cartographer"
+        ]
+    },
+    "2166": {
+        "name": "Graphic and Multimedia Designers",
+        "aliases": [
+            "desainer grafis",
+            "graphic designer",
+            "visual designer",
+            "ilustrator",
+            "illustrator",
+            "desainer visual",
+            "ui designer",
+            "ux designer",
+            "ui/ux designer",
+            "product designer",
+            "interaction designer",
+            "desainer ui/ux",
+            "freelance designer"
+        ]
+    },
+    "2211": {
+        "name": "Generalist Medical Practitioners",
+        "aliases": [
+            "dokter",
+            "dokter umum",
+            "general practitioner",
+            "physician",
+            "dokter internship",
+            "general doctor"
+        ]
+    },
+    "2212": {
+        "name": "Specialist Medical Practitioners",
+        "aliases": [
+            "dokter spesialis",
+            "specialist doctor",
+            "dokter bedah",
+            "surgeon"
+        ]
+    },
+    "2221": {
+        "name": "Nursing Professionals",
+        "aliases": [
+            "perawat",
+            "nurse",
+            "nursing professional",
+            "perawat pelaksana",
+            "perawat kepala",
+            "head nurse",
+            "charge nurse",
+            "perawat igd",
+            "perawat rawat inap",
+            "perawat rawat jalan",
+            "perawat icu",
+            "clinic nurse"
+        ]
+    },
+    "2222": {
+        "name": "Midwifery Professionals",
+        "aliases": [
+            "bidan",
+            "midwife"
+        ]
+    },
+    "2230": {
+        "name": "Traditional and Complementary Medicine Professionals",
+        "aliases": [
+            "ahli akupunktur",
+            "acupuncturist",
+            "herbalist"
+        ]
+    },
+    "2240": {
+        "name": "Paramedical Practitioners",
+        "aliases": [
+            "paramedis",
+            "paramedic"
+        ]
+    },
+    "2250": {
+        "name": "Veterinarians",
+        "aliases": [
+            "dokter hewan",
+            "veterinarian",
+            "vet"
+        ]
+    },
+    "2261": {
+        "name": "Dentists",
+        "aliases": [
+            "asisten dokter gigi",
+            "dental assistant",
+            "dental hygienist",
+            "asisten dokter",
+            "perawat gigi"
+        ]
+    },
+    "2262": {
+        "name": "Pharmacists",
+        "aliases": [
+            "apoteker",
+            "pharmacist",
+            "farmasi"
+        ]
+    },
+    "2263": {
+        "name": "Environmental and Occupational Health and Hygiene Professionals",
+        "aliases": [
+            "k3 officer",
+            "hse officer",
+            "hse specialist",
+            "safety officer",
+            "ahli k3",
+            "occupational health",
+            "safety engineer",
+            "ehs officer",
+            "ehs specialist"
+        ]
+    },
+    "2264": {
+        "name": "Physiotherapists",
+        "aliases": [
+            "fisioterapis",
+            "physiotherapist",
+            "physical therapist"
+        ]
+    },
+    "2265": {
+        "name": "Dieticians and Nutritionists",
+        "aliases": [
+            "ahli gizi",
+            "nutritionist",
+            "dietician",
+            "dietitian",
+            "ahli diet"
+        ]
+    },
+    "2266": {
+        "name": "Audiologists and Speech Therapists",
+        "aliases": [
+            "speech therapist",
+            "terapis wicara",
+            "audiologist"
+        ]
+    },
+    "2267": {
+        "name": "Optometrists and Ophthalmic Opticians",
+        "aliases": [
+            "optometrist",
+            "ahli optometri",
+            "ahli mata"
+        ]
+    },
+    "2269": {
+        "name": "Health Professionals Not Elsewhere Classified",
+        "aliases": [
+            "ahli kesehatan",
+            "health professional"
+        ]
+    },
+    "2310": {
+        "name": "University and Higher Education Teachers",
+        "aliases": [
+            "english teacher",
+            "guru bahasa inggris",
+            "guru",
+            "teacher",
+            "tutor",
+            "pengajar",
+            "dosen",
+            "tenaga pengajar",
+            "lecturer",
+            "asisten dosen"
+        ]
+    },
+    "2320": {
+        "name": "Vocational Education Teachers",
+        "aliases": [
+            "guru smk",
+            "vocational teacher",
+            "instruktur pelatihan",
+            "trainer",
+            "instruktur"
+        ]
+    },
+    "2330": {
+        "name": "Secondary Education Teachers",
+        "aliases": [
+            "guru smp",
+            "guru sma",
+            "secondary teacher",
+            "guru sekolah menengah",
+            "pengajar"
+        ]
+    },
+    "2341": {
+        "name": "Primary School Teachers",
+        "aliases": [
+            "guru sd",
+            "primary teacher",
+            "guru sekolah dasar"
+        ]
+    },
+    "2342": {
+        "name": "Early Childhood Educators",
+        "aliases": [
+            "guru paud",
+            "guru tk",
+            "early childhood teacher",
+            "guru taman kanak-kanak"
+        ]
+    },
+    "2351": {
+        "name": "Education Methods Specialists",
+        "aliases": [
+            "curriculum developer",
+            "pengembang kurikulum",
+            "instructional designer"
+        ]
+    },
+    "2352": {
+        "name": "Special Needs Teachers",
+        "aliases": [
+            "guru slb",
+            "special education teacher",
+            "guru berkebutuhan khusus"
+        ]
+    },
+    "2353": {
+        "name": "Other Language Teachers",
+        "aliases": [
+            "guru bahasa",
+            "language teacher",
+            "efl teacher",
+            "esl teacher"
+        ]
+    },
+    "2354": {
+        "name": "Other Music Teachers",
+        "aliases": [
+            "guru musik",
+            "music teacher",
+            "music instructor"
+        ]
+    },
+    "2355": {
+        "name": "Other Arts Teachers",
+        "aliases": [
+            "guru seni",
+            "art teacher",
+            "art instructor"
+        ]
+    },
+    "2356": {
+        "name": "Information Technology Trainers",
+        "aliases": [
+            "it trainer",
+            "pelatih it",
+            "computer trainer"
+        ]
+    },
+    "2359": {
+        "name": "Teaching Professionals Not Elsewhere Classified",
+        "aliases": []
+    },
+    "2411": {
+        "name": "Accountants",
+        "aliases": [
+            "accountant",
+            "auditor",
+            "tax specialist",
+            "akuntan",
+            "finance staff",
+            "finance officer",
+            "accounting staff",
+            "staff akuntansi",
+            "staff keuangan",
+            "tax officer",
+            "accounts payable",
+            "accounts receivable",
+            "admin akuntansi",
+            "staf akuntansi",
+            "staf keuangan",
+            "admin keuangan",
+            "administrator keuangan",
+            "staf admin keuangan",
+            "internal audit",
+            "staf internal audit",
+            "staff internal audit",
+            "auditor internal",
+            "internal auditor",
+            "internal audit staff",
+            "finance accounting tax",
+            "staf finance accounting",
+            "staff finance accounting",
+            "fat staff",
+            "staf fat",
+            "finance accounting & tax",
+            "tax staff",
+            "staf pajak",
+            "tax supervisor",
+            "spv tax",
+            "fat supervisor",
+            "spv fat",
+            "finance accounting supervisor",
+            "accounting supervisor",
+            "spv accounting",
+            "treasury staff",
+            "staff treasury",
+            "staf treasury",
+            "treasury officer",
+            "cost controller",
+            "cost control",
+            "fat officer"
+        ]
+    },
+    "2412": {
+        "name": "Financial and Investment Advisers",
+        "aliases": [
+            "financial advisor",
+            "financial planner",
+            "perencana keuangan",
+            "investment advisor",
+            "wealth manager"
+        ]
+    },
+    "2413": {
+        "name": "Financial Analysts",
+        "aliases": [
+            "financial analyst",
+            "analis keuangan",
+            "credit analyst",
+            "risk analyst",
+            "analis risiko",
+            "analis kredit",
+            "investment analyst",
+            "analis investasi",
+            "treasury analyst",
+            "fp&a analyst",
+            "staf fp&a"
+        ]
+    },
+    "2421": {
+        "name": "Management and Organization Analysts",
+        "aliases": [
+            "business analyst",
+            "management consultant",
+            "project manager",
+            "scrum master",
+            "product owner",
+            "product manager",
+            "program manager",
+            "analis bisnis"
+        ]
+    },
+    "2422": {
+        "name": "Policy Administration Professionals",
+        "aliases": [
+            "policy analyst",
+            "analis kebijakan"
+        ]
+    },
+    "2423": {
+        "name": "Personnel and Careers Professionals",
+        "aliases": [
+            "hr",
+            "recruiter",
+            "talent acquisition",
+            "hrd",
+            "human resources",
+            "hr officer",
+            "hr staff",
+            "hr admin",
+            "people operations",
+            "hr generalist",
+            "hr specialist",
+            "personalia",
+            "rekrutmen",
+            "recruitment staff"
+        ]
+    },
+    "2424": {
+        "name": "Training and Staff Development Professionals",
+        "aliases": [
+            "training manager",
+            "learning and development",
+            "l&d specialist",
+            "training specialist",
+            "pelatihan dan pengembangan"
+        ]
+    },
+    "2431": {
+        "name": "Advertising and Marketing Professionals",
+        "aliases": [
+            "digital marketer",
+            "seo specialist",
+            "social media",
+            "social media specialist",
+            "sem specialist",
+            "performance marketing",
+            "growth hacker",
+            "digital marketing",
+            "online marketing",
+            "marketing executive",
+            "marketing staff",
+            "staf pemasaran",
+            "asisten pemasaran",
+            "staf administrasi pemasaran",
+            "kol campaign",
+            "affiliate marketer",
+            "kol specialist",
+            "growth marketing",
+            "social media creator",
+            "tiktok creator",
+            "influencer marketer",
+            "content specialist",
+            "social media & content specialist",
+            "content strategist",
+            "content planner",
+            "content coordinator",
+            "campaign specialist",
+            "campaign executive",
+            "campaign coordinator",
+            "campaign planner",
+            "marketing officer",
+            "marketing associate",
+            "brand executive",
+            "brand associate",
+            "brand manager",
+            "brand specialist",
+            "copywriter",
+            "content writer",
+            "public relations officer",
+            "staf promosi",
+            "promotion staff",
+            "product marketing",
+            "product marketer"
+        ]
+    },
+    "2432": {
+        "name": "Public Relations Professionals",
+        "aliases": [
+            "public relations",
+            "pr officer",
+            "pr specialist",
+            "humas",
+            "staf humas",
+            "communications officer",
+            "media relations"
+        ]
+    },
+    "2433": {
+        "name": "Technical and Medical Sales Professionals (excluding ICT)",
+        "aliases": [
+            "medical representative",
+            "medical sales",
+            "medrep",
+            "sales farmasi"
+        ]
+    },
+    "2434": {
+        "name": "Information and Communications Technology Sales Professionals",
+        "aliases": [
+            "it sales",
+            "technology sales",
+            "presales consultant",
+            "presales engineer",
+            "solution consultant"
+        ]
+    },
+    "2511": {
+        "name": "Systems Analysts",
+        "aliases": [
+            "systems analyst",
+            "analis sistem",
+            "it analyst",
+            "business systems analyst"
+        ]
+    },
+    "2512": {
+        "name": "Software Developers",
+        "aliases": [
+            "software engineer",
+            "software developer",
+            "programmer",
+            "full stack developer",
+            "fullstack developer",
+            "backend developer",
+            "back end developer",
+            "java developer",
+            "python developer",
+            "golang developer",
+            "php developer",
+            "laravel developer",
+            "node developer",
+            "pengembang perangkat lunak",
+            "pemrogram",
+            "blockchain developer",
+            "blockchain engineer",
+            "defi developer",
+            "prompt engineer",
+            "prompt developer",
+            "game developer",
+            "game designer",
+            "unity developer",
+            "unreal developer",
+            "tech lead",
+            "hris developer",
+            "hris programmer",
+            "erp developer",
+            "sap developer",
+            "odoo developer",
+            "salesforce developer",
+            "hris analyst",
+            "it developer specialist",
+            "devops",
+            "devops engineer",
+            "machine learning engineer",
+            "ml engineer",
+            "ai engineer",
+            "ai developer",
+            "ai specialist",
+            "nlp engineer",
+            "computer vision engineer"
+        ]
+    },
+    "2513": {
+        "name": "Web and Multimedia Developers",
+        "aliases": [
+            "web developer",
+            "frontend developer",
+            "front end developer",
+            "react developer",
+            "vue developer",
+            "angular developer",
+            "pengembang web",
+            "desainer web",
+            "web development"
+        ]
+    },
+    "2514": {
+        "name": "Applications Programmers",
+        "aliases": [
+            "mobile developer",
+            "android developer",
+            "ios developer",
+            "flutter developer",
+            "react native developer",
+            "app developer",
+            "mobile engineer",
+            "pengembang aplikasi mobile"
+        ]
+    },
+    "2519": {
+        "name": "Software and Applications Developers and Analysts Not Elsewhere Classified",
+        "aliases": [
+            "qa engineer",
+            "tester",
+            "sdet",
+            "quality assurance",
+            "test engineer",
+            "automation tester",
+            "qa analyst",
+            "devops engineer",
+            "sre",
+            "site reliability engineer",
+            "cloud engineer",
+            "platform engineer",
+            "mlops engineer",
+            "solutions architect software",
+            "technical architect",
+            "scrum master",
+            "agile coach",
+            "software tester"
+        ]
+    },
+    "2521": {
+        "name": "Database Designers and Administrators",
+        "aliases": [
+            "dba",
+            "database administrator",
+            "database engineer",
+            "database analyst",
+            "data engineer",
+            "etl developer",
+            "big data engineer",
+            "data architect",
+            "administrator basis data",
+            "data developer"
+        ]
+    },
+    "2522": {
+        "name": "Systems Administrators",
+        "aliases": [
+            "system administrator",
+            "sysadmin",
+            "server administrator",
+            "it support",
+            "helpdesk",
+            "technical support",
+            "desktop support",
+            "it technician",
+            "it officer",
+            "it staff",
+            "administrator sistem",
+            "dukungan it",
+            "it",
+            "it support staff",
+            "staf it support",
+            "it infrastructure staff",
+            "it helpdesk",
+            "helpdesk it",
+            "it support officer"
+        ]
+    },
+    "2523": {
+        "name": "Computer Network Professionals",
+        "aliases": [
+            "network engineer",
+            "network administrator",
+            "infrastructure engineer",
+            "it infrastructure",
+            "teknisi jaringan",
+            "administrator jaringan",
+            "staf jaringan",
+            "network staff"
+        ]
+    },
+    "2529": {
+        "name": "Database and Network Professionals Not Elsewhere Classified",
+        "aliases": [
+            "security analyst",
+            "penetration tester",
+            "soc analyst",
+            "information security",
+            "cybersecurity analyst",
+            "security engineer",
+            "ethical hacker",
+            "analis keamanan siber",
+            "network security",
+            "it security",
+            "cyber security",
+            "infrastructure security",
+            "infrastructure & network security"
+        ]
+    },
+    "2611": {
+        "name": "Lawyers",
+        "aliases": [
+            "pengacara",
+            "lawyer",
+            "advokat",
+            "legal staff",
+            "legal officer",
+            "legal property",
+            "legal land",
+            "legal pertanahan",
+            "staf legal pertanahan",
+            "legal officer property",
+            "legal agraria",
+            "legal legal & permit",
+            "permit",
+            "perizinan",
+            "corporate legal",
+            "legal corporate",
+            "konsultan hukum",
+            "legal advisor",
+            "staf legal",
+            "legal executive",
+            "industrial relations manager",
+            "staf hubungan industrial",
+            "compliance officer",
+            "staf kepatuhan"
+        ]
+    },
+    "2612": {
+        "name": "Judges",
+        "aliases": []
+    },
+    "2619": {
+        "name": "Legal Professionals Not Elsewhere Classified",
+        "aliases": [
+            "notaris",
+            "notary"
+        ]
+    },
+    "2621": {
+        "name": "Archivists and Curators",
+        "aliases": [
+            "archivist",
+            "arsiparis",
+            "kurator",
+            "curator"
+        ]
+    },
+    "2622": {
+        "name": "Librarians and Related Information Professionals",
+        "aliases": [
+            "pustakawan",
+            "librarian"
+        ]
+    },
+    "2631": {
+        "name": "Economists",
+        "aliases": [
+            "ekonom",
+            "economist"
+        ]
+    },
+    "2632": {
+        "name": "Sociologists, Anthropologists and Related Professionals",
+        "aliases": []
+    },
+    "2633": {
+        "name": "Philosophers, Historians and Political Scientists",
+        "aliases": []
+    },
+    "2634": {
+        "name": "Psychologists",
+        "aliases": [
+            "psikologi",
+            "psikolog",
+            "psychologist",
+            "konselor",
+            "counselor"
+        ]
+    },
+    "2635": {
+        "name": "Social Work and Counselling Professionals",
+        "aliases": [
+            "pekerja sosial",
+            "social worker"
+        ]
+    },
+    "2636": {
+        "name": "Religious Professionals",
+        "aliases": []
+    },
+    "2641": {
+        "name": "Authors and Related Writers",
+        "aliases": [
+            "penulis",
+            "author",
+            "writer",
+            "novelist"
+        ]
+    },
+    "2642": {
+        "name": "Journalists",
+        "aliases": [
+            "content writer",
+            "copywriter",
+            "technical writer",
+            "content creator",
+            "editor",
+            "penulis konten",
+            "vtuber",
+            "virtual tuber",
+            "streamer",
+            "youtube creator",
+            "freelance writer",
+            "jurnalis",
+            "reporter"
+        ]
+    },
+    "2643": {
+        "name": "Translators, Interpreters and Other Linguists",
+        "aliases": [
+            "translator",
+            "penerjemah",
+            "interpreter",
+            "juru bahasa",
+            "sworn translator"
+        ]
+    },
+    "2651": {
+        "name": "Visual Artists",
+        "aliases": [
+            "seniman",
+            "artist",
+            "pelukis",
+            "painter artist",
+            "sculptor"
+        ]
+    },
+    "2652": {
+        "name": "Musicians, Singers and Composers",
+        "aliases": [
+            "musisi",
+            "musician",
+            "penyanyi",
+            "singer",
+            "komposer",
+            "composer"
+        ]
+    },
+    "2653": {
+        "name": "Dancers and Choreographers",
+        "aliases": [
+            "penari",
+            "dancer",
+            "koreografer",
+            "choreographer"
+        ]
+    },
+    "2654": {
+        "name": "Film, Stage and Related Directors and Producers",
+        "aliases": [
+            "sutradara",
+            "director film",
+            "film director",
+            "producer",
+            "produser"
+        ]
+    },
+    "2655": {
+        "name": "Actors",
+        "aliases": [
+            "aktor",
+            "actor",
+            "aktris",
+            "actress",
+            "artis"
+        ]
+    },
+    "2656": {
+        "name": "Announcers on Radio, Television and Other Media",
+        "aliases": [
+            "presenter",
+            "penyiar",
+            "announcer",
+            "broadcaster",
+            "host tv",
+            "host radio"
+        ]
+    },
+    "2659": {
+        "name": "Creative and Performing Artists Not Elsewhere Classified",
+        "aliases": [
+            "youtuber",
+            "tiktoker",
+            "influencer"
+        ]
+    },
+    "3111": {
+        "name": "Chemical and Physical Science Technicians",
+        "aliases": [
+            "asisten laboratorium",
+            "lab assistant",
+            "research assistant",
+            "research associate"
+        ]
+    },
+    "3112": {
+        "name": "Civil Engineering Technicians",
+        "aliases": [
+            "civil infra. staff",
+            "civil infra staff",
+            "staf infrastruktur sipil",
+            "teknisi sipil",
+            "pengawas konstruksi",
+            "pengawas lapangan",
+            "site supervisor",
+            "inspektor konstruksi",
+            "civil supervisor",
+            "construction inspector",
+            "maintenance officer"
+        ]
+    },
+    "3113": {
+        "name": "Electrical Engineering Technicians",
+        "aliases": [
+            "electrical technician",
+            "teknisi elektrik",
+            "teknisi elektro"
+        ]
+    },
+    "3114": {
+        "name": "Electronics Engineering Technicians",
+        "aliases": [
+            "electronics technician",
+            "teknisi elektronik",
+            "teknisi elektronika"
+        ]
+    },
+    "3115": {
+        "name": "Mechanical Engineering Technicians",
+        "aliases": [
+            "teknisi mesin",
+            "mechanical technician",
+            "teknisi mekanik"
+        ]
+    },
+    "3116": {
+        "name": "Chemical Engineering Technicians",
+        "aliases": [
+            "teknik kimia",
+            "chemical technician",
+            "teknisi kimia",
+            "lab technician",
+            "analis laboratorium",
+            "laboran"
+        ]
+    },
+    "3117": {
+        "name": "Mining and Metallurgical Technicians",
+        "aliases": []
+    },
+    "3118": {
+        "name": "Draughtspersons",
+        "aliases": [
+            "drafter",
+            "autocad drafter",
+            "teknisi gambar",
+            "drafting technician",
+            "drafter sipil",
+            "civil drafter",
+            "drafter arsitektur",
+            "drafter struktur",
+            "juru gambar",
+            "juru gambar teknik",
+            "drafter mekanikal",
+            "drafter elektrikal",
+            "drafter interior",
+            "3d visualizer",
+            "operator autocad",
+            "autocad operator"
+        ]
+    },
+    "3119": {
+        "name": "Physical and Engineering Science Technicians Not Elsewhere Classified",
+        "aliases": [
+            "quality control",
+            "qc inspector",
+            "qc staff",
+            "quality inspector",
+            "staf qc",
+            "safety officer"
+        ]
+    },
+    "3121": {
+        "name": "Mining Supervisors",
+        "aliases": [
+            "supervisor tambang",
+            "mining supervisor"
+        ]
+    },
+    "3122": {
+        "name": "Manufacturing Supervisors",
+        "aliases": [
+            "supervisor pabrik",
+            "production supervisor",
+            "supervisor produksi",
+            "manufacturing supervisor"
+        ]
+    },
+    "3123": {
+        "name": "Construction Supervisors",
+        "aliases": [
+            "supervisor konstruksi",
+            "construction supervisor",
+            "mandor",
+            "foreman",
+            "pengawas proyek",
+            "estimator",
+            "construction estimator",
+            "chief engineering",
+            "chief engineer",
+            "chief engineer hotel",
+            "chief engineering building",
+            "spv engineering",
+            "supervisor engineering"
+        ]
+    },
+    "3131": {
+        "name": "Power Production Plant Operators",
+        "aliases": [
+            "operator pembangkit listrik",
+            "power plant operator"
+        ]
+    },
+    "3132": {
+        "name": "Incinerator and Water Treatment Plant Operators",
+        "aliases": []
+    },
+    "3133": {
+        "name": "Chemical Processing Plant Controllers",
+        "aliases": []
+    },
+    "3134": {
+        "name": "Petroleum and Natural Gas Refining Plant Operators",
+        "aliases": []
+    },
+    "3135": {
+        "name": "Metal Production Process Controllers",
+        "aliases": []
+    },
+    "3139": {
+        "name": "Process Control Technicians Not Elsewhere Classified",
+        "aliases": []
+    },
+    "3141": {
+        "name": "Life Science Technicians (excluding Medical)",
+        "aliases": [
+            "lab technician biology",
+            "teknisi laboratorium biologi"
+        ]
+    },
+    "3142": {
+        "name": "Agricultural Technicians",
+        "aliases": [
+            "teknisi pertanian",
+            "agricultural technician",
+            "agronomy technician"
+        ]
+    },
+    "3143": {
+        "name": "Forestry Technicians",
+        "aliases": []
+    },
+    "3151": {
+        "name": "Ships’ Engineers",
+        "aliases": [
+            "mualim",
+            "mualim i",
+            "mualim ii",
+            "mualim iii",
+            "ship officer",
+            "ship navigator",
+            "deck officer",
+            "nakhoda",
+            "pelaut"
+        ]
+    },
+    "3152": {
+        "name": "Ships' Deck Officers and Pilots",
+        "aliases": []
+    },
+    "3153": {
+        "name": "Aircraft Pilots and Related Associate Professionals",
+        "aliases": []
+    },
+    "3154": {
+        "name": "Air Traffic Controllers",
+        "aliases": []
+    },
+    "3155": {
+        "name": "Air Traffic Safety Electronics Technicians",
+        "aliases": []
+    },
+    "3211": {
+        "name": "Medical Imaging and Therapeutic Equipment Technicians",
+        "aliases": [
+            "radiographer",
+            "radiografer",
+            "teknisi radiologi"
+        ]
+    },
+    "3212": {
+        "name": "Medical and Pathology Laboratory Technicians",
+        "aliases": [
+            "analis laboratorium medis",
+            "medical lab technician",
+            "teknisi laboratorium medis"
+        ]
+    },
+    "3213": {
+        "name": "Pharmaceutical Technicians and Assistants",
+        "aliases": [
+            "asisten apoteker",
+            "pharmacy technician",
+            "pharmacy assistant"
+        ]
+    },
+    "3214": {
+        "name": "Medical and Dental Prosthetic Technicians",
+        "aliases": []
+    },
+    "3221": {
+        "name": "Nursing Associate Professionals",
+        "aliases": [
+            "perawat associate",
+            "nursing associate",
+            "perawat gigi",
+            "asisten perawat",
+            "dental nurse",
+            "nursing assistant"
+        ]
+    },
+    "3222": {
+        "name": "Midwifery Associate Professionals",
+        "aliases": []
+    },
+    "3230": {
+        "name": "Traditional and Complementary Medicine Associate Professionals",
+        "aliases": []
+    },
+    "3240": {
+        "name": "Veterinary Technicians and Assistants",
+        "aliases": []
+    },
+    "3251": {
+        "name": "Dental Assistants and Therapists",
+        "aliases": []
+    },
+    "3252": {
+        "name": "Medical Records and Health Information Technicians",
+        "aliases": [
+            "medical records",
+            "rekam medis",
+            "health information"
+        ]
+    },
+    "3253": {
+        "name": "Community Health Workers",
+        "aliases": [
+            "koordinator program sosial",
+            "community worker",
+            "community development",
+            "kader posyandu",
+            "petugas kesehatan masyarakat"
+        ]
+    },
+    "3254": {
+        "name": "Dispensing Opticians",
+        "aliases": []
+    },
+    "3255": {
+        "name": "Physiotherapy Technicians and Assistants",
+        "aliases": []
+    },
+    "3256": {
+        "name": "Medical Assistants",
+        "aliases": []
+    },
+    "3257": {
+        "name": "Environmental and Occupational Health Inspectors and Associates",
+        "aliases": []
+    },
+    "3258": {
+        "name": "Ambulance Workers",
+        "aliases": []
+    },
+    "3259": {
+        "name": "Other Health Associate Professionals Not Elsewhere Classified",
+        "aliases": []
+    },
+    "3311": {
+        "name": "Securities and Finance Dealers and Brokers",
+        "aliases": [
+            "trader",
+            "broker saham",
+            "securities dealer",
+            "dealer saham"
+        ]
+    },
+    "3312": {
+        "name": "Credit and Loans Officers",
+        "aliases": [
+            "loan officer",
+            "credit officer",
+            "analis kredit bank",
+            "staff kredit"
+        ]
+    },
+    "3313": {
+        "name": "Accounting Associate Professionals",
+        "aliases": [
+            "accounting associate",
+            "junior accountant",
+            "asisten akuntan"
+        ]
+    },
+    "3314": {
+        "name": "Statistical, Mathematical and Related Associate Professionals",
+        "aliases": [
+            "statistical associate",
+            "asisten statistik"
+        ]
+    },
+    "3315": {
+        "name": "Valuers and Loss Assessors",
+        "aliases": [
+            "property valuer",
+            "penilai properti",
+            "appraiser",
+            "penilai aset",
+            "asset valuer",
+            "ahli taksasi properti"
+        ]
+    },
+    "3321": {
+        "name": "Insurance Representatives",
+        "aliases": [
+            "insurance agent",
+            "agen asuransi",
+            "insurance sales"
+        ]
+    },
+    "3322": {
+        "name": "Commercial Sales Representatives",
+        "aliases": [
+            "sales",
+            "sales executive",
+            "sales representative",
+            "account executive",
+            "business development",
+            "bd",
+            "staf penjualan",
+            "tenaga penjual",
+            "sales officer",
+            "sales associate",
+            "account manager",
+            "key account manager",
+            "sales agent",
+            "agen penjualan",
+            "sales advisor",
+            "business development representative",
+            "bdr",
+            "sales development representative",
+            "sdr",
+            "relationship manager",
+            "rm",
+            "funding officer"
+        ]
+    },
+    "3323": {
+        "name": "Buyers",
+        "aliases": [
+            "purchasing officer",
+            "procurement officer",
+            "procurement staff",
+            "purchasing staff",
+            "staf pengadaan",
+            "staf purchasing",
+            "buyer",
+            "procurement specialist",
+            "purchasing manager",
+            "procurement manager",
+            "staf pembelian",
+            "ppic",
+            "ppic staff"
+        ]
+    },
+    "3324": {
+        "name": "Trade Brokers",
+        "aliases": []
+    },
+    "3331": {
+        "name": "Clearing and Forwarding Agents",
+        "aliases": [
+            "freight forwarder",
+            "forwarding agent",
+            "customs broker",
+            "ppjk",
+            "clearing agent",
+            "import export staff",
+            "staf ekspor impor"
+        ]
+    },
+    "3332": {
+        "name": "Conference and Event Planners",
+        "aliases": [
+            "event planner",
+            "event organizer",
+            "event coordinator",
+            "wedding organizer",
+            "eo",
+            "perencana acara"
+        ]
+    },
+    "3333": {
+        "name": "Employment Agents and Contractors",
+        "aliases": [
+            "employment agent",
+            "agen tenaga kerja",
+            "outsourcing coordinator"
+        ]
+    },
+    "3334": {
+        "name": "Real Estate Agents and Property Managers",
+        "aliases": [
+            "real estate agent",
+            "property manager",
+            "agen properti",
+            "marketing properti",
+            "sales properti",
+            "sales property",
+            "broker properti",
+            "estate manager",
+            "tenant relation",
+            "tenant relation officer",
+            "tenant relation staff",
+            "leasing executive",
+            "leasing officer",
+            "leasing staff",
+            "staf leasing",
+            "building manager",
+            "pengelola properti",
+            "manajer properti",
+            "property executive",
+            "sales agent",
+            "chief tenant relations",
+            "guest relation officer",
+            "customer relations property",
+            "estate management",
+            "pengelola kawasan",
+            "town management",
+            "property management",
+            "property advisor",
+            "marketing gallery",
+            "land acquisition",
+            "pembebasan lahan",
+            "land development",
+            "pengembangan lahan",
+            "town maintenance",
+            "leasing manager"
+        ]
+    },
+    "3339": {
+        "name": "Business Services Agents Not Elsewhere Classified",
+        "aliases": [
+            "business agent",
+            "agen bisnis"
+        ]
+    },
+    "3341": {
+        "name": "Office Supervisors",
+        "aliases": [
+            "office supervisor",
+            "supervisor kantor",
+            "office manager",
+            "manajer kantor"
+        ]
+    },
+    "3342": {
+        "name": "Legal Secretaries",
+        "aliases": [
+            "legal secretary",
+            "sekretaris hukum"
+        ]
+    },
+    "3343": {
+        "name": "Administrative and Executive Secretaries",
+        "aliases": [
+            "sekretaris",
+            "secretary",
+            "executive secretary",
+            "sekretaris direksi",
+            "board secretary",
+            "personal assistant",
+            "pa",
+            "sekretaris pribadi",
+            "executive assistant",
+            "ea",
+            "project secretary"
+        ]
+    },
+    "3344": {
+        "name": "Medical Secretaries",
+        "aliases": [
+            "medical secretary",
+            "sekretaris medis"
+        ]
+    },
+    "3351": {
+        "name": "Customs and Border Inspectors",
+        "aliases": [
+            "customs officer",
+            "petugas bea cukai"
+        ]
+    },
+    "3352": {
+        "name": "Government Tax and Excise Officials",
+        "aliases": [
+            "tax official",
+            "petugas pajak"
+        ]
+    },
+    "3353": {
+        "name": "Government Social Benefits Officials",
+        "aliases": []
+    },
+    "3354": {
+        "name": "Government Licensing Officials",
+        "aliases": []
+    },
+    "3355": {
+        "name": "Police Inspectors and Detectives",
+        "aliases": []
+    },
+    "3359": {
+        "name": "Government Regulatory Associate Professionals Not Elsewhere Classified",
+        "aliases": []
+    },
+    "3411": {
+        "name": "Legal and Related Associate Professionals",
+        "aliases": [
+            "paralegal",
+            "staf paralegal",
+            "legal administrator",
+            "admin legal",
+            "staf administrasi hukum",
+            "legal clerk"
+        ]
+    },
+    "3412": {
+        "name": "Social Work Associate Professionals",
+        "aliases": [
+            "social work associate",
+            "asisten pekerja sosial"
+        ]
+    },
+    "3413": {
+        "name": "Religious Associate Professionals",
+        "aliases": []
+    },
+    "3421": {
+        "name": "Athletes and Sports Players",
+        "aliases": [
+            "atlet",
+            "athlete",
+            "olahragawan",
+            "sports player"
+        ]
+    },
+    "3422": {
+        "name": "Sports Coaches, Instructors and Officials",
+        "aliases": [
+            "pelatih",
+            "coach",
+            "sports coach",
+            "instruktur olahraga"
+        ]
+    },
+    "3423": {
+        "name": "Fitness and Recreation Instructors and Programme Leaders",
+        "aliases": [
+            "instruktur fitness",
+            "fitness instructor",
+            "personal trainer",
+            "gym instructor"
+        ]
+    },
+    "3431": {
+        "name": "Photographers",
+        "aliases": [
+            "fotografer",
+            "photographer",
+            "videographer",
+            "videografer",
+            "kameraman",
+            "cameraman"
+        ]
+    },
+    "3432": {
+        "name": "Interior Designers and Decorators",
+        "aliases": [
+            "interior designer",
+            "desainer interior",
+            "staf interior",
+            "interior decorator"
+        ]
+    },
+    "3433": {
+        "name": "Gallery, Museum and Library Technicians",
+        "aliases": [
+            "museum technician",
+            "teknisi museum"
+        ]
+    },
+    "3434": {
+        "name": "Chefs",
+        "aliases": [
+            "chef",
+            "kepala koki",
+            "pastry chef",
+            "sous chef",
+            "executive chef"
+        ]
+    },
+    "3435": {
+        "name": "Other Artistic and Cultural Associate Professionals",
+        "aliases": [
+            "motion graphic designer",
+            "3d artist",
+            "animator",
+            "video editor",
+            "editor video",
+            "multimedia designer"
+        ]
+    },
+    "3511": {
+        "name": "Information and Communications Technology Operations Technicians",
+        "aliases": [
+            "it operations",
+            "noc engineer",
+            "noc operator",
+            "operator it",
+            "asisten laboratorium komputer",
+            "asisten laboratorium ti",
+            "asisten laboratorium informatika",
+            "asisten praktikum komputer",
+            "asisten praktikum ti",
+            "asisten praktikum informatika",
+            "computer lab assistant",
+            "it lab assistant"
+        ]
+    },
+    "3512": {
+        "name": "Information and Communications Technology User Support Technicians",
+        "aliases": []
+    },
+    "3513": {
+        "name": "Computer Network and Systems Technicians",
+        "aliases": [
+            "network technician",
+            "teknisi jaringan komputer"
+        ]
+    },
+    "3514": {
+        "name": "Web Technicians",
+        "aliases": [
+            "web technician",
+            "teknisi web",
+            "webmaster"
+        ]
+    },
+    "3521": {
+        "name": "Broadcasting and Audiovisual Technicians",
+        "aliases": [
+            "broadcasting technician",
+            "teknisi broadcast",
+            "audio engineer",
+            "sound engineer",
+            "video technician"
+        ]
+    },
+    "3522": {
+        "name": "Telecommunications Engineering Technicians",
+        "aliases": [
+            "telco technician",
+            "teknisi telekomunikasi",
+            "field engineer telecom"
+        ]
+    },
+    "4110": {
+        "name": "General Office Clerks",
+        "aliases": [
+            "general office clerk",
+            "admin",
+            "administrative assistant",
+            "staf administrasi",
+            "admin staff",
+            "office boy",
+            "virtual assistant",
+            "admin operasional",
+            "staf operasional",
+            "staff operasional",
+            "operational staff",
+            "office assistant",
+            "ga staff",
+            "staf ga",
+            "general affair staff",
+            "staf general affair",
+            "general affairs staff",
+            "general affair",
+            "general affairs",
+            "admin support",
+            "administrative support",
+            "administrasi",
+            "staf administrasi umum",
+            "staff administrasi",
+            "clerk",
+            "office administrator",
+            "front office",
+            "receptionist",
+            "resepsionis",
+            "front desk",
+            "staf back office",
+            "back office staff",
+            "admin dokumen",
+            "document controller",
+            "staf data entry",
+            "data entry staff",
+            "admin sales",
+            "sales administrator",
+            "administrasi penjualan"
+        ]
+    },
+    "4120": {
+        "name": "Secretaries (general)",
+        "aliases": [
+            "general secretary",
+            "sekretaris umum"
+        ]
+    },
+    "4131": {
+        "name": "Typists and Word Processing Operators",
+        "aliases": [
+            "typist",
+            "juru ketik"
+        ]
+    },
+    "4132": {
+        "name": "Data Entry Clerks",
+        "aliases": [
+            "data entry",
+            "data entry clerk",
+            "operator data",
+            "input data"
+        ]
+    },
+    "4211": {
+        "name": "Bank Tellers and Related Clerks",
+        "aliases": [
+            "teller bank",
+            "bank teller"
+        ]
+    },
+    "4212": {
+        "name": "Bookmakers, Croupiers and Related Gaming Workers",
+        "aliases": []
+    },
+    "4213": {
+        "name": "Pawnbrokers and Money-lenders",
+        "aliases": [
+            "debt collector",
+            "penagih utang",
+            "collection staff"
+        ]
+    },
+    "4214": {
+        "name": "Debt Collectors and Related Workers",
+        "aliases": [
+            "debt collector lapangan",
+            "field collector"
+        ]
+    },
+    "4221": {
+        "name": "Travel Consultants and Clerks",
+        "aliases": [
+            "travel consultant",
+            "travel agent",
+            "agen perjalanan",
+            "ticketing staff",
+            "staf tiket"
+        ]
+    },
+    "4222": {
+        "name": "Contact Centre Information Clerks",
+        "aliases": [
+            "call center agent",
+            "customer service representative",
+            "cs agent",
+            "cs representative",
+            "cs officer",
+            "customer service",
+            "customer care",
+            "customer support",
+            "layanan pelanggan",
+            "staf layanan pelanggan",
+            "cs staff"
+        ]
+    },
+    "4223": {
+        "name": "Telephone Switchboard Operators",
+        "aliases": []
+    },
+    "4224": {
+        "name": "Hotel Receptionists",
+        "aliases": [
+            "resepsionis hotel",
+            "hotel receptionist",
+            "front desk hotel"
+        ]
+    },
+    "4225": {
+        "name": "Inquiry Clerks",
+        "aliases": [
+            "information clerk",
+            "petugas informasi"
+        ]
+    },
+    "4226": {
+        "name": "Receptionists (general)",
+        "aliases": [
+            "resepsionis",
+            "receptionist",
+            "front desk"
+        ]
+    },
+    "4227": {
+        "name": "Survey and Market Research Interviewers",
+        "aliases": [
+            "surveyor lapangan",
+            "market research interviewer",
+            "enumerator"
+        ]
+    },
+    "4229": {
+        "name": "Client Information Workers Not Elsewhere Classified",
+        "aliases": []
+    },
+    "4311": {
+        "name": "Accounting and Bookkeeping Clerks",
+        "aliases": [
+            "bookkeeper",
+            "pembukuan",
+            "staf pembukuan"
+        ]
+    },
+    "4312": {
+        "name": "Statistical, Finance and Insurance Clerks",
+        "aliases": [
+            "statistical clerk",
+            "staf statistik",
+            "finance clerk",
+            "staf administrasi keuangan"
+        ]
+    },
+    "4313": {
+        "name": "Payroll Clerks",
+        "aliases": [
+            "payroll staff",
+            "staf penggajian",
+            "payroll officer",
+            "payroll admin"
+        ]
+    },
+    "4321": {
+        "name": "Stock Clerks",
+        "aliases": [
+            "admin gudang",
+            "staff gudang",
+            "staf gudang",
+            "warehouse admin",
+            "inventory control",
+            "stock keeper",
+            "admin inventory",
+            "petugas gudang",
+            "helper gudang",
+            "warehouse helper",
+            "packer",
+            "picker",
+            "checker gudang",
+            "operator forklift",
+            "staf logistik gudang"
+        ]
+    },
+    "4322": {
+        "name": "Production Clerks",
+        "aliases": [
+            "production clerk",
+            "admin produksi",
+            "ppic admin"
+        ]
+    },
+    "4323": {
+        "name": "Transport Clerks",
+        "aliases": [
+            "transport clerk",
+            "admin transportasi",
+            "staf pengiriman",
+            "shipping admin",
+            "shipping staff"
+        ]
+    },
+    "4411": {
+        "name": "Library Clerks",
+        "aliases": [
+            "library clerk",
+            "staf perpustakaan"
+        ]
+    },
+    "4412": {
+        "name": "Mail Carriers and Sorting Clerks",
+        "aliases": [
+            "mail carrier",
+            "pengantar surat",
+            "postman",
+            "tukang pos"
+        ]
+    },
+    "4413": {
+        "name": "Coding, Proofreading and Related Clerks",
+        "aliases": []
+    },
+    "4414": {
+        "name": "Scribes and Related Workers",
+        "aliases": []
+    },
+    "4415": {
+        "name": "Filing and Copying Clerks",
+        "aliases": []
+    },
+    "4416": {
+        "name": "Personnel Clerks",
+        "aliases": [
+            "personnel clerk",
+            "staf kepegawaian",
+            "hr clerk",
+            "admin hr"
+        ]
+    },
+    "4419": {
+        "name": "Other Clerical Support Workers Not Elsewhere Classified",
+        "aliases": []
+    },
+    "5111": {
+        "name": "Travel Attendants and Travel Stewards",
+        "aliases": [
+            "pramugari",
+            "pramugara",
+            "flight attendant",
+            "cabin crew"
+        ]
+    },
+    "5112": {
+        "name": "Transport Conductors",
+        "aliases": []
+    },
+    "5113": {
+        "name": "Travel Guides",
+        "aliases": [
+            "tour guide",
+            "pemandu wisata",
+            "guide",
+            "tour leader"
+        ]
+    },
+    "5120": {
+        "name": "Cooks",
+        "aliases": [
+            "koki",
+            "juru masak",
+            "cook"
+        ]
+    },
+    "5131": {
+        "name": "Waiters",
+        "aliases": [
+            "pelayan",
+            "waiter",
+            "waitress",
+            "pramusaji"
+        ]
+    },
+    "5132": {
+        "name": "Bartenders",
+        "aliases": [
+            "barista",
+            "bartender",
+            "mixologist",
+            "crew kafe",
+            "crew restoran"
+        ]
+    },
+    "5141": {
+        "name": "Hairdressers",
+        "aliases": [
+            "tukang cukur",
+            "hairdresser",
+            "penata rambut",
+            "hair stylist",
+            "barber"
+        ]
+    },
+    "5142": {
+        "name": "Beauticians and Related Workers",
+        "aliases": [
+            "beautician",
+            "terapis kecantikan",
+            "beauty therapist",
+            "nail artist",
+            "lash artist",
+            "makeup artist",
+            "mua",
+            "kapster"
+        ]
+    },
+    "5151": {
+        "name": "Cleaning and Housekeeping Supervisors in Offices, Hotels and Other Establishments",
+        "aliases": [
+            "housekeeping supervisor",
+            "supervisor kebersihan",
+            "executive housekeeper"
+        ]
+    },
+    "5152": {
+        "name": "Domestic Housekeepers",
+        "aliases": [
+            "housekeeper",
+            "pembantu rumah tangga",
+            "asisten rumah tangga",
+            "art"
+        ]
+    },
+    "5153": {
+        "name": "Building Caretakers",
+        "aliases": [
+            "building caretaker",
+            "pengelola gedung",
+            "facility staff",
+            "teknisi fasilitas"
+        ]
+    },
+    "5161": {
+        "name": "Astrologers, Fortune-tellers and Related Workers",
+        "aliases": []
+    },
+    "5162": {
+        "name": "Companions and Valets",
+        "aliases": []
+    },
+    "5163": {
+        "name": "Undertakers and Embalmers",
+        "aliases": []
+    },
+    "5164": {
+        "name": "Pet Groomers and Animal Care Workers",
+        "aliases": [
+            "pet groomer",
+            "animal care",
+            "perawat hewan"
+        ]
+    },
+    "5165": {
+        "name": "Driving Instructors",
+        "aliases": [
+            "instruktur mengemudi",
+            "driving instructor"
+        ]
+    },
+    "5169": {
+        "name": "Personal Services Workers Not Elsewhere Classified",
+        "aliases": []
+    },
+    "5211": {
+        "name": "Stall and Market Salespersons",
+        "aliases": [
+            "pedagang pasar",
+            "market vendor"
+        ]
+    },
+    "5212": {
+        "name": "Street Food Salespersons",
+        "aliases": [
+            "penjual makanan kaki lima",
+            "street food vendor"
+        ]
+    },
+    "5221": {
+        "name": "Shopkeepers",
+        "aliases": [
+            "shopee seller",
+            "online seller",
+            "dropshipper"
+        ]
+    },
+    "5222": {
+        "name": "Shop Supervisors",
+        "aliases": [
+            "store supervisor",
+            "supervisor toko",
+            "shop supervisor"
+        ]
+    },
+    "5223": {
+        "name": "Shop Sales Assistants",
+        "aliases": [
+            "shop assistant",
+            "sales assistant",
+            "pramuniaga",
+            "spg",
+            "spb",
+            "sales promotion girl",
+            "sales promotion boy",
+            "sales promotion",
+            "sales counter",
+            "kasir toko",
+            "pramuniaga toko",
+            "store associate",
+            "retail associate",
+            "beauty advisor",
+            "ba",
+            "crew store",
+            "crew outlet"
+        ]
+    },
+    "5230": {
+        "name": "Cashiers and Ticket Clerks",
+        "aliases": [
+            "kasir",
+            "cashier",
+            "teller kasir",
+            "teller"
+        ]
+    },
+    "5241": {
+        "name": "Fashion and Other Models",
+        "aliases": [
+            "model",
+            "fashion model",
+            "photo model"
+        ]
+    },
+    "5242": {
+        "name": "Sales Demonstrators",
+        "aliases": []
+    },
+    "5243": {
+        "name": "Door-to-door Salespersons",
+        "aliases": []
+    },
+    "5244": {
+        "name": "Contact Centre Salespersons",
+        "aliases": [
+            "telemarketer",
+            "telesales",
+            "telemarketing",
+            "staf telemarketing",
+            "telemarketing staff",
+            "call center sales",
+            "staf telesales"
+        ]
+    },
+    "5245": {
+        "name": "Service Station Attendants",
+        "aliases": []
+    },
+    "5246": {
+        "name": "Food Service Counter Attendants",
+        "aliases": [
+            "crew outlet",
+            "food counter staff",
+            "crew fnb"
+        ]
+    },
+    "5249": {
+        "name": "Sales Workers Not Elsewhere Classified",
+        "aliases": []
+    },
+    "5311": {
+        "name": "Child Care Workers",
+        "aliases": [
+            "babysitter",
+            "pengasuh anak",
+            "nanny",
+            "child care worker"
+        ]
+    },
+    "5312": {
+        "name": "Teachers’ Aides",
+        "aliases": [
+            "asisten guru",
+            "teacher aide",
+            "guru pendamping"
+        ]
+    },
+    "5321": {
+        "name": "Health Care Assistants",
+        "aliases": [
+            "caregiver",
+            "perawat lansia",
+            "health care assistant"
+        ]
+    },
+    "5322": {
+        "name": "Home-based Personal Care Workers",
+        "aliases": []
+    },
+    "5329": {
+        "name": "Personal Care Workers in Health Services Not Elsewhere Classified",
+        "aliases": []
+    },
+    "5411": {
+        "name": "Firefighters",
+        "aliases": [
+            "pemadam kebakaran",
+            "firefighter"
+        ]
+    },
+    "5412": {
+        "name": "Police Officers",
+        "aliases": [
+            "polisi",
+            "police officer"
+        ]
+    },
+    "5413": {
+        "name": "Prison Guards",
+        "aliases": []
+    },
+    "5414": {
+        "name": "Security Guards",
+        "aliases": [
+            "satpam",
+            "security guard",
+            "security officer",
+            "petugas keamanan",
+            "penjaga keamanan",
+            "pengaman",
+            "anggota keamanan",
+            "security",
+            "chief security",
+            "danru security",
+            "komandan regu satpam",
+            "anggota satpam",
+            "pengawal pribadi",
+            "bodyguard"
+        ]
+    },
+    "5419": {
+        "name": "Protective Services Workers Not Elsewhere Classified",
+        "aliases": []
+    },
+    "6111": {
+        "name": "Field Crop and Vegetable Growers",
+        "aliases": [
+            "petani",
+            "farmer",
+            "petani sawah"
+        ]
+    },
+    "6112": {
+        "name": "Tree and Shrub Crop Growers",
+        "aliases": []
+    },
+    "6113": {
+        "name": "Gardeners; Horticultural and Nursery Growers",
+        "aliases": []
+    },
+    "6114": {
+        "name": "Mixed Crop Growers",
+        "aliases": []
+    },
+    "6121": {
+        "name": "Livestock and Dairy Producers",
+        "aliases": [
+            "peternak",
+            "livestock farmer",
+            "peternak ayam"
+        ]
+    },
+    "6122": {
+        "name": "Poultry Producers",
+        "aliases": []
+    },
+    "6123": {
+        "name": "Apiarists and Sericulturists",
+        "aliases": []
+    },
+    "6129": {
+        "name": "Animal Producers Not Elsewhere Classified",
+        "aliases": []
+    },
+    "6130": {
+        "name": "Mixed Crop and Animal Producers",
+        "aliases": []
+    },
+    "6210": {
+        "name": "Forestry and Related Workers",
+        "aliases": []
+    },
+    "6221": {
+        "name": "Aquaculture Workers",
+        "aliases": []
+    },
+    "6222": {
+        "name": "Inland and Coastal Waters Fishery Workers",
+        "aliases": [
+            "nelayan",
+            "fisherman"
+        ]
+    },
+    "6223": {
+        "name": "Deep-sea Fishery Workers",
+        "aliases": []
+    },
+    "6224": {
+        "name": "Hunters and Trappers",
+        "aliases": []
+    },
+    "6310": {
+        "name": "Subsistence Crop Farmers",
+        "aliases": []
+    },
+    "6320": {
+        "name": "Subsistence Livestock Farmers",
+        "aliases": []
+    },
+    "6330": {
+        "name": "Subsistence Mixed Crop and Livestock Farmers",
+        "aliases": []
+    },
+    "6340": {
+        "name": "Subsistence Fishers, Hunters, Trappers and Gatherers",
+        "aliases": []
+    },
+    "7111": {
+        "name": "House Builders",
+        "aliases": [
+            "tukang bangunan",
+            "house builder",
+            "construction worker"
+        ]
+    },
+    "7112": {
+        "name": "Bricklayers and Related Workers",
+        "aliases": [
+            "tukang batu",
+            "bricklayer",
+            "mason"
+        ]
+    },
+    "7113": {
+        "name": "Stonemasons, Stone Cutters, Spitters and Carvers",
+        "aliases": []
+    },
+    "7114": {
+        "name": "Concrete Placers, Concrete Finishers and Related Workers",
+        "aliases": [
+            "tukang cor",
+            "concrete worker",
+            "concrete finisher"
+        ]
+    },
+    "7115": {
+        "name": "Carpenters and Joiners",
+        "aliases": [
+            "tukang kayu",
+            "carpenter"
+        ]
+    },
+    "7119": {
+        "name": "Building Frame and Related Trades Workers Not Elsewhere Classified",
+        "aliases": []
+    },
+    "7121": {
+        "name": "Roofers",
+        "aliases": []
+    },
+    "7122": {
+        "name": "Floor Layers and Tile Setters",
+        "aliases": []
+    },
+    "7123": {
+        "name": "Plasterers",
+        "aliases": []
+    },
+    "7124": {
+        "name": "Insulation Workers",
+        "aliases": []
+    },
+    "7125": {
+        "name": "Glaziers",
+        "aliases": []
+    },
+    "7126": {
+        "name": "Plumbers and Pipe Fitters",
+        "aliases": [
+            "tukang pipa",
+            "plumber",
+            "pipe fitter",
+            "tukang ledeng"
+        ]
+    },
+    "7127": {
+        "name": "Air Conditioning and Refrigeration Mechanics",
+        "aliases": [
+            "teknisi ac",
+            "ac technician",
+            "teknisi pendingin",
+            "refrigeration technician",
+            "teknisi chiller"
+        ]
+    },
+    "7131": {
+        "name": "Painters and Related Workers",
+        "aliases": [
+            "tukang cat",
+            "painter",
+            "house painter"
+        ]
+    },
+    "7132": {
+        "name": "Spray Painters and Varnishers",
+        "aliases": []
+    },
+    "7133": {
+        "name": "Building Structure Cleaners",
+        "aliases": []
+    },
+    "7211": {
+        "name": "Metal Moulders and Coremakers",
+        "aliases": []
+    },
+    "7212": {
+        "name": "Welders and Flame Cutters",
+        "aliases": [
+            "teknisi pengelasan",
+            "welder",
+            "tukang las",
+            "welding technician",
+            "juru las"
+        ]
+    },
+    "7213": {
+        "name": "Sheet Metal Workers",
+        "aliases": []
+    },
+    "7214": {
+        "name": "Structural Metal Preparers and Erectors",
+        "aliases": []
+    },
+    "7215": {
+        "name": "Riggers and Cable Splicers",
+        "aliases": []
+    },
+    "7221": {
+        "name": "Blacksmiths, Hammersmiths and Forging Press Workers",
+        "aliases": []
+    },
+    "7222": {
+        "name": "Toolmakers and Related Workers",
+        "aliases": []
+    },
+    "7223": {
+        "name": "Metal Working Machine Tool Setters and Operators",
+        "aliases": []
+    },
+    "7224": {
+        "name": "Metal Polishers, Wheel Grinders and Tool Sharpeners",
+        "aliases": []
+    },
+    "7231": {
+        "name": "Motor Vehicle Mechanics and Repairers",
+        "aliases": [
+            "servis otomotif",
+            "automotive mechanic",
+            "mekanik",
+            "montir",
+            "technician automotive",
+            "bengkel"
+        ]
+    },
+    "7232": {
+        "name": "Aircraft Engine Mechanics and Repairers",
+        "aliases": [
+            "aircraft mechanic",
+            "mekanik pesawat",
+            "teknisi pesawat"
+        ]
+    },
+    "7233": {
+        "name": "Agricultural and Industrial Machinery Mechanics and Repairers",
+        "aliases": [
+            "mekanik alat berat",
+            "heavy equipment mechanic",
+            "teknisi alat berat"
+        ]
+    },
+    "7234": {
+        "name": "Bicycle and Related Repairers",
+        "aliases": []
+    },
+    "7311": {
+        "name": "Precision-instrument Makers and Repairers",
+        "aliases": []
+    },
+    "7312": {
+        "name": "Musical Instrument Makers and Tuners",
+        "aliases": []
+    },
+    "7313": {
+        "name": "Jewellery and Precious Metal Workers",
+        "aliases": []
+    },
+    "7314": {
+        "name": "Potters and Related Workers",
+        "aliases": []
+    },
+    "7315": {
+        "name": "Glass Makers, Cutters, Grinders and Finishers",
+        "aliases": []
+    },
+    "7316": {
+        "name": "Singwriters, Decorative Painters, Engravers and Etchers",
+        "aliases": []
+    },
+    "7317": {
+        "name": "Handicraft Workers in Wood, Basketry and Related Materials",
+        "aliases": []
+    },
+    "7318": {
+        "name": "Handicraft Workers in Textile, Leather and Related Materials",
+        "aliases": []
+    },
+    "7319": {
+        "name": "Handicraft Workers Not Elsewhere Classifed",
+        "aliases": []
+    },
+    "7321": {
+        "name": "Pre-press Technicians",
+        "aliases": []
+    },
+    "7322": {
+        "name": "Printers",
+        "aliases": []
+    },
+    "7323": {
+        "name": "Print Finishing and Binding Workers",
+        "aliases": []
+    },
+    "7411": {
+        "name": "BuildingandRelatedElectricians",
+        "aliases": [
+            "tukang listrik",
+            "electrician",
+            "teknisi listrik",
+            "teknisi mep",
+            "mep technician",
+            "mep staff",
+            "staf mep",
+            "teknisi maintenance",
+            "maintenance gedung",
+            "teknisi gedung",
+            "building maintenance staff",
+            "teknisi listrik gedung",
+            "mep supervisor",
+            "spv mep",
+            "mep lead",
+            "mep leader"
+        ]
+    },
+    "7412": {
+        "name": "Electrical Mechanics and Fitters",
+        "aliases": [
+            "electrical fitter",
+            "tukang pasang listrik"
+        ]
+    },
+    "7413": {
+        "name": "Electrical Line Installers and Repairers",
+        "aliases": [
+            "teknisi kabel",
+            "electrical line installer"
+        ]
+    },
+    "7421": {
+        "name": "Electronics Mechanics and Servicers",
+        "aliases": [
+            "electronics mechanic",
+            "teknisi elektronik servis"
+        ]
+    },
+    "7422": {
+        "name": "Information and Communications Technology Installers and Servicers",
+        "aliases": [
+            "teknisi it instalasi",
+            "ict installer",
+            "cabling technician",
+            "teknisi kabel data"
+        ]
+    },
+    "7511": {
+        "name": "Butchers, Fishmongers and Related Food Preparers",
+        "aliases": [
+            "tukang daging",
+            "butcher",
+            "fishmonger"
+        ]
+    },
+    "7512": {
+        "name": "Bakers, Pastry-cooks and Confectionery Makers",
+        "aliases": [
+            "baker",
+            "tukang roti",
+            "pastry cook",
+            "pembuat kue"
+        ]
+    },
+    "7513": {
+        "name": "Dairy Products Makers",
+        "aliases": []
+    },
+    "7514": {
+        "name": "Fruit, Vegetable and Related Preservers",
+        "aliases": []
+    },
+    "7515": {
+        "name": "Food and Beverage Tasters and Graders",
+        "aliases": []
+    },
+    "7516": {
+        "name": "Tobacco Preparers and Tobacco Products Makers",
+        "aliases": []
+    },
+    "7521": {
+        "name": "Wood Treaters",
+        "aliases": []
+    },
+    "7522": {
+        "name": "Cabinet-makers and Related Workers",
+        "aliases": []
+    },
+    "7523": {
+        "name": "Woodworking Machine Tool Setters and Operators",
+        "aliases": []
+    },
+    "7531": {
+        "name": "Tailors, Dressmakers, Furriers and Hatters",
+        "aliases": [
+            "penjahit",
+            "tailor",
+            "dressmaker",
+            "tukang jahit"
+        ]
+    },
+    "7532": {
+        "name": "Garment and Related Patternmakers and Cutters",
+        "aliases": []
+    },
+    "7533": {
+        "name": "Sewing, Embroidery and Related Workers",
+        "aliases": []
+    },
+    "7534": {
+        "name": "Upholsterers and Related Workers",
+        "aliases": []
+    },
+    "7535": {
+        "name": "Pelt Dressers, Tanners and Fellmongers",
+        "aliases": []
+    },
+    "7536": {
+        "name": "Shoemakers and Related Workers",
+        "aliases": []
+    },
+    "7541": {
+        "name": "Underwater Divers",
+        "aliases": []
+    },
+    "7542": {
+        "name": "Shotfirers and Blasters",
+        "aliases": []
+    },
+    "7543": {
+        "name": "Product Graders and Testers (excluding Foods and Beverages)",
+        "aliases": []
+    },
+    "7544": {
+        "name": "Fumigators and Other Pest and Weed Controllers",
+        "aliases": []
+    },
+    "7549": {
+        "name": "Craft and Related Workers Not Elsewhere Classified",
+        "aliases": []
+    },
+    "8111": {
+        "name": "Miners and Quarriers",
+        "aliases": []
+    },
+    "8112": {
+        "name": "Mineral and Stone Processing Plant Operators",
+        "aliases": []
+    },
+    "8113": {
+        "name": "Well Drillers and Borers and Related Workers",
+        "aliases": []
+    },
+    "8114": {
+        "name": "Cement, Stone and Other Mineral Products Machine Operators",
+        "aliases": []
+    },
+    "8121": {
+        "name": "Metal Processing Plant Operators",
+        "aliases": [
+            "metal processing plant operator",
+            "operator pabrik logam",
+            "operator produksi",
+            "production operator"
+        ]
+    },
+    "8122": {
+        "name": "Metal Finishing, Plating and Coating Machine Operators",
+        "aliases": []
+    },
+    "8131": {
+        "name": "Chemical Products Plant and Machine Operators",
+        "aliases": []
+    },
+    "8132": {
+        "name": "Photographic Products Machine Operators",
+        "aliases": []
+    },
+    "8141": {
+        "name": "Rubber Products Machine Operators",
+        "aliases": []
+    },
+    "8142": {
+        "name": "Plastic Products Machine Operators",
+        "aliases": []
+    },
+    "8143": {
+        "name": "Paper Products Machine Operators",
+        "aliases": []
+    },
+    "8151": {
+        "name": "Fibre Preparing, Spinning and Winding Machine Operators",
+        "aliases": []
+    },
+    "8152": {
+        "name": "Weaving and Knitting Machine Operators",
+        "aliases": []
+    },
+    "8153": {
+        "name": "Sewing Machine Operators",
+        "aliases": []
+    },
+    "8154": {
+        "name": "Bleaching, Dyeing and Fabric Cleaning Machine Operators",
+        "aliases": []
+    },
+    "8155": {
+        "name": "Fur and Leather Preparing Machine Operators",
+        "aliases": []
+    },
+    "8156": {
+        "name": "Shoemaking and Related Machine Operators",
+        "aliases": []
+    },
+    "8157": {
+        "name": "Laundry Machine Operators",
+        "aliases": []
+    },
+    "8159": {
+        "name": "Textile, Fur and Leather Products Machine Operators Not Elsewhere Classified",
+        "aliases": []
+    },
+    "8160": {
+        "name": "Food and Related Products Machine Operators",
+        "aliases": []
+    },
+    "8171": {
+        "name": "Pulp and Papermaking Plant Operators",
+        "aliases": []
+    },
+    "8172": {
+        "name": "Wood Processing Plant Operators",
+        "aliases": []
+    },
+    "8181": {
+        "name": "Glass and Ceramics Plant Operators",
+        "aliases": []
+    },
+    "8182": {
+        "name": "Steam Engine and Boiler Operators",
+        "aliases": []
+    },
+    "8183": {
+        "name": "Packing, Bottling and Labelling Machine Operators",
+        "aliases": []
+    },
+    "8189": {
+        "name": "Stationary Plant and Machine Operators Not Elsewhere Classified",
+        "aliases": []
+    },
+    "8211": {
+        "name": "Mechanical Machinery Assemblers",
+        "aliases": []
+    },
+    "8212": {
+        "name": "Electrical and Electronic Equipment Assemblers",
+        "aliases": [
+            "teknisi elektronik perakitan",
+            "electronics assembler"
+        ]
+    },
+    "8219": {
+        "name": "Assemblers Not Elsewhere Classified",
+        "aliases": []
+    },
+    "8311": {
+        "name": "Locomotive Engine Drivers",
+        "aliases": [
+            "masinis",
+            "train driver",
+            "locomotive driver"
+        ]
+    },
+    "8312": {
+        "name": "Railway Brake, Signal and Switch Operators",
+        "aliases": []
+    },
+    "8321": {
+        "name": "Motorcycle Drivers",
+        "aliases": [
+            "ojek",
+            "ojol",
+            "ojek online",
+            "motorcycle driver"
+        ]
+    },
+    "8322": {
+        "name": "Car, Taxi and Van Drivers",
+        "aliases": [
+            "car driver",
+            "taxi driver",
+            "van driver",
+            "supir mobil",
+            "sopir",
+            "driver",
+            "supir pribadi",
+            "driver pribadi",
+            "supir kantor",
+            "driver kantor",
+            "supir logistik",
+            "driver logistik",
+            "supir ambulance",
+            "pengemudi"
+        ]
+    },
+    "8331": {
+        "name": "Bus and Tram Drivers",
+        "aliases": [
+            "sopir bus",
+            "bus driver",
+            "driver bus"
+        ]
+    },
+    "8332": {
+        "name": "Heavy Truck and Lorry Drivers",
+        "aliases": [
+            "sopir truk",
+            "truck driver",
+            "supir truk",
+            "driver truk",
+            "sopir trailer"
+        ]
+    },
+    "8341": {
+        "name": "Mobile Farm and Forestry Plant Operators",
+        "aliases": []
+    },
+    "8342": {
+        "name": "Earthmoving and Related Plant Operators",
+        "aliases": [
+            "operator alat berat",
+            "heavy equipment operator",
+            "excavator operator",
+            "operator excavator",
+            "operator bulldozer"
+        ]
+    },
+    "8343": {
+        "name": "Crane, Hoist and Related Plant Operators",
+        "aliases": [
+            "operator crane",
+            "crane operator",
+            "operator hoist"
+        ]
+    },
+    "8344": {
+        "name": "Lifting Truck Operators",
+        "aliases": [
+            "operator forklift",
+            "forklift operator",
+            "forklift driver"
+        ]
+    },
+    "8350": {
+        "name": "Ships’ Deck Crews and Related Workers",
+        "aliases": []
+    },
+    "9111": {
+        "name": "Domestic Cleaners and Helpers",
+        "aliases": [
+            "pembantu",
+            "domestic cleaner",
+            "household helper"
+        ]
+    },
+    "9112": {
+        "name": "Cleaners and Helpers in Offices, Hotels and Other Establishments",
+        "aliases": [
+            "cleaning service",
+            "petugas kebersihan",
+            "janitor",
+            "housekeeping",
+            "housekeeper",
+            "office boy",
+            "office girl",
+            "ob",
+            "og",
+            "clogger",
+            "helper kebersihan"
+        ]
+    },
+    "9121": {
+        "name": "Hand Launderers and Pressers",
+        "aliases": []
+    },
+    "9122": {
+        "name": "Vehicle Cleaners",
+        "aliases": []
+    },
+    "9123": {
+        "name": "Window Cleaners",
+        "aliases": []
+    },
+    "9129": {
+        "name": "Other Cleaning Workers",
+        "aliases": []
+    },
+    "9211": {
+        "name": "Crop Farm Labourers",
+        "aliases": []
+    },
+    "9212": {
+        "name": "Livestock Farm Labourers",
+        "aliases": []
+    },
+    "9213": {
+        "name": "Mixed Crop and Livestock Farm Labourers",
+        "aliases": []
+    },
+    "9214": {
+        "name": "Garden and Horticultural Labourers",
+        "aliases": [
+            "gardener",
+            "tukang kebun",
+            "staf lanskap",
+            "landscape worker",
+            "pemelihara tanaman",
+            "helper kebun"
+        ]
+    },
+    "9215": {
+        "name": "Forestry Labourers",
+        "aliases": []
+    },
+    "9216": {
+        "name": "Fishery and Aquaculture Labourers",
+        "aliases": []
+    },
+    "9311": {
+        "name": "Mining and Quarrying Labourers",
+        "aliases": []
+    },
+    "9312": {
+        "name": "Civil Engineering Labourers",
+        "aliases": []
+    },
+    "9313": {
+        "name": "Building Construction Labourers",
+        "aliases": [
+            "kuli bangunan",
+            "construction labourer",
+            "buruh bangunan"
+        ]
+    },
+    "9321": {
+        "name": "Hand Packers",
+        "aliases": [
+            "packer",
+            "tukang packing",
+            "hand packer"
+        ]
+    },
+    "9329": {
+        "name": "Manufacturing Labourers Not Elsewhere Classified",
+        "aliases": []
+    },
+    "9331": {
+        "name": "Hand and Pedal Vehicle Drivers",
+        "aliases": []
+    },
+    "9332": {
+        "name": "Drivers of Animal-drawn Vehicles and Machinery",
+        "aliases": []
+    },
+    "9333": {
+        "name": "Freight Handlers",
+        "aliases": [
+            "porter",
+            "kuli angkut",
+            "freight handler",
+            "buruh angkut"
+        ]
+    },
+    "9334": {
+        "name": "Shelf Fillers",
+        "aliases": [
+            "shelf filler",
+            "petugas rak",
+            "merchandiser display"
+        ]
+    },
+    "9411": {
+        "name": "Fast Food Preparers",
+        "aliases": [
+            "crew fast food",
+            "fast food worker",
+            "fast food preparer"
+        ]
+    },
+    "9412": {
+        "name": "Kitchen Helpers",
+        "aliases": [
+            "helper dapur",
+            "kitchen helper",
+            "kitchen crew",
+            "dishwasher"
+        ]
+    },
+    "9510": {
+        "name": "Street and Related Services Workers",
+        "aliases": []
+    },
+    "9520": {
+        "name": "Street Vendors (excluding Food)",
+        "aliases": []
+    },
+    "9611": {
+        "name": "Garbage and Recycling Collectors",
+        "aliases": [
+            "petugas sampah",
+            "garbage collector",
+            "waste collector"
+        ]
+    },
+    "9612": {
+        "name": "Refuse Sorters",
+        "aliases": []
+    },
+    "9613": {
+        "name": "Sweepers and Related Labourers",
+        "aliases": []
+    },
+    "9621": {
+        "name": "Messengers, Package Deliverers and Luggage Porters",
+        "aliases": [
+            "kurir",
+            "courier",
+            "pengantar paket",
+            "delivery driver"
+        ]
+    },
+    "9622": {
+        "name": "Odd-job Persons",
+        "aliases": []
+    },
+    "9623": {
+        "name": "Meter Readers and Vending-machine Collectors",
+        "aliases": []
+    },
+    "9624": {
+        "name": "Water and Firewood Collectors",
+        "aliases": []
+    },
+    "9629": {
+        "name": "Elementary Workers Not Elsewhere Classified",
+        "aliases": []
+    }
+}
