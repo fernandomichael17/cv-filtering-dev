@@ -92,19 +92,19 @@ Rules:
 - max_age: explicitly required maximum age (integer). If not stated, MUST be null.
 - min_gpa: explicitly required minimum GPA out of 4.0 (float). If not stated, MUST be null.
 - marital_status: explicitly required marital status, choose one of: "Belum Menikah" (Single), "Menikah" (Married), or null if not explicitly stated.
-- required_skills: ONLY STRICTLY REQUIRED HARD SKILLS / TECHNICAL SKILLS explicitly mentioned in the JD (e.g. "Python", "Ms. Excel", "SAP", "Mengemudi"). Do NOT put subjective or physical traits here.
-- preferred_skills: PREFERRED HARD SKILLS or technical skills considered a PLUS explicitly in the JD.
+- required_skills: Strictly required tools, professional skills, or core domain knowledge explicitly mentioned in the JD (e.g. "Python", "Ms. Excel", "HRIS", "Undang-Undang Ketenagakerjaan", "Komunikasi", "Negosiasi", "Industrial Relation", "Mengemudi"). Do NOT include generic subjective adjectives like "jujur", "pekerja keras", "bertanggung jawab", but DO include key professional/technical skills.
+- preferred_skills: PREFERRED technical skills, tools, or professional competencies considered a plus.
 - required_certifications: STRICTLY REQUIRED professional certifications or licenses (e.g., "Ahli K3 Umum", "SIM A"). Put mandatory certs here, not in required_skills.
 - preferred_certifications: PREFERRED certifications or licenses, not mandatory but a plus. Put optional certs here.
 - tags: MUST be an array containing exactly 3 strings, respectively:
   1. Job field (e.g., "IT", "Finance", "HR", "Marketing", "Engineering")
-  2. Specific expertise in that field (e.g., "Machine Learning", "Web Development")
-  3. Main tools/technologies used (e.g., "Python", "SAP", "AutoCAD")
+  2. Specific expertise in that field (e.g., "Machine Learning", "Web Development", "HR Generalist")
+  3. Main tools/technologies used (e.g., "Python", "SAP", "HRIS", "AutoCAD")
 - budget: explicitly stated maximum salary budget/limit for this job in IDR (integer). If stated in millions, convert to full integer (e.g. "Gaji up to 15jt" or "Budget max 15.000.000" -> 15000000). If not stated, MUST be null.
 - placement_outside_jakarta: boolean (true/false). Set to true if the job description explicitly mentions requiring or demanding candidates to be willing to be relocated or placed outside Jakarta or outside Jabodetabek or all over Indonesia (e.g. "bersedia ditempatkan di luar Jakarta", "bersedia ditempatkan di seluruh Indonesia", "willing to be relocated outside Jakarta"). Otherwise, set to false.
 - standardized_title: Based on the combined job title, description, and specifications/responsibilities, write 1 standard, clean job title (in 2-3 words, either in standard English or Indonesian) that best represents the actual role. E.g. if the title is "Networking Supervisor" but the duties are managing call center agents, this should be "Supervisor Call Center" or "Call Center Supervisor".
 - If not explicitly stated, use reasonable defaults EXCEPT for min_experience_years which MUST be 0, and min_age, max_age, min_gpa, max_experience_years, preferred_max_experience_years, and marital_status which MUST be null if missing.
-
+-
 EXAMPLE 1 (IT JD):
 JD: "Dibutuhkan Senior Backend Engineer. Gaji up to 15.000.000. Minimal lulusan S1 Teknik Informatika. Pengalaman minimal 3 tahun, maksimal 6 tahun. Usia 25-35 tahun. Harus menguasai Python dan Django, memiliki pengalaman dengan PostgreSQL. Diutamakan yang memahami AWS dan Docker."
 Output:
@@ -130,7 +130,7 @@ Output:
   "standardized_title": "Backend Engineer"
 }}
 
-EXAMPLE 2 (Non-IT JD):
+EXAMPLE 2 (Non-IT Safety JD):
 JD: "Lowongan HSE Officer. Pendidikan min D3 Teknik atau Kesehatan Kerja. Fresh graduate dipersilakan, pengalaman 1-2 tahun. Wajib memiliki sertifikasi Ahli K3 Umum yang masih aktif dan memiliki SIM A. Diutamakan memiliki sertifikasi ISO 45001 atau NEBOSH. Harus sehat jasmani dan bisa bekerja dalam tim. Bersedia ditempatkan di site project luar Jawa/luar Jakarta."
 Output:
 {{
@@ -153,6 +153,31 @@ Output:
   "budget": null,
   "placement_outside_jakarta": true,
   "standardized_title": "HSE Officer"
+}}
+
+EXAMPLE 3 (HR/Generalist JD):
+JD: "Lowongan Kerja HRGA Supervisor. Pendidikan minimal S1 Psikologi, Manajemen Sumber Daya Manusia, atau Administrasi Bisnis. Minimal 5 tahun pengalaman kerja di bidang HRGA/HR Generalist di perusahaan manufaktur. Pemahaman yang kuat tentang undang-undang ketenagakerjaan dan industrial relation. Kemampuan komunikasi yang baik, baik lisan maupun tertulis, dan kemampuan bernegosiasi yang andal. Pengetahuan tentang penggunaan HRIS. Mampu berbahasa Mandarin menjadi nilai tambah."
+Output:
+{{
+  "min_education": "S1",
+  "allowed_majors": ["Psikologi", "Manajemen Sumber Daya Manusia", "Administrasi Bisnis"],
+  "major_flexibility": "flexible",
+  "min_experience_years": 5,
+  "max_experience_years": null,
+  "preferred_min_experience_years": 5,
+  "preferred_max_experience_years": null,
+  "min_age": null,
+  "max_age": null,
+  "min_gpa": null,
+  "marital_status": null,
+  "required_skills": ["Undang-Undang Ketenagakerjaan", "HRIS", "Komunikasi", "Negosiasi", "Industrial Relation"],
+  "preferred_skills": ["Mandarin"],
+  "required_certifications": [],
+  "preferred_certifications": [],
+  "tags": ["HR", "HR Generalist", "HRIS"],
+  "budget": null,
+  "placement_outside_jakarta": false,
+  "standardized_title": "HRGA Supervisor"
 }}"""
 
 

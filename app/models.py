@@ -202,6 +202,7 @@ class Require(Base):
     address = Column(Text, nullable=True)
     gmail = Column(String(255), nullable=True)
     linkedin = Column(String(255), nullable=True)
+    instagram = Column(String(255), nullable=True)
     phone = Column(String(50), nullable=True)
     createdat = Column(DateTime, nullable=True)
     updatedat = Column(DateTime, nullable=True)

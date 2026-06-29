@@ -83,7 +83,7 @@ def _taxonomy_label(match_type: str) -> str:
     labels = {
         "exact": "sangat sesuai (exact match)",
         "related": "serumpun (related)",
-        "loosely_related": "berdekatan (loosely related)",
+        "loosely_related": "Relevansi Sebagian (Partially Relevant)",
         "skills_match": "kecocokan berbasis skill",
         "unknown": "tidak dapat ditentukan secara otomatis",
         "no_experience": "tanpa pengalaman kerja relevan",

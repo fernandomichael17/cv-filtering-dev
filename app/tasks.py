@@ -42,42 +42,45 @@ def run_job_parsing_celery_task(job_id: int, title: str, desc: str, spec: str | 
     Return:
         None
     """
-    from app.database import async_session
+    from app.database import async_session, engine
     from app.repositories.job_repository import JobRepository
     from core.llm.jd_parser import parse_job_description
 
     async def _run():
-        async with async_session() as session:
-            try:
-                combined_jd = desc
-                if spec:
-                    combined_jd = f"Description:\n{desc}\n\nRequirements/Specification:\n{spec}"
-                
-                full_jd_text = f"Posisi: {title}\n\n{combined_jd}"
-                parsed = await parse_job_description(full_jd_text)
-                tags = parsed.pop("tags", [])
-                
-                job_repo_local = JobRepository()
-                await job_repo_local.upsert_parsed_cache(
-                    session, job_id, parsed, tags
-                )
+        try:
+            async with async_session() as session:
+                try:
+                    combined_jd = desc
+                    if spec:
+                        combined_jd = f"Description:\n{desc}\n\nRequirements/Specification:\n{spec}"
+                    
+                    full_jd_text = f"Posisi: {title}\n\n{combined_jd}"
+                    parsed = await parse_job_description(full_jd_text)
+                    tags = parsed.pop("tags", [])
+                    
+                    job_repo_local = JobRepository()
+                    await job_repo_local.upsert_parsed_cache(
+                        session, job_id, parsed, tags
+                    )
 
-                # Bersihkan data hasil filtering lama karena kriteria lowongan berubah
-                from app.repositories.filtering_repository import FilteringRepository
-                from app.repositories.local_metadata_repository import LocalMetadataRepository
-                filtering_repo = FilteringRepository()
-                local_repo = LocalMetadataRepository()
-                
-                await filtering_repo.delete_results_by_job_vacancy_id(session, job_id)
-                await session.commit()
+                    # Bersihkan data hasil filtering lama karena kriteria lowongan berubah
+                    from app.repositories.filtering_repository import FilteringRepository
+                    from app.repositories.local_metadata_repository import LocalMetadataRepository
+                    filtering_repo = FilteringRepository()
+                    local_repo = LocalMetadataRepository()
+                    
+                    await filtering_repo.delete_results_by_job_vacancy_id(session, job_id)
+                    await session.commit()
 
-                await asyncio.to_thread(local_repo.delete_metadata_by_job_id, job_id)
-                
-                logger.info("Job #%d JD berhasil di-parse asinkron oleh Celery dan hasil filtering lama telah dibersihkan. Tags: %s", job_id, tags)
-            except Exception as e:
-                logger.error("JD parsing asinkron gagal untuk Job #%d di Celery: %s", job_id, e)
-                job_repo_local = JobRepository()
-                await job_repo_local.upsert_parsed_cache(session, job_id, {}, [])
+                    await asyncio.to_thread(local_repo.delete_metadata_by_job_id, job_id)
+                    
+                    logger.info("Job #%d JD berhasil di-parse asinkron oleh Celery dan hasil filtering lama telah dibersihkan. Tags: %s", job_id, tags)
+                except Exception as e:
+                    logger.error("JD parsing asinkron gagal untuk Job #%d di Celery: %s", job_id, e)
+                    job_repo_local = JobRepository()
+                    await job_repo_local.upsert_parsed_cache(session, job_id, {}, [])
+        finally:
+            await engine.dispose()
 
     asyncio.run(_run())
 
@@ -92,16 +95,19 @@ def run_extraction_celery_task(user_id: int) -> None:
     Return:
         None
     """
-    from app.database import async_session
+    from app.database import async_session, engine
     from app.services.extraction_service import run_extraction
 
     async def _run():
-        async with async_session() as session:
-            try:
-                logger.info("Memulai ekstraksi data kandidat untuk user_id=%d via Celery", user_id)
-                await run_extraction(session, user_id)
-            except Exception as e:
-                logger.error("Gagal mengekstrak data kandidat untuk user_id=%d di Celery: %s", user_id, e)
+        try:
+            async with async_session() as session:
+                try:
+                    logger.info("Memulai ekstraksi data kandidat untuk user_id=%d via Celery", user_id)
+                    await run_extraction(session, user_id)
+                except Exception as e:
+                    logger.error("Gagal mengekstrak data kandidat untuk user_id=%d di Celery: %s", user_id, e)
+        finally:
+            await engine.dispose()
 
     asyncio.run(_run())
 
@@ -117,19 +123,22 @@ def run_filtering_celery_task(job_id: int, mode: str = "registered") -> None:
     Return:
         None
     """
-    from app.database import async_session
+    from app.database import async_session, engine
     from app.services.filtering_service import FilteringService
 
     async def _run():
-        service = FilteringService()
-        async with async_session() as db:
-            try:
-                logger.info("Memulai pipeline filter CV untuk Job ID: %d via Celery (mode: %s)", job_id, mode)
-                await service.run_filtering(db, job_id, mode=mode)
-            except Exception as e:
-                logger.error("Gagal menjalankan pipeline filter CV untuk Job ID %d di Celery: %s", job_id, e)
-            finally:
-                remove_job_active(job_id)
+        try:
+            service = FilteringService()
+            async with async_session() as db:
+                try:
+                    logger.info("Memulai pipeline filter CV untuk Job ID: %d via Celery (mode: %s)", job_id, mode)
+                    await service.run_filtering(db, job_id, mode=mode)
+                except Exception as e:
+                    logger.error("Gagal menjalankan pipeline filter CV untuk Job ID %d di Celery: %s", job_id, e)
+                finally:
+                    remove_job_active(job_id)
+        finally:
+            await engine.dispose()
 
     asyncio.run(_run())
 
@@ -146,30 +155,33 @@ def parse_and_filter_celery_task(job_id: int, title: str, description: str) -> N
     Return:
         None
     """
-    from app.database import async_session
+    from app.database import async_session, engine
     from app.services.filtering_service import FilteringService
     from core.llm.jd_parser import parse_job_description
 
     async def _run():
-        service = FilteringService()
-        async with async_session() as db:
-            try:
-                logger.info("Memulai parse dan filter instan untuk Job ID: %d via Celery", job_id)
-                full_jd_text = f"Posisi: {title}\n\n{description}"
+        try:
+            service = FilteringService()
+            async with async_session() as db:
                 try:
-                    parsed = await parse_job_description(full_jd_text)
-                    tags = parsed.pop("tags", [])
-                    await service.job_repo.upsert_parsed_cache(
-                        db, job_id, parsed, tags
-                    )
-                except Exception as parse_err:
-                    logger.error("JD parsing gagal di Celery task untuk Job ID #%d: %s", job_id, parse_err)
-                    await service.job_repo.upsert_parsed_cache(db, job_id, {}, [])
+                    logger.info("Memulai parse dan filter instan untuk Job ID: %d via Celery", job_id)
+                    full_jd_text = f"Posisi: {title}\n\n{description}"
+                    try:
+                        parsed = await parse_job_description(full_jd_text)
+                        tags = parsed.pop("tags", [])
+                        await service.job_repo.upsert_parsed_cache(
+                            db, job_id, parsed, tags
+                        )
+                    except Exception as parse_err:
+                        logger.error("JD parsing gagal di Celery task untuk Job ID #%d: %s", job_id, parse_err)
+                        await service.job_repo.upsert_parsed_cache(db, job_id, {}, [])
 
-                await service.run_filtering(db, job_id, mode="mixmatch")
-            except Exception as e:
-                logger.error("Gagal menjalankan parse dan filter untuk Job ID %d di Celery: %s", job_id, e)
-            finally:
-                remove_job_active(job_id)
+                    await service.run_filtering(db, job_id, mode="mixmatch")
+                except Exception as e:
+                    logger.error("Gagal menjalankan parse dan filter untuk Job ID %d di Celery: %s", job_id, e)
+                finally:
+                    remove_job_active(job_id)
+        finally:
+            await engine.dispose()
 
     asyncio.run(_run())

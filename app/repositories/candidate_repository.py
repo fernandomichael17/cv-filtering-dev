@@ -202,7 +202,10 @@ async def get_tags_status(session: AsyncSession, require_id: int) -> dict:
         "require_id": require_id,
         "has_tags": tag is not None,
         "cv_tags": tag.tags if tag else None,
+        "tags": tag.tags if tag else None,
         "skills_extracted": skill is not None,
+        "hard_skill": skill.hard_skill if skill else None,
+        "soft_skill": skill.soft_skill if skill else None,
         "experience_tags_count": len(exp_tags),
         "updated_at": tag.updated_at if tag else None,
     }

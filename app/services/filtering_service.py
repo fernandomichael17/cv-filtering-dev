@@ -150,11 +150,13 @@ def get_score_degradation_reason(
         str: String penjelasan alasan penurunan skor dalam Bahasa Indonesia formal.
     """
     if is_alternative:
-        if has_required_skills and hard_matched_count == 0 and tax_match_type != "exact":
+        if has_required_skills and hard_matched_count == 0:
             return "kandidat direkomendasikan sebagai Kategori Alternatif karena tidak memiliki kecocokan eksak pada keahlian wajib yang disyaratkan."
         return "kandidat direkomendasikan sebagai Kategori Alternatif karena kecocokan taksonomi peran menggunakan pencocokan toleransi tinggi (relaxed matching)."
 
     if decision_status == "REVIEW":
+        if has_required_skills and hard_matched_count == 0 and tax_match_type == "exact":
+            return "kandidat direkomendasikan sebagai Kategori Review untuk ditinjau manual karena tidak mencantumkan keahlian wajib secara eksplisit meskipun bidang jabatannya sangat sesuai."
         if tax_match_type in ("loosely_related", "skills_match"):
             return f"kandidat direkomendasikan sebagai Kategori Review untuk ditinjau manual karena kecocokan peran bertipe {tax_match_type.replace('_', ' ')}."
         return "kandidat direkomendasikan sebagai Kategori Review untuk ditinjau manual karena kualifikasi peran tidak dikenali secara penuh."
@@ -669,9 +671,12 @@ class FilteringService:
                     else:
                         decision_status = "LAYAK"
 
-                    if has_required_requirements and len(hard_matched) == 0 and tax_match_type != "exact":
-                        decision_status = "ALTERNATIF"
-                        cand_res.is_alternative = True
+                    if has_required_requirements and len(hard_matched) == 0:
+                        if tax_match_type == "exact":
+                            decision_status = "REVIEW"
+                        else:
+                            decision_status = "ALTERNATIF"
+                            cand_res.is_alternative = True
 
                 raw_score = cand_res.total_score
                 # Penyesuaian skor ke rentang absolut berdasarkan tier keputusan kelayakan (P12)

@@ -300,10 +300,9 @@ def _make_professional_decision(
                 "relevant_years": 0,
                 "total_years": round(total_years, 1),
                 "reason": (
-                    f"Pengalaman kandidat sebagai {roles_str} bertipe loosely related diloloskan di mode relaxed untuk review manual."
+                    f"Pengalaman kandidat sebagai {roles_str} memiliki Relevansi Sebagian (Partially Relevant) diloloskan di mode relaxed untuk review manual."
                     if relaxed else
-                    f"Pengalaman kandidat sebagai {roles_str} memiliki tingkat relevansi "
-                    f"loosely related terhadap posisi {job_title}, namun diloloskan ke UNKNOWN "
+                    f"Pengalaman kandidat sebagai {roles_str} memiliki tingkat Relevansi Sebagian (Partially Relevant) terhadap posisi {job_title}, namun diloloskan ke UNKNOWN "
                     f"karena memiliki kesesuaian skill/jurusan untuk review manual."
                 ),
             }
@@ -316,7 +315,7 @@ def _make_professional_decision(
                 "relevant_years": 0,
                 "total_years": round(total_years, 1),
                 "reason": (
-                    f"[Kesesuaian Posisi] Pengalaman kerja kandidat sebagai {roles_str} dikategorikan kurang relevan (loosely related) "
+                    f"[Kesesuaian Posisi] Pengalaman kerja kandidat sebagai {roles_str} dikategorikan memiliki Relevansi Sebagian (Partially Relevant) "
                     f"dan tidak memiliki kesesuaian keahlian spesifik atau latar belakang jurusan yang relevan untuk posisi {job_title}."
                 ),
             }

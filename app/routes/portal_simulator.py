@@ -15,7 +15,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, insert
 
 from app.database import get_db
-from app.tasks import run_job_parsing_celery_task
+from app.tasks import run_job_parsing_celery_task, run_extraction_celery_task
 from app.models import (
     User as PGUser,
     Require as PGRequire,
@@ -582,6 +582,13 @@ async def register_portal_candidate(data: CandidateCreateInput, db: AsyncSession
     except Exception as e:
         logger.error("Gagal sinkronisasi kandidat ke PostgreSQL: %s", e)
         raise HTTPException(status_code=500, detail=f"SQLite disimpan, tapi sinkronisasi PG gagal: {str(e)}")
+
+    # Picu tugas ekstraksi Celery secara asinkron
+    try:
+        run_extraction_celery_task.delay(user_id)
+        logger.info("Memicu Celery extraction task secara otomatis untuk user_id=%d", user_id)
+    except Exception as e:
+        logger.error("Gagal memicu Celery extraction task secara otomatis untuk user_id=%d: %s", user_id, e)
 
     return {"status": "success", "user_id": user_id, "require_id": req_id}
 
