@@ -41,16 +41,8 @@ async def run_extraction(session: AsyncSession, user_id: int) -> dict:
 
     # Bersihkan data hasil filtering lama karena data profil/tags kandidat telah diperbarui
     from sqlalchemy import delete
-    from app.models import FilteringResult
-    from app.repositories.local_metadata_repository import LocalMetadataRepository
-    import asyncio
-    
     # Hapus hasil filtering lama kandidat ini di PostgreSQL
     await session.execute(delete(FilteringResult).where(FilteringResult.require_id == require_id))
-    
-    # Hapus metadata lokal lama kandidat ini di SQLite
-    local_repo = LocalMetadataRepository()
-    await asyncio.to_thread(local_repo.delete_metadata_by_candidate_id, require_id)
 
     await session.commit()
 

@@ -65,14 +65,10 @@ def run_job_parsing_celery_task(job_id: int, title: str, desc: str, spec: str | 
 
                     # Bersihkan data hasil filtering lama karena kriteria lowongan berubah
                     from app.repositories.filtering_repository import FilteringRepository
-                    from app.repositories.local_metadata_repository import LocalMetadataRepository
                     filtering_repo = FilteringRepository()
-                    local_repo = LocalMetadataRepository()
                     
                     await filtering_repo.delete_results_by_job_vacancy_id(session, job_id)
                     await session.commit()
-
-                    await asyncio.to_thread(local_repo.delete_metadata_by_job_id, job_id)
                     
                     logger.info("Job #%d JD berhasil di-parse asinkron oleh Celery dan hasil filtering lama telah dibersihkan. Tags: %s", job_id, tags)
                 except Exception as e:

@@ -155,6 +155,9 @@ class FilteringResult(Base):
     decision = Column(String(50), nullable=False)
     reason = Column(Text, nullable=True)
     similarity_score = Column(Float, nullable=True)
+    total_score = Column(Float, nullable=True)
+    confidence = Column(String(50), nullable=True)
+    score_breakdown = Column(JSONB, nullable=True)
     created_at = Column(DateTime, server_default=func.now())
 
     # Hubungan relasi antar model

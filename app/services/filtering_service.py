@@ -23,7 +23,6 @@ from app.config import settings
 from app.models import Require, FilteringResult, ParsedJobCache
 from app.repositories.job_repository import JobRepository
 from app.repositories.filtering_repository import FilteringRepository
-from app.repositories.local_metadata_repository import LocalMetadataRepository
 from app.schemas.filtering import (
     FilteringResponse,
     CandidateResult,
@@ -173,7 +172,6 @@ class FilteringService:
     def __init__(self):
         self.job_repo = JobRepository()
         self.filtering_repo = FilteringRepository()
-        self.local_repo = LocalMetadataRepository()
 
     def _build_candidate_result(
         self,
@@ -714,28 +712,25 @@ class FilteringService:
                     "decision": decision_status,
                     "reason": db_reason,
                     "similarity_score": None,
+                    "total_score": cand_res.total_score,
+                    "confidence": cand_res.confidence,
+                    "score_breakdown": cand_res.score_breakdown or {},
                 })
 
                 final_saved_candidates.append(cand_res)
 
             # Simpan massal
             if results_to_save:
+                # Pastikan seluruh dictionary memiliki key yang lengkap untuk menghindari ketidakhomogenan skema insert
+                for r in results_to_save:
+                    if "total_score" not in r:
+                        r["total_score"] = None
+                    if "confidence" not in r:
+                        r["confidence"] = None
+                    if "score_breakdown" not in r:
+                        r["score_breakdown"] = None
                 await self.filtering_repo.save_results_bulk(save_db, results_to_save)
             await save_db.commit()
-
-            # Simpan metadata analitik AI ke SQLite lokal secara asinkron
-            local_meta_list = []
-            for cand_res in final_saved_candidates:
-                local_meta_list.append({
-                    "require_id": cand_res.candidate_id,
-                    "confidence": cand_res.confidence,
-                    "total_score": cand_res.total_score,
-                    "score_breakdown": cand_res.score_breakdown or {}
-                })
-            if local_meta_list:
-                def save_local_meta():
-                    self.local_repo.save_metadata_bulk(job_id, local_meta_list)
-                await asyncio.to_thread(save_local_meta)
 
         return await self.get_results(db, job_id)
 
@@ -765,9 +760,6 @@ class FilteringService:
         all_results = await self.filtering_repo.get_results_by_job_vacancy_id(db, job_id)
         layak_results = [r for r in all_results if r.decision in ("LAYAK", "REVIEW", "ALTERNATIF")]
 
-        # Ambil metadata AI dari SQLite lokal secara asinkron
-        local_metadata = await asyncio.to_thread(self.local_repo.get_metadata_by_job_id, job_id)
-
         require_ids = [r.require_id for r in layak_results]
         candidates_orm = await self.filtering_repo.fetch_candidates_by_ids(db, require_ids)
         candidates_map = {c.requireid: c for c in candidates_orm}
@@ -780,16 +772,15 @@ class FilteringService:
             if candidate:
                 is_alt = (lr.decision == "ALTERNATIF")
                 
-                # Coba ambil data dari SQLite lokal terlebih dahulu
-                meta = local_metadata.get(lr.require_id)
-                if meta:
-                    score = meta.get("total_score", 0.0)
-                    breakdown = meta.get("score_breakdown", {})
-                    confidence = meta.get("confidence", "low")
+                # Coba ambil data dari PostgreSQL utama
+                if lr.total_score is not None:
+                    score = lr.total_score
+                    breakdown = lr.score_breakdown or {}
+                    confidence = lr.confidence or "low"
                     score_before = score
                     llm_confidence = None
                 else:
-                    # Fallback ke kalkulasi real-time jika metadata SQLite tidak ditemukan
+                    # Fallback ke kalkulasi real-time jika data tidak ditemukan di DB
                     cv_tags_str = getattr(candidate.candidate_tags, "tags", None) if getattr(candidate, "candidate_tags", None) else None
                     tax_result = match_job_role(
                         candidate.work_experiences,
