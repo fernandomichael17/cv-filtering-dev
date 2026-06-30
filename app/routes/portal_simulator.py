@@ -273,6 +273,9 @@ class ApplyInput(BaseModel):
 async def sync_job_to_pg(db: AsyncSession, sqlite_id: int, job_data: JobCreateInput) -> int:
     """Sinkronisasi data lowongan kerja dari SQLite ke PostgreSQL.
 
+    Melakukan delete-then-insert jika ID lowongan sudah terdaftar di PostgreSQL
+    untuk menghindari pelanggaran konstrain Unique Key.
+
     Parameter:
         db (AsyncSession): Sesi database PostgreSQL.
         sqlite_id (int): ID lowongan di SQLite.
@@ -281,6 +284,11 @@ async def sync_job_to_pg(db: AsyncSession, sqlite_id: int, job_data: JobCreateIn
     Return:
         int: ID lowongan di PostgreSQL.
     """
+    from sqlalchemy import delete
+    # Hapus data lama dengan ID yang sama (beserta cascade delete relasi terkait)
+    await db.execute(delete(PGJob).where(PGJob.job_vacancy_id == sqlite_id))
+    await db.commit()
+
     pg_job = PGJob(
         job_vacancy_id=sqlite_id,
         job_vacancy_name=job_data.title,
