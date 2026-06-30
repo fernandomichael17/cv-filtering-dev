@@ -406,22 +406,7 @@ class FilteringService:
         all_adjusted.sort(key=lambda x: x.total_score, reverse=True)
         return all_adjusted
 
-    async def run_filtering(self, db: AsyncSession, job_id: int, mode: str = "registered") -> FilteringResponse:
-        """
-        Menjalankan alur pipa penyaringan CV secara lengkap untuk ID lowongan tertentu.
-
-        Parameter:
-            db: Async database session.
-            job_id: ID lowongan pekerjaan.
-            mode: Mode pencarian kandidat ("registered" untuk pelamar terdaftar, atau "mixmatch" untuk seluruh database).
-
-        Return:
-            FilteringResponse: Hasil akhir proses penyaringan terstruktur.
-        """
-        start_time = time.time()
-        logger.info("Memulai pipeline filtering untuk Job ID: %d (Mode: %s)", job_id, mode)
-
-        # 1. Ambil detail lowongan & cache parsing
+    async def _prepare_job_requirements(self, db: AsyncSession, job_id: int):
         job_cache = await self.job_repo.get_parsed_cache(db, job_id)
         vacancy = await self.job_repo.get_vacancy_by_id(db, job_id)
         if not vacancy:
@@ -439,13 +424,14 @@ class FilteringService:
         requirements = job_cache.parsed_requirements
         job_tags = job_cache.tags
         
-        # Tentukan judul jabatan untuk pencocokan taksonomi (menggunakan Feature Flag)
         job_title = vacancy.job_vacancy_name
         if settings.USE_STANDARDIZED_TITLE_FOR_TAXO and requirements and requirements.get("standardized_title"):
             job_title = requirements["standardized_title"]
             logger.info("Menggunakan nama jabatan standar hasil LLM untuk taksonomi: '%s' (Judul asli: '%s')", job_title, vacancy.job_vacancy_name)
 
-        # 2. Ambil kandidat berdasarkan mode dan saring yang sudah pernah diproses sebelumnya
+        return job_cache, vacancy, job_title, requirements, job_tags
+
+    async def _fetch_candidates_for_filtering(self, db: AsyncSession, job_id: int, mode: str):
         existing_results = await self.filtering_repo.get_results_by_job_vacancy_id(db, job_id)
         already_filtered_ids = {res.require_id for res in existing_results}
         logger.info("Ditemukan %d kandidat yang sudah pernah difilter sebelumnya untuk lowongan ini.", len(already_filtered_ids))
@@ -457,35 +443,25 @@ class FilteringService:
             all_candidates = await self.filtering_repo.get_active_candidates(db)
             logger.info("Berhasil mengambil seluruh %d kandidat aktif dari database untuk mix-match.", len(all_candidates))
 
-        # Hanya menyaring kandidat baru yang belum pernah diproses
         all_candidates = [c for c in all_candidates if c.requireid not in already_filtered_ids]
         logger.info("Jumlah kandidat baru yang akan diproses: %d (dari total %d kandidat)", len(all_candidates), len(all_candidates) + len(already_filtered_ids))
+        
+        return all_candidates
 
-        if not all_candidates:
-            logger.info("Tidak ada kandidat baru untuk difilter. Mengambil hasil dari database.")
-            return await self.get_results(db, job_id)
-
-        total_candidates = len(all_candidates)
-
-        # 3. Layer 1 — Hard filter
+    async def _run_elimination_pipeline(self, all_candidates, requirements, job_tags, job_title, job_id):
+        results_to_save = []
+        
+        # Layer 1 — Hard filter
         passed_hard, eliminated_hard = apply_hard_filters(all_candidates, requirements)
         logger.info("Hard filter selesai. Lolos: %d, Gugur: %d", len(passed_hard), len(eliminated_hard))
-
-        # Kumpulkan data eliminasi
-        results_to_save = []
+        
         for elim in eliminated_hard:
             results_to_save.append({
-                "job_vacancy_id": job_id,
-                "require_id": elim["require_id"],
-                "candidate_name": elim["candidate_name"],
-                "stage": "hard_filter",
-                "decision": "ELIMINATED",
-                "reason": elim["reason"],
-                "similarity_score": None,
+                "job_vacancy_id": job_id, "require_id": elim["require_id"], "candidate_name": elim["candidate_name"],
+                "stage": "hard_filter", "decision": "ELIMINATED", "reason": elim["reason"], "similarity_score": None,
             })
 
-
-        # 4. Layer 1.5 — Category filter
+        # Layer 1.5 — Category filter
         compatible_categories = requirements.get("compatible_categories", [])
         if not compatible_categories and job_tags:
             job_category = get_job_category(job_tags)
@@ -494,90 +470,60 @@ class FilteringService:
 
         passed_category = []
         eliminated_category = []
-
         if compatible_categories:
             for candidate in passed_hard:
                 name = f"{candidate.firstname or ''} {candidate.lastname or ''}".strip()
-                cat_result = check_category_compatibility(
-                    candidate.work_experiences,
-                    compatible_categories,
-                )
+                cat_result = check_category_compatibility(candidate.work_experiences, compatible_categories)
                 if cat_result["compatible"]:
                     passed_category.append(candidate)
                 else:
                     eliminated_category.append({
-                        "require_id": candidate.requireid,
-                        "candidate_name": name,
-                        "reason": cat_result["reason"],
+                        "require_id": candidate.requireid, "candidate_name": name, "reason": cat_result["reason"],
                     })
             
             for elim in eliminated_category:
                 results_to_save.append({
-                    "job_vacancy_id": job_id,
-                    "require_id": elim["require_id"],
-                    "candidate_name": elim["candidate_name"],
-                    "stage": "category_filter",
-                    "decision": "ELIMINATED",
-                    "reason": elim["reason"],
-                    "similarity_score": None,
+                    "job_vacancy_id": job_id, "require_id": elim["require_id"], "candidate_name": elim["candidate_name"],
+                    "stage": "category_filter", "decision": "ELIMINATED", "reason": elim["reason"], "similarity_score": None,
                 })
-
             logger.info("Category filter selesai. Lolos: %d, Gugur: %d", len(passed_category), len(eliminated_category))
         else:
             passed_category = passed_hard
 
         # Pre-warm semantic caches
+        import asyncio
         await asyncio.to_thread(_prewarm_caches, passed_category, requirements, job_tags, job_title)
 
-        # 5. Layer 2 — Taxonomy matching
+        # Layer 2 — Taxonomy matching
         min_exp_years = requirements.get("min_experience_years", 0)
         max_exp_years = requirements.get("max_experience_years")
         passed_taxonomy, unknown_taxonomy, relaxed_taxonomy, eliminated_taxonomy = apply_taxonomy_filter(
-            passed_category,
-            job_title=job_title,
-            min_experience_years=min_exp_years,
-            job_tags=job_tags,
-            max_experience_years=max_exp_years,
+            passed_category, job_title=job_title, min_experience_years=min_exp_years,
+            job_tags=job_tags, max_experience_years=max_exp_years,
         )
 
         for elim in eliminated_taxonomy:
             results_to_save.append({
-                "job_vacancy_id": job_id,
-                "require_id": elim["require_id"],
-                "candidate_name": elim["candidate_name"],
-                "stage": "taxonomy_filter",
-                "decision": "ELIMINATED",
-                "reason": elim["reason"],
-                "similarity_score": None,
+                "job_vacancy_id": job_id, "require_id": elim["require_id"], "candidate_name": elim["candidate_name"],
+                "stage": "taxonomy_filter", "decision": "ELIMINATED", "reason": elim["reason"], "similarity_score": None,
             })
 
-
-        # Gabungkan kandidat untuk diproses oleh Skills Filter
         candidates_with_tax = passed_taxonomy + unknown_taxonomy
         candidates_for_skills = [c for c, _ in candidates_with_tax]
         taxonomy_results = {c.requireid: res for c, res in candidates_with_tax}
 
-        # 6. Layer 1.7 — Skills filter
-        passed_skills, eliminated_skills = apply_skills_filter(
-            candidates_for_skills, requirements, taxonomy_results=taxonomy_results
-        )
+        # Layer 1.7 — Skills filter
+        passed_skills, eliminated_skills = apply_skills_filter(candidates_for_skills, requirements, taxonomy_results=taxonomy_results)
 
         for elim in eliminated_skills:
             results_to_save.append({
-                "job_vacancy_id": job_id,
-                "require_id": elim["require_id"],
-                "candidate_name": elim["candidate_name"],
-                "stage": "skills_filter",
-                "decision": "ELIMINATED",
-                "reason": elim["reason"],
-                "similarity_score": None,
+                "job_vacancy_id": job_id, "require_id": elim["require_id"], "candidate_name": elim["candidate_name"],
+                "stage": "skills_filter", "decision": "ELIMINATED", "reason": elim["reason"], "similarity_score": None,
             })
-
 
         passed_skills_ids = {c.requireid for c in passed_skills}
         final_candidates = [(c, res) for c, res in candidates_with_tax if c.requireid in passed_skills_ids]
 
-        # Proses kandidat alternatif (Tier 2/relaxed_taxonomy) jika ada
         if relaxed_taxonomy:
             candidates_for_relaxed_skills = [c for c, _ in relaxed_taxonomy]
             relaxed_taxonomy_results = {c.requireid: res for c, res in relaxed_taxonomy}
@@ -593,17 +539,14 @@ class FilteringService:
                 
             for elim in eliminated_relaxed_skills:
                 results_to_save.append({
-                    "job_vacancy_id": job_id,
-                    "require_id": elim["require_id"],
-                    "candidate_name": elim["candidate_name"],
-                    "stage": "skills_filter_alternative",
-                    "decision": "ELIMINATED",
-                    "reason": f"[Kandidat Alternatif] {elim['reason']}",
-                    "similarity_score": None,
+                    "job_vacancy_id": job_id, "require_id": elim["require_id"], "candidate_name": elim["candidate_name"],
+                    "stage": "skills_filter_alternative", "decision": "ELIMINATED", "reason": f"[Kandidat Alternatif] {elim['reason']}", "similarity_score": None,
                 })
 
+        unknown_require_ids = {c.requireid for c, _ in unknown_taxonomy}
+        return final_candidates, results_to_save, unknown_require_ids
 
-        # 7. Skoring Kandidat
+    def _calculate_scores_and_tiers(self, final_candidates, requirements, job_title):
         temp_candidates = []
         for candidate, result in final_candidates:
             score, breakdown = calculate_candidate_score(candidate, requirements, result, job_title)
@@ -618,35 +561,12 @@ class FilteringService:
             temp_candidates.append((candidate, cand_res))
 
         temp_candidates.sort(key=lambda x: x[1].total_score, reverse=True)
-        qualified_candidates = [item[1] for item in temp_candidates]
+        return temp_candidates
 
-        # 8. Validasi keyakinan (confidence) LLM untuk kandidat teratas (opsional)
-        if settings.ENABLE_LLM_EVALUATOR:
-            # DB Session Decoupling — commit sesi sebelum LLM call agar tidak memblock pool
-            try:
-                await db.commit()
-                await db.close()
-            except Exception as db_err:
-                logger.warning("Gagal menutup sesi database sebelum evaluasi LLM: %s", db_err)
-
-            qualified_candidates = await self._evaluate_top_candidates(
-                job_title=job_title,
-                job_description=vacancy.job_vacancy_job_desc or "",
-                requirements=requirements,
-                candidates=qualified_candidates,
-                min_experience_years=float(min_exp_years),
-            )
-        else:
-            logger.info("LLM Evaluator dinonaktifkan. Menggunakan skor deterministic.")
-
-        # 9. Menyimpan hasil akhir penyaringan ke database (membuka sesi baru)
+    async def _save_final_results(self, db, job_id, temp_candidates, qualified_candidates, results_to_save, requirements, unknown_require_ids):
         from app.database import async_session
         async with async_session() as save_db:
-            unknown_require_ids = {c.requireid for c, _ in unknown_taxonomy}
-            final_saved_candidates = []
-
             for candidate, cand_res in temp_candidates:
-                # Sinkronkan skor & alasan dari LLM evaluator (jika aktif)
                 if settings.ENABLE_LLM_EVALUATOR:
                     eval_res = next((qc for qc in qualified_candidates if qc.candidate_id == cand_res.candidate_id), None)
                     if eval_res:
@@ -677,21 +597,15 @@ class FilteringService:
                             cand_res.is_alternative = True
 
                 raw_score = cand_res.total_score
-                # Penyesuaian skor ke rentang absolut berdasarkan tier keputusan kelayakan (P12)
                 cand_res.total_score = adjust_score_by_tier(raw_score, decision_status)
-
                 cand_res.decision = decision_status
-
-                # Hitung confidence level
                 cand_res.confidence = calculate_confidence(breakdown, decision_status)
 
-                # Bangun reason berdasarkan mode evaluator
                 if settings.ENABLE_LLM_EVALUATOR and cand_res.llm_confidence:
                     db_reason = f"[{cand_res.llm_confidence.upper()}] {cand_res.match_reason}"
                 else:
                     db_reason = build_candidate_reason(breakdown, decision_status)
                     
-                # Tambahkan informasi skor asli jika skor disesuaikan (P12)
                 if decision_status in ("REVIEW", "ALTERNATIF") and raw_score != cand_res.total_score:
                     has_req_skills = bool(requirements.get("required_skills"))
                     degrade_reason = get_score_degradation_reason(
@@ -705,34 +619,83 @@ class FilteringService:
                 cand_res.match_reason = db_reason
 
                 results_to_save.append({
-                    "job_vacancy_id": job_id,
-                    "require_id": cand_res.candidate_id,
-                    "candidate_name": cand_res.name,
-                    "stage": "taxonomy_filter",
-                    "decision": decision_status,
-                    "reason": db_reason,
-                    "similarity_score": None,
-                    "total_score": cand_res.total_score,
-                    "confidence": cand_res.confidence,
-                    "score_breakdown": cand_res.score_breakdown or {},
+                    "job_vacancy_id": job_id, "require_id": cand_res.candidate_id, "candidate_name": cand_res.name,
+                    "stage": "taxonomy_filter", "decision": decision_status, "reason": db_reason,
+                    "similarity_score": None, "total_score": cand_res.total_score,
+                    "confidence": cand_res.confidence, "score_breakdown": cand_res.score_breakdown or {},
                 })
 
-                final_saved_candidates.append(cand_res)
-
-            # Simpan massal
             if results_to_save:
-                # Pastikan seluruh dictionary memiliki key yang lengkap untuk menghindari ketidakhomogenan skema insert
                 for r in results_to_save:
-                    if "total_score" not in r:
-                        r["total_score"] = None
-                    if "confidence" not in r:
-                        r["confidence"] = None
-                    if "score_breakdown" not in r:
-                        r["score_breakdown"] = None
+                    if "total_score" not in r: r["total_score"] = None
+                    if "confidence" not in r: r["confidence"] = None
+                    if "score_breakdown" not in r: r["score_breakdown"] = None
                 await self.filtering_repo.save_results_bulk(save_db, results_to_save)
             await save_db.commit()
 
-        return await self.get_results(db, job_id)
+    async def run_filtering(self, db: AsyncSession, job_id: int, mode: str = "registered") -> FilteringResponse:
+        """
+        Menjalankan alur pipa penyaringan CV secara lengkap untuk ID lowongan tertentu.
+
+        Parameter:
+            db: Async database session.
+            job_id: ID lowongan pekerjaan.
+            mode: Mode pencarian kandidat ("registered" untuk pelamar terdaftar, atau "mixmatch" untuk seluruh database).
+
+        Return:
+            FilteringResponse: Hasil akhir proses penyaringan terstruktur.
+        """
+        start_time = time.time()
+        logger.info("Memulai pipeline filtering untuk Job ID: %d (Mode: %s)", job_id, mode)
+
+        # 1. Persiapan
+        job_cache, vacancy, job_title, requirements, job_tags = await self._prepare_job_requirements(db, job_id)
+
+        # 2. Ambil Kandidat Baru
+        all_candidates = await self._fetch_candidates_for_filtering(db, job_id, mode)
+        if not all_candidates:
+            logger.info("Tidak ada kandidat baru untuk difilter. Mengambil hasil dari database.")
+            return await self.get_results(db, job_id)
+
+        # 3. Pipa Eliminasi (Layer 1 - 2)
+        final_candidates, results_to_save, unknown_require_ids = await self._run_elimination_pipeline(
+            all_candidates, requirements, job_tags, job_title, job_id
+        )
+
+        # 4. Perhitungan Skor Awal
+        temp_candidates = self._calculate_scores_and_tiers(
+            final_candidates, requirements, job_title
+        )
+        qualified_candidates = [item[1] for item in temp_candidates]
+
+        # 5. Evaluasi LLM Tambahan (Bila Aktif)
+        if settings.ENABLE_LLM_EVALUATOR:
+            try:
+                await db.commit()
+                await db.close()
+            except Exception as db_err:
+                logger.warning("Gagal menutup sesi database sebelum evaluasi LLM: %s", db_err)
+
+            min_exp_years = requirements.get("min_experience_years", 0)
+            qualified_candidates = await self._evaluate_top_candidates(
+                job_title=job_title,
+                job_description=vacancy.job_vacancy_job_desc or "",
+                requirements=requirements,
+                candidates=qualified_candidates,
+                min_experience_years=float(min_exp_years),
+            )
+        else:
+            logger.info("LLM Evaluator dinonaktifkan. Menggunakan skor deterministic.")
+
+        # 6. Finalisasi & Penyimpanan
+        await self._save_final_results(
+            db, job_id, temp_candidates, qualified_candidates, results_to_save, requirements, unknown_require_ids
+        )
+
+        # 7. Kembalikan Response Akhir dari DB
+        from app.database import async_session
+        async with async_session() as new_db:
+            return await self.get_results(new_db, job_id)
 
 
     async def get_results(self, db: AsyncSession, job_id: int) -> FilteringResponse:
