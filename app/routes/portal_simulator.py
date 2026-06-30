@@ -24,6 +24,7 @@ from app.models import (
     RequireTraining as PGRequireTrain,
     JobVacancy as PGJob,
     ApplyJobs as PGApply,
+    FilteringResult,
 )
 
 logger = logging.getLogger(__name__)
@@ -313,11 +314,19 @@ async def sync_candidate_to_pg(db: AsyncSession, sqlite_user_id: int, sqlite_req
         data (CandidateCreateInput): Data profil kandidat.
     """
     from sqlalchemy import delete
-    # 1. Hapus data anak (PGRequire) terlebih dahulu untuk mematuhi konstrain Foreign Key
+    
+    # 1. Hapus seluruh data detail anak (cucu-cucu) terlebih dahulu
+    await db.execute(delete(PGRequireEdu).where(PGRequireEdu.requireid == sqlite_req_id))
+    await db.execute(delete(PGRequireExp).where(PGRequireExp.requireid == sqlite_req_id))
+    await db.execute(delete(PGRequireTrain).where(PGRequireTrain.requireid == sqlite_req_id))
+    await db.execute(delete(FilteringResult).where(FilteringResult.require_id == sqlite_req_id))
+    await db.execute(delete(PGApply).where(PGApply.user_id == sqlite_user_id))
+    
+    # 2. Hapus data profil kandidat (PGRequire)
     await db.execute(delete(PGRequire).where(PGRequire.requireid == sqlite_req_id))
     await db.execute(delete(PGRequire).where(PGRequire.user_id == sqlite_user_id))
     
-    # 2. Hapus data induk (PGUser)
+    # 3. Hapus data akun user (PGUser)
     await db.execute(delete(PGUser).where(PGUser.id == sqlite_user_id))
     await db.commit()
 
