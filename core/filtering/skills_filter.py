@@ -45,13 +45,15 @@ def apply_skills_filter(
     min_match_ratio: float = 0.5,
     taxonomy_results: dict | None = None,
 ) -> tuple[list, list[dict]]:
-    """
-    Menerapkan penyaringan berbasis keahlian (skills-based filter) terhadap kandidat.
+    """Menerapkan penyaringan berbasis keahlian (skills-based filter) terhadap kandidat.
 
     Kandidat harus memiliki minimal satu kecocokan keahlian wajib. Jika min_match_ratio > 0,
     kandidat harus memenuhi rasio kecocokan keahlian wajib tertentu sesuai nilai ambang batas.
-    Kandidat dengan kecocokan taksonomi peran yang kuat (exact atau related) akan langsung
-    diloloskan untuk dievaluasi pada tahap penilaian (scoring).
+    
+    PENGECUALIAN TOLERANSI PERAN (Metland Internal Policy):
+    Kandidat dengan kecocokan taksonomi peran yang kuat (tipe 'exact' atau 'related') 
+    dikecualikan dari eliminasi keahlian mutlak ini agar dapat diloloskan ke tahap skoring 
+    dan dievaluasi secara manual di status REVIEW atau ALTERNATIF.
 
     Parameter:
         candidates (list): Daftar kandidat (objek Require ORM) yang dimuat dari database.
@@ -91,6 +93,10 @@ def apply_skills_filter(
         # Handle candidates with no detectable skills at all
         if not candidate_skills:
             if is_fresh_grad and has_rel_major:
+                passed.append(candidate)
+                continue
+            elif tax_match in ("exact", "related"):
+                # Pengecualian: Loloskan ke skoring jika memiliki kecocokan peran yang kuat
                 passed.append(candidate)
                 continue
             else:
@@ -133,16 +139,20 @@ def apply_skills_filter(
         # For candidates with unrelated majors, they MUST match at least one required skill (regardless of fresh grad status)
         if not has_rel_major:
             if len(matched_required_hard) == 0 and len(matched_required_semantic) == 0:
-                eliminated.append({
-                    "require_id": rid,
-                    "candidate_name": name,
-                    "reason": (
-                        f"[Keahlian] Latar belakang jurusan kandidat tidak sejenis dan tidak memiliki satu pun keahlian wajib yang disyaratkan. "
-                        f"Wajib: {', '.join(required_skills)}. "
-                        f"Keahlian kandidat: {', '.join(sorted(candidate_skills)[:5])}{'...' if len(candidate_skills) > 5 else ''}."
-                    ),
-                })
-                continue
+                if tax_match in ("exact", "related"):
+                    # Pengecualian: Loloskan ke skoring
+                    pass
+                else:
+                    eliminated.append({
+                        "require_id": rid,
+                        "candidate_name": name,
+                        "reason": (
+                            f"[Keahlian] Latar belakang jurusan kandidat tidak sejenis dan tidak memiliki satu pun keahlian wajib yang disyaratkan. "
+                            f"Wajib: {', '.join(required_skills)}. "
+                            f"Keahlian kandidat: {', '.join(sorted(candidate_skills)[:5])}{'...' if len(candidate_skills) > 5 else ''}."
+                        ),
+                    })
+                    continue
 
         # Count matches for preferred skills (from JD)
         preferred_skills = requirements.get("preferred_skills", [])
@@ -161,16 +171,20 @@ def apply_skills_filter(
         # (Exempt if required_skills < 2 to prevent single point of failure in JD parser)
         if not is_fresh_grad and required_skills and len(required_skills) >= 2:
             if len(matched_required_hard) == 0 and len(matched_required_semantic) == 0:
-                eliminated.append({
-                    "require_id": rid,
-                    "candidate_name": name,
-                    "reason": (
-                        f"[Keahlian] Kandidat tidak memiliki keahlian wajib yang disyaratkan lowongan. "
-                        f"Wajib: {', '.join(required_skills)}. "
-                        f"Keahlian kandidat: {', '.join(sorted(candidate_skills)[:5])}{'...' if len(candidate_skills) > 5 else ''}."
-                    ),
-                })
-                continue
+                if tax_match in ("exact", "related"):
+                    # Pengecualian: Loloskan ke skoring
+                    pass
+                else:
+                    eliminated.append({
+                        "require_id": rid,
+                        "candidate_name": name,
+                        "reason": (
+                            f"[Keahlian] Kandidat tidak memiliki keahlian wajib yang disyaratkan lowongan. "
+                            f"Wajib: {', '.join(required_skills)}. "
+                            f"Keahlian kandidat: {', '.join(sorted(candidate_skills)[:5])}{'...' if len(candidate_skills) > 5 else ''}."
+                        ),
+                    })
+                    continue
         # ──────────────────────────────────────────────────────────────────────
 
         total_matched = len(matched_required) + len(matched_preferred)
@@ -183,28 +197,36 @@ def apply_skills_filter(
 
         # Check: at least 1 required or preferred skill must match
         if total_matched == 0:
-            eliminated.append({
-                "require_id": rid,
-                "candidate_name": name,
-                "reason": (
-                    f"[Keahlian] Tidak ditemukan kecocokan keahlian pada CV kandidat, baik keahlian wajib maupun yang diutamakan. "
-                    f"Wajib: {', '.join(required_skills)}. "
-                    f"Diutamakan: {', '.join(preferred_skills) if preferred_skills else 'tidak ada'}. "
-                    f"Keahlian kandidat: {', '.join(sorted(candidate_skills)[:5])}{'...' if len(candidate_skills) > 5 else ''}."
-                ),
-            })
-            continue
+            if tax_match in ("exact", "related"):
+                # Pengecualian: Loloskan ke skoring
+                pass
+            else:
+                eliminated.append({
+                    "require_id": rid,
+                    "candidate_name": name,
+                    "reason": (
+                        f"[Keahlian] Tidak ditemukan kecocokan keahlian pada CV kandidat, baik keahlian wajib maupun yang diutamakan. "
+                        f"Wajib: {', '.join(required_skills)}. "
+                        f"Diutamakan: {', '.join(preferred_skills) if preferred_skills else 'tidak ada'}. "
+                        f"Keahlian kandidat: {', '.join(sorted(candidate_skills)[:5])}{'...' if len(candidate_skills) > 5 else ''}."
+                    ),
+                })
+                continue
 
         if match_ratio < effective_threshold and effective_threshold > 0:
-            eliminated.append({
-                "require_id": rid,
-                "candidate_name": name,
-                "reason": (
-                    f"[Keahlian] Rasio kecocokan keahlian wajib kandidat ({match_ratio:.0%}) di bawah ambang batas minimum yang ditentukan ({effective_threshold:.0%}). "
-                    f"Keahlian yang cocok: {', '.join(matched_required) if matched_required else 'tidak ada'}."
-                ),
-            })
-            continue
+            if tax_match in ("exact", "related"):
+                # Pengecualian: Loloskan ke skoring
+                pass
+            else:
+                eliminated.append({
+                    "require_id": rid,
+                    "candidate_name": name,
+                    "reason": (
+                        f"[Keahlian] Rasio kecocokan keahlian wajib kandidat ({match_ratio:.0%}) di bawah ambang batas minimum yang ditentukan ({effective_threshold:.0%}). "
+                        f"Keahlian yang cocok: {', '.join(matched_required) if matched_required else 'tidak ada'}."
+                    ),
+                })
+                continue
 
         passed.append(candidate)
 

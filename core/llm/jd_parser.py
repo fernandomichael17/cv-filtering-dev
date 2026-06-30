@@ -81,7 +81,7 @@ Return ONLY valid JSON with no preamble, explanations, or markdown backticks:
 }}
 
 Rules:
-- min_education: choose one of SMA, D3, S1, S2, S3
+- min_education: choose one of SMA, D3, S1, S2, S3. CRITICAL: If the Job Description states a slash-separated or range/alternative education requirement (e.g., "D3/S1", "SMA/D3", "S1 atau S2"), you MUST select the LOWEST education level mentioned as the absolute minimum requirement (e.g. "D3/S1" -> "D3", "SMA/D3" -> "SMA", "S1 atau S2" -> "S1").
 - allowed_majors: List of specific university majors/degrees required (e.g. "Teknik Informatika", "Hukum"). If JD mentions specific degrees like "Law degree", extract the corresponding major (e.g., "Hukum"). If open to all majors or not specified, leave empty []. CRITICAL: If the Job Description uses abbreviations or acronyms (e.g., "DKV", "HI", "TI", "SI", "T. Sipil"), you MUST expand them to their full formal names in Indonesian (e.g., "Desain Komunikasi Visual", "Hubungan Internasional", "Teknik Informatika", "Sistem Informasi", "Teknik Sipil").
 - major_flexibility: "strict" (must match exactly) or "flexible" (related majors are ok)
 - min_experience_years: ABSOLUTE required minimum years of experience (integer). CRITICAL: If the JD mentions "fresh graduate dipersilakan" or "fresh grad ok", this MUST be 0 regardless of any other numbers mentioned.
