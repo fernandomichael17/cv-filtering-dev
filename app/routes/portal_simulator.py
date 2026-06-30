@@ -304,7 +304,7 @@ async def sync_candidate_to_pg(db: AsyncSession, sqlite_user_id: int, sqlite_req
     """Sinkronisasi data lengkap kandidat ke PostgreSQL.
 
     Melakukan delete-then-insert jika ID user atau require sudah terdaftar di PostgreSQL
-    untuk menghindari pelanggaran konstrain Unique Key.
+    untuk menghindari pelanggaran konstrain Unique Key dan Foreign Key.
 
     Parameter:
         db (AsyncSession): Sesi database PostgreSQL.
@@ -313,9 +313,12 @@ async def sync_candidate_to_pg(db: AsyncSession, sqlite_user_id: int, sqlite_req
         data (CandidateCreateInput): Data profil kandidat.
     """
     from sqlalchemy import delete
-    # Hapus user lama jika ada (menghapus require, edu, exp, train terkait secara cascade)
-    await db.execute(delete(PGUser).where(PGUser.id == sqlite_user_id))
+    # 1. Hapus data anak (PGRequire) terlebih dahulu untuk mematuhi konstrain Foreign Key
     await db.execute(delete(PGRequire).where(PGRequire.requireid == sqlite_req_id))
+    await db.execute(delete(PGRequire).where(PGRequire.user_id == sqlite_user_id))
+    
+    # 2. Hapus data induk (PGUser)
+    await db.execute(delete(PGUser).where(PGUser.id == sqlite_user_id))
     await db.commit()
 
     # 1. Simpan ke PG User
