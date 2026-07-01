@@ -112,8 +112,8 @@ def _score_experience_surplus(requirements: dict, taxonomy_result: dict, skills_
     # Terapkan discount factor berdasarkan skills_match_pct:
     # - skills_match >= 60% -> surplus poin penuh (1.0x)
     # - skills_match 30%-59% -> surplus poin setengah (0.5x)
-    # - skills_match < 30% -> surplus poin minimal (0.2x)
-    if skills_match_pct >= 0.60:
+    # Pastikan jika keterampilan wajib tidak memenuhi threshold semantik yang toleran (0.60),
+    if skills_match_pct >= settings.SIMILARITY_THRESHOLD_FALLBACK:
         discount = 1.0
     elif skills_match_pct >= 0.30:
         discount = 0.5
@@ -328,8 +328,8 @@ def _score_certifications(candidate, requirements: dict) -> tuple[float, dict]:
             if name.strip().lower() in already_matched_lower:
                 continue
             sim, _ = semantic_matcher.calculate_max_similarity(name, [job_context])
-            # Naikkan threshold bonus sertifikat ke 0.65 untuk menghindari pencocokan yang terlalu longgar
-            if sim >= 0.65:
+            # Naikkan threshold bonus sertifikat ke batas yang dikonfigurasi (0.65) untuk menghindari pencocokan yang terlalu longgar
+            if sim >= settings.SIMILARITY_THRESHOLD_SCORING_CERT_BONUS:
                 bonus_relevant += 1
 
         score += min(2.0, bonus_relevant * 1.0)
@@ -390,7 +390,7 @@ def _score_skills_match(candidate, requirements: dict, job_title: str = "") -> t
         fallback_matched = []
         for skill in candidate_skills:
             sim, best = semantic_matcher.calculate_max_similarity(skill, fallback_contexts)
-            if sim >= 0.60:
+            if sim >= settings.SIMILARITY_THRESHOLD_FALLBACK:
                 fallback_matched.append(f"{skill} ({sim:.2f})")
 
         # Cap lebih rendah (10.0) karena fallback kurang reliable dibanding explicit skill match.
@@ -425,8 +425,8 @@ def _score_skills_match(candidate, requirements: dict, job_title: str = "") -> t
 
     # ── Fallback: Cocokkan skill yang belum match terhadap teks jobdesk ──
     # Hanya berjalan jika ada skill yang belum ter-match dan kandidat punya jobdesk.
-    # Threshold lebih ketat (0.72) karena jobdesk adalah free text, bukan structured skill.
-    JOBDESK_SIM_THRESHOLD = 0.72
+    # Threshold evaluasi free-text jobdesk
+    JOBDESK_SIM_THRESHOLD = settings.SIMILARITY_THRESHOLD_JOBDESK
     req_matched_names = {m.split(" (")[0].lower() for m in req_matched}
     pref_matched_names = {m.split(" (")[0].lower() for m in pref_matched}
 
@@ -699,7 +699,7 @@ def calculate_candidate_score(candidate, requirements: dict, taxonomy_result: di
     # Bobot adaptif fresh graduate vs profesional
     if is_fresh_grad:
         total = (
-            tax_score * 0.60 +      # Taksonomi kurang relevan untuk FG
+            tax_score * settings.SIMILARITY_THRESHOLD_FALLBACK +      # Taksonomi kurang relevan untuk FG
             exp_score * 0.10 +      # Pengalaman minimal untuk FG
             edu_score * 1.80 +      # Pendidikan ditingkatkan
             major_score * 1.50 +     # Jurusan ditingkatkan

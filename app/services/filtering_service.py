@@ -32,15 +32,20 @@ from app.schemas.filtering import (
     EliminatedCandidate,
     DirectFilteringResponse,
 )
-from core.filtering.hard_filter import apply_hard_filters
+from core.filtering.hard_filter import apply_hard_filters, _get_highest_education
 from core.filtering.taxonomy_matcher import apply_taxonomy_filter, match_job_role
 from core.filtering.category_filter import get_job_category, check_category_compatibility
 from core.filtering.skills_filter import apply_skills_filter
 from core.filtering.scoring import calculate_candidate_score
+from core.filtering.semantic_matcher import semantic_matcher
 from core.llm.jd_parser import parse_job_description
+from core.llm.candidate_evaluator import evaluate_candidate_confidence, PENALTY_MULTIPLIER
 from core.utils.major_mapping import EDU_ID_TO_STR
 from core.utils.reason_builder import build_candidate_reason
 from core.utils.confidence import calculate_confidence
+from core.utils.skill_helper import build_candidate_skills
+from app.database import async_session
+from core.observability.metrics import PipelineMetrics, current_metrics
 
 logger = logging.getLogger(__name__)
 
@@ -48,7 +53,6 @@ logger = logging.getLogger(__name__)
 def _prewarm_caches(candidates: list, requirements: dict, job_tags: list[str] | None, job_title: str) -> None:
     """Pre-warm semantic matcher caches to avoid redundant embedding calculations."""
     try:
-        from core.filtering.semantic_matcher import semantic_matcher
         texts_to_cache = set()
         
         # 1. Job tags prewarm
@@ -62,7 +66,6 @@ def _prewarm_caches(candidates: list, requirements: dict, job_tags: list[str] | 
         for m in allowed_majors:
             texts_to_cache.add(f"passage: {m.strip().lower()}")
             
-        from core.filtering.hard_filter import _get_highest_education
         for c in candidates:
             edus = getattr(c, "educations", []) or []
             _, _, major, _ = _get_highest_education(edus)
@@ -76,7 +79,6 @@ def _prewarm_caches(candidates: list, requirements: dict, job_tags: list[str] | 
             if skill:
                 texts_to_cache.add(f"query: {skill.strip().lower()}")
                 
-        from core.utils.skill_helper import build_candidate_skills
         for c in candidates:
             cand_skills = build_candidate_skills(c)
             for skill in cand_skills:
@@ -271,11 +273,7 @@ class FilteringService:
         min_experience_years: float = 0.0,
     ) -> list[CandidateResult]:
         """Validasi keakuratan kualifikasi kandidat teratas menggunakan LLM."""
-        if not candidates:
-            return candidates
-
-        from core.llm.candidate_evaluator import evaluate_candidate_confidence
-        import asyncio
+        # Evaluasi confidence dan analisis mendalam menggunakan LLM
 
         FLOOR = 10
         CEILING = 20
@@ -455,6 +453,10 @@ class FilteringService:
         passed_hard, eliminated_hard = apply_hard_filters(all_candidates, requirements)
         logger.info("Hard filter selesai. Lolos: %d, Gugur: %d", len(passed_hard), len(eliminated_hard))
         
+        from core.observability.metrics import get_metrics
+        metrics = get_metrics()
+        if metrics: metrics.record_count("passed_hard_filter", len(passed_hard))
+        
         for elim in eliminated_hard:
             results_to_save.append({
                 "job_vacancy_id": job_id, "require_id": elim["require_id"], "candidate_name": elim["candidate_name"],
@@ -487,11 +489,11 @@ class FilteringService:
                     "stage": "category_filter", "decision": "ELIMINATED", "reason": elim["reason"], "similarity_score": None,
                 })
             logger.info("Category filter selesai. Lolos: %d, Gugur: %d", len(passed_category), len(eliminated_category))
+            if metrics: metrics.record_count("passed_category_filter", len(passed_category))
         else:
             passed_category = passed_hard
 
         # Pre-warm semantic caches
-        import asyncio
         await asyncio.to_thread(_prewarm_caches, passed_category, requirements, job_tags, job_title)
 
         # Layer 2 — Taxonomy matching
@@ -509,6 +511,7 @@ class FilteringService:
             })
 
         candidates_with_tax = passed_taxonomy + unknown_taxonomy
+        if metrics: metrics.record_count("passed_taxonomy_filter", len(candidates_with_tax))
         candidates_for_skills = [c for c, _ in candidates_with_tax]
         taxonomy_results = {c.requireid: res for c, res in candidates_with_tax}
 
@@ -523,6 +526,7 @@ class FilteringService:
 
         passed_skills_ids = {c.requireid for c in passed_skills}
         final_candidates = [(c, res) for c, res in candidates_with_tax if c.requireid in passed_skills_ids]
+        if metrics: metrics.record_count("passed_skills_filter", len(final_candidates))
 
         if relaxed_taxonomy:
             candidates_for_relaxed_skills = [c for c, _ in relaxed_taxonomy]
@@ -564,8 +568,7 @@ class FilteringService:
         return temp_candidates
 
     async def _save_final_results(self, db, job_id, temp_candidates, qualified_candidates, results_to_save, requirements, unknown_require_ids):
-        from app.database import async_session
-        async with async_session() as save_db:
+        async with async_session() as session:
             for candidate, cand_res in temp_candidates:
                 if settings.ENABLE_LLM_EVALUATOR:
                     eval_res = next((qc for qc in qualified_candidates if qc.candidate_id == cand_res.candidate_id), None)
@@ -630,8 +633,8 @@ class FilteringService:
                     if "total_score" not in r: r["total_score"] = None
                     if "confidence" not in r: r["confidence"] = None
                     if "score_breakdown" not in r: r["score_breakdown"] = None
-                await self.filtering_repo.save_results_bulk(save_db, results_to_save)
-            await save_db.commit()
+                await self.filtering_repo.save_results_bulk(session, results_to_save)
+            await session.commit()
 
     async def run_filtering(self, db: AsyncSession, job_id: int, mode: str = "registered") -> FilteringResponse:
         """
@@ -645,58 +648,75 @@ class FilteringService:
         Return:
             FilteringResponse: Hasil akhir proses penyaringan terstruktur.
         """
-        start_time = time.time()
+        from core.observability.metrics import PipelineMetrics, current_metrics
         logger.info("Memulai pipeline filtering untuk Job ID: %d (Mode: %s)", job_id, mode)
+        
+        metrics = PipelineMetrics(job_id)
+        token = current_metrics.set(metrics)
+        
+        try:
+            # 1. Persiapan
+            with metrics.measure_latency("preparation"):
+                job_cache, vacancy, job_title, requirements, job_tags = await self._prepare_job_requirements(db, job_id)
 
-        # 1. Persiapan
-        job_cache, vacancy, job_title, requirements, job_tags = await self._prepare_job_requirements(db, job_id)
+            # 2. Ambil Kandidat Baru
+            with metrics.measure_latency("fetch_candidates"):
+                all_candidates = await self._fetch_candidates_for_filtering(db, job_id, mode)
+            
+            metrics.record_count("initial_candidates", len(all_candidates))
+            
+            if not all_candidates:
+                logger.info("Tidak ada kandidat baru untuk difilter. Mengambil hasil dari database.")
+                return await self.get_results(db, job_id)
 
-        # 2. Ambil Kandidat Baru
-        all_candidates = await self._fetch_candidates_for_filtering(db, job_id, mode)
-        if not all_candidates:
-            logger.info("Tidak ada kandidat baru untuk difilter. Mengambil hasil dari database.")
-            return await self.get_results(db, job_id)
+            # 3. Pipa Eliminasi (Layer 1 - 2)
+            with metrics.measure_latency("elimination_pipeline"):
+                final_candidates, results_to_save, unknown_require_ids = await self._run_elimination_pipeline(
+                    all_candidates, requirements, job_tags, job_title, job_id
+                )
+                metrics.record_count("passed_pipeline", len(final_candidates))
 
-        # 3. Pipa Eliminasi (Layer 1 - 2)
-        final_candidates, results_to_save, unknown_require_ids = await self._run_elimination_pipeline(
-            all_candidates, requirements, job_tags, job_title, job_id
-        )
+            # 4. Perhitungan Skor Awal
+            with metrics.measure_latency("scoring"):
+                temp_candidates = self._calculate_scores_and_tiers(
+                    final_candidates, requirements, job_title
+                )
+            qualified_candidates = [item[1] for item in temp_candidates]
 
-        # 4. Perhitungan Skor Awal
-        temp_candidates = self._calculate_scores_and_tiers(
-            final_candidates, requirements, job_title
-        )
-        qualified_candidates = [item[1] for item in temp_candidates]
+            # 5. Evaluasi LLM Tambahan (Bila Aktif)
+            if settings.ENABLE_LLM_EVALUATOR:
+                with metrics.measure_latency("llm_evaluation"):
+                    try:
+                        await db.commit()
+                        await db.close()
+                    except Exception as db_err:
+                        logger.warning("Gagal menutup sesi database sebelum evaluasi LLM: %s", db_err)
 
-        # 5. Evaluasi LLM Tambahan (Bila Aktif)
-        if settings.ENABLE_LLM_EVALUATOR:
-            try:
-                await db.commit()
-                await db.close()
-            except Exception as db_err:
-                logger.warning("Gagal menutup sesi database sebelum evaluasi LLM: %s", db_err)
+                    min_exp_years = requirements.get("min_experience_years", 0)
+                    qualified_candidates = await self._evaluate_top_candidates(
+                        job_title=job_title,
+                        job_description=vacancy.job_vacancy_job_desc or "",
+                        requirements=requirements,
+                        candidates=qualified_candidates,
+                        min_experience_years=float(min_exp_years),
+                    )
+            else:
+                logger.info("LLM Evaluator dinonaktifkan. Menggunakan skor deterministic.")
 
-            min_exp_years = requirements.get("min_experience_years", 0)
-            qualified_candidates = await self._evaluate_top_candidates(
-                job_title=job_title,
-                job_description=vacancy.job_vacancy_job_desc or "",
-                requirements=requirements,
-                candidates=qualified_candidates,
-                min_experience_years=float(min_exp_years),
-            )
-        else:
-            logger.info("LLM Evaluator dinonaktifkan. Menggunakan skor deterministic.")
+            # 6. Simpan Hasil ke DB
+            with metrics.measure_latency("save_results"):
+                await self._save_final_results(
+                    db, job_id, temp_candidates, qualified_candidates, results_to_save, requirements, unknown_require_ids
+                )
 
-        # 6. Finalisasi & Penyimpanan
-        await self._save_final_results(
-            db, job_id, temp_candidates, qualified_candidates, results_to_save, requirements, unknown_require_ids
-        )
-
-        # 7. Kembalikan Response Akhir dari DB
-        from app.database import async_session
-        async with async_session() as new_db:
-            return await self.get_results(new_db, job_id)
-
+            # 7. Kembalikan Response Akhir dari DB
+            with metrics.measure_latency("fetch_final_results"):
+                async with async_session() as new_db:
+                    result = await self.get_results(new_db, job_id)
+                    return result
+        finally:
+            metrics.log_report()
+            current_metrics.reset(token)
 
     async def get_results(self, db: AsyncSession, job_id: int) -> FilteringResponse:
         """
@@ -772,7 +792,6 @@ class FilteringService:
                                 break
 
                         if llm_confidence:
-                            from core.llm.candidate_evaluator import PENALTY_MULTIPLIER
                             multiplier = PENALTY_MULTIPLIER.get(llm_confidence, 0.0)
                             score = max(0.0, round(score * (1.0 - multiplier), 1))
 
@@ -908,7 +927,6 @@ class FilteringService:
 
     async def run_filtering_task(self, job_id: int, mode: str = "registered") -> None:
         """Menjalankan proses penyaringan CV di latar belakang dengan database session mandiri."""
-        from app.database import async_session
         async with async_session() as db:
             try:
                 logger.info("Memulai background task run_filtering untuk Job ID: %d", job_id)
@@ -920,7 +938,6 @@ class FilteringService:
 
     async def parse_and_filter_task(self, job_id: int, title: str, description: str) -> None:
         """Menjalankan parsing deskripsi kerja dan penyaringan di latar belakang."""
-        from app.database import async_session
         async with async_session() as db:
             try:
                 logger.info("Memulai background task parse_and_filter untuk Job ID: %d", job_id)

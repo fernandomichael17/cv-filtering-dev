@@ -17,6 +17,7 @@ from app.config import settings
 from core.utils.taxonomy import TITLE_TO_ISCO
 from core.utils.db_cache import SQLiteCache
 from core.utils.text_normalizer import normalize_text
+from core.observability.metrics import get_metrics
 
 logger = logging.getLogger(__name__)
 
@@ -134,10 +135,18 @@ class SemanticTaxonomyMatcher:
         # Gunakan SQLite cache
         cache_key = f"emb:{MODEL_NAME}:{text_clean}"
         cached_val = self._db_cache.get(cache_key)
+        
+        metrics = get_metrics()
+        
         if cached_val is not None:
+            if metrics:
+                metrics.record_cache_hit()
             return cached_val
             
         # Encode single text
+        if metrics:
+            metrics.record_cache_miss()
+            
         emb = self.model.encode([text_clean], convert_to_numpy=True, show_progress_bar=False)[0]
         self._db_cache.set(cache_key, emb)
         return emb

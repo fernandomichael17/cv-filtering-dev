@@ -185,6 +185,9 @@ CREATE TABLE IF NOT EXISTS filtering_results (
     decision VARCHAR(50) NOT NULL,
     reason TEXT,
     similarity_score FLOAT,
+    total_score FLOAT,
+    confidence VARCHAR(50),
+    score_breakdown JSONB,
     created_at TIMESTAMP DEFAULT NOW()
 );
 

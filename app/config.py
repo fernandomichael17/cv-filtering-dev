@@ -34,6 +34,9 @@ class Settings(BaseSettings):
     SIMILARITY_THRESHOLD_SCORING_CERT: float = 0.80           # Batas kemiripan sertifikasi di scoring
     SIMILARITY_THRESHOLD_SCORING_SKILL: float = 0.80          # Batas kemiripan keahlian di scoring
     SIMILARITY_THRESHOLD_ISCO_FALLBACK: float = 0.82          # Batas kemiripan fallback taksonomi ISCO
+    SIMILARITY_THRESHOLD_SCORING_CERT_BONUS: float = 0.65     # Batas kemiripan untuk bonus sertifikat relevan
+    SIMILARITY_THRESHOLD_JOBDESK: float = 0.72                # Batas kemiripan untuk evaluasi free-text jobdesk
+    SIMILARITY_THRESHOLD_FALLBACK: float = 0.60               # Batas longgar kemiripan fallback taksonomi/pengalaman
 
     # Database Configuration
     DB_USER: str = ""

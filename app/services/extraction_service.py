@@ -2,8 +2,11 @@
 
 import logging
 
+from sqlalchemy import delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.database import async_session
+from app.models import FilteringResult
 from app.repositories import candidate_repository
 from core.llm.candidate_tagger import tag_candidate
 
@@ -39,8 +42,6 @@ async def run_extraction(session: AsyncSession, user_id: int) -> dict:
 
     await _save_extraction_result(session, candidate, extraction_result)
 
-    # Bersihkan data hasil filtering lama karena data profil/tags kandidat telah diperbarui
-    from sqlalchemy import delete
     # Hapus hasil filtering lama kandidat ini di PostgreSQL
     await session.execute(delete(FilteringResult).where(FilteringResult.require_id == require_id))
 
@@ -126,7 +127,6 @@ async def run_extraction_task(user_id: int) -> None:
     Return:
         None
     """
-    from app.database import async_session
     async with async_session() as session:
         try:
             logger.info("Memulai background task run_extraction untuk user_id=%d", user_id)

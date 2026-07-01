@@ -294,6 +294,48 @@ def validate_and_refine_jd(parsed: dict, jd_text: str) -> dict:
     if "compatible_categories" not in parsed:
         parsed["compatible_categories"] = []
         
+    # ── Koreksi Pengalaman Kerja dengan Regex (Hybrid Parser) ────────────────
+    try:
+        clean_jd_text = re.sub(r'\s+', ' ', jd_text_lower)
+        
+        # 1. Cari range pengalaman (e.g. 1-2 tahun, 3 s/d 5 thn)
+        range_pattern = r'(?:pengalaman|experience|kerja|selama|min|minimal)\s+[^.]{0,60}?\b(\d+)\s*(?:-|s/d|sampai)\s*(\d+)\s*(?:tahun|thn|th|years|yr|year)\b'
+        range_match = re.search(range_pattern, clean_jd_text)
+        
+        # Cek kata kunci fresh graduate
+        fresh_keywords = ["fresh graduate", "fresh grad", "lulusan baru", "tanpa pengalaman"]
+        is_fresh_ok = any(kw in clean_jd_text for kw in fresh_keywords)
+        
+        if range_match:
+            r_min = int(range_match.group(1))
+            r_max = int(range_match.group(2))
+            if r_min < 17:  # Membedakan dengan umur
+                if is_fresh_ok:
+                    parsed["min_experience_years"] = 0
+                else:
+                    parsed["min_experience_years"] = r_min
+                parsed["preferred_min_experience_years"] = r_min
+                parsed["preferred_max_experience_years"] = r_max
+                parsed["max_experience_years"] = None
+                logger.info("Regex corrected experience range to min: %d, pref_min: %d, pref_max: %d", parsed["min_experience_years"], r_min, r_max)
+        else:
+            # 2. Cari nilai tunggal (e.g. min 3 tahun)
+            single_pattern = r'(?:pengalaman|experience|kerja|selama|min|minimal)\s+[^.]{0,60}?\b(\d+)\s*(?:tahun|thn|th|years|yr|year)\b'
+            single_match = re.search(single_pattern, clean_jd_text)
+            if single_match:
+                s_val = int(single_match.group(1))
+                if s_val < 17:
+                    if is_fresh_ok:
+                        parsed["min_experience_years"] = 0
+                    else:
+                        parsed["min_experience_years"] = s_val
+                    parsed["preferred_min_experience_years"] = s_val
+                    parsed["preferred_max_experience_years"] = None
+                    parsed["max_experience_years"] = None
+                    logger.info("Regex corrected experience to min: %d", parsed["min_experience_years"])
+    except Exception as e:
+        logger.warning("Gagal melakukan koreksi regex pengalaman kerja: %s", e)
+
     if "preferred_min_experience_years" not in parsed:
         parsed["preferred_min_experience_years"] = parsed.get("min_experience_years", 0)
     if "preferred_max_experience_years" not in parsed:
@@ -314,10 +356,17 @@ def validate_and_refine_jd(parsed: dict, jd_text: str) -> dict:
         max_exp = parsed.get("max_experience_years")
         if max_exp is not None:
             try:
+                # Batasi pencarian max_keywords hanya pada kalimat yang relevan dengan masa kerja/pengalaman kerja
                 max_keywords = ["max", "maks", "maximum", "maksimal", "not more", "tidak lebih", "up to", "hingga", "batas", "paling lama"]
-                if not any(kw in jd_text_lower for kw in max_keywords):
+                exp_sentences = []
+                for sentence in re.split(r'[.\n]', jd_text_lower):
+                    if any(w in sentence for w in ["tahun", "thn", "pengalaman", "experience", "kerja"]):
+                        exp_sentences.append(sentence)
+                exp_context = " ".join(exp_sentences)
+                
+                if not any(kw in exp_context for kw in max_keywords):
                     parsed["max_experience_years"] = None
-                    logger.info("Programmatically set max_experience_years to None because no maximum keywords found in JD.")
+                    logger.info("Programmatically set max_experience_years to None because no maximum keywords found in experience context.")
             except Exception as e:
                 logger.warning("Failed to validate max_experience_years: %s", e)
                 parsed["max_experience_years"] = None
@@ -418,6 +467,18 @@ def _sanitize_parsed_types(parsed: dict) -> dict:
             logger.warning(
                 "Nilai min_experience_years (%s) lebih besar dari max_experience_years (%s). Mereset max_experience_years ke None.",
                 parsed["min_experience_years"], parsed["max_experience_years"]
+            )
+            parsed["max_experience_years"] = None
+
+    # Sanity check: max_experience_years tidak boleh lebih kecil dari rentang preferred
+    if parsed.get("max_experience_years") is not None:
+        pref_max = parsed.get("preferred_max_experience_years")
+        pref_min = parsed.get("preferred_min_experience_years")
+        if (pref_max is not None and parsed["max_experience_years"] < pref_max) or \
+           (pref_min is not None and parsed["max_experience_years"] < pref_min):
+            logger.warning(
+                "Kontradiksi logika: max_experience_years (%s) lebih kecil dari rentang preferensi. Mereset max_experience_years ke None.",
+                parsed["max_experience_years"]
             )
             parsed["max_experience_years"] = None
 
