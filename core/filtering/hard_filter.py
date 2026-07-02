@@ -68,24 +68,61 @@ from core.utils.major_matcher import (
 )
 
 def _get_total_experience_years(work_experiences: list) -> float:
-    """Calculate total experience in years from work experience records."""
-    from datetime import datetime
-    total_months = 0
+    """Menghitung total pengalaman kerja dalam tahun dari daftar riwayat pekerjaan.
+
+    Menggunakan algoritma timeline merge untuk mencegah penghitungan ganda
+    pada periode kerja yang tumpang tindih (overlap). Jika kandidat bekerja
+    di 2 tempat secara bersamaan (misal 2020-2023 dan 2021-2024),
+    hasilnya 4 tahun (bukan 7 tahun).
+
+    Parameter:
+        work_experiences (list): Daftar objek pengalaman kerja dari database.
+
+    Return:
+        float: Total pengalaman kerja dalam tahun (sudah di-merge).
+    """
+    from datetime import datetime, date
+
+    # Kumpulkan semua interval (start_date, end_date) dalam satuan date
+    intervals = []
     for exp in work_experiences:
         start_date = getattr(exp, "startdate", None)
         end_date = getattr(exp, "enddate", None)
         start_year = getattr(exp, "startyear", None)
         end_year = getattr(exp, "endyear", None)
 
-        if start_date and end_date:
-            days = (end_date - start_date).days
-            total_months += max(0, days / 30.0)
-        elif start_year and end_year:
-            total_months += max(0, (end_year - start_year) * 12)
-        elif start_year and getattr(exp, "iscurrent", False):
-            total_months += max(0, (datetime.now().year - start_year) * 12)
+        s, e = None, None
 
-    return total_months / 12.0
+        if start_date and end_date:
+            s = start_date if isinstance(start_date, date) else start_date.date() if hasattr(start_date, 'date') else None
+            e = end_date if isinstance(end_date, date) else end_date.date() if hasattr(end_date, 'date') else None
+        elif start_year and end_year:
+            s = date(int(start_year), 1, 1)
+            e = date(int(end_year), 1, 1)
+        elif start_year and getattr(exp, "iscurrent", False):
+            s = date(int(start_year), 1, 1)
+            e = date(datetime.now().year, datetime.now().month, datetime.now().day)
+
+        if s and e and e >= s:
+            intervals.append((s, e))
+
+    if not intervals:
+        return 0.0
+
+    # Merge overlapping intervals
+    intervals.sort(key=lambda x: x[0])
+    merged = [intervals[0]]
+    for current_start, current_end in intervals[1:]:
+        last_start, last_end = merged[-1]
+        if current_start <= last_end:
+            # Overlap terdeteksi, gabungkan interval
+            merged[-1] = (last_start, max(last_end, current_end))
+        else:
+            merged.append((current_start, current_end))
+
+    # Hitung total hari dari interval yang sudah di-merge
+    total_days = sum((e - s).days for s, e in merged)
+    return total_days / 365.25
 
 
 def _parse_dateofbirth(dob_raw) -> 'datetime | None':

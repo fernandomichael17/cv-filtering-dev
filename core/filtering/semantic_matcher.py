@@ -225,6 +225,12 @@ class SemanticTaxonomyMatcher:
         # Calculate
         similarities = cosine_similarity(query_emb, targets_embs)[0]
         
+        # Zero out mutually exclusive pairs to prevent false positives
+        from core.utils.skill_synonyms import are_skills_mutually_exclusive
+        for i, t in enumerate(targets_clean):
+            if are_skills_mutually_exclusive(query_clean, t):
+                similarities[i] = 0.0
+                
         best_idx = np.argmax(similarities)
         return float(similarities[best_idx]), targets_clean[best_idx]
 

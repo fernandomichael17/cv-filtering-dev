@@ -1,0 +1,1273 @@
+{
+    "SKILL_EXCLUSIONS": [
+        ["java", "javascript"],
+        ["c", "cpp"],
+        ["c", "csharp"],
+        ["cpp", "csharp"],
+        ["r", "ruby"],
+        ["php", "python"],
+        ["sql", "nosql"],
+        ["frontend", "backend"],
+        ["ui", "api"],
+        ["html", "http"],
+        ["account payable", "account receivable", "general ledger"],
+        ["audit internal", "audit eksternal"],
+        ["pajak penghasilan", "pajak pertambahan nilai"],
+        ["cpa", "cfa", "cma", "cia"],
+        ["rekrutmen", "penggajian", "kompensasi dan benefit", "hubungan industrial", "asesmen"],
+        ["k3 umum", "k3 konstruksi"],
+        ["gada pratama", "gada madya", "gada utama"],
+        ["sim a", "sim b1", "sim b2", "sim c"],
+        ["purchasing", "sales", "marketing"],
+        ["telemarketing", "digital marketing", "social media marketing"],
+        ["seo", "sem"],
+        ["b2b", "b2c"],
+        ["inbound", "outbound"],
+        ["front desk", "back office", "gudang"],
+        ["data entry", "data science", "data analyst", "data engineer"],
+        ["system analyst", "business analyst", "quality assurance"],
+        ["sbu", "slf", "ska", "str", "sip"],
+        ["autocad", "sketchup", "sap2000"],
+        ["mechanical", "electrical", "plumbing"],
+        ["housekeeping", "gardening"]
+    ],
+    "SYMBOL_NORMALIZATION_MAP": {
+        "c++": "cpp",
+        "c#": "csharp",
+        "f#": "fsharp",
+        "objective-c": "objective c",
+        ".net": "dotnet",
+        ".net core": "dotnet core",
+        ".net framework": "dotnet framework",
+        "asp.net": "aspnet",
+        "node.js": "nodejs",
+        "react.js": "reactjs",
+        "vue.js": "vuejs",
+        "next.js": "nextjs",
+        "nuxt.js": "nuxtjs",
+        "express.js": "expressjs",
+        "nest.js": "nestjs",
+        "three.js": "threejs",
+        "d3.js": "d3js",
+        "ember.js": "emberjs",
+        "backbone.js": "backbonejs",
+        "angular.js": "angularjs",
+        "s&p": "snp",
+        "r&d": "rnd",
+        "f&b": "fnb"
+    },
+    "SKILL_SYNONYMS": {
+        "postgresql": [
+            "postgres",
+            "psql",
+            "pgsql"
+        ],
+        "tensorflow": [
+            "tensorflow 2",
+            "tf",
+            "tensorflow2"
+        ],
+        "javascript": [
+            "js",
+            "ecmascript",
+            "es6"
+        ],
+        "react": [
+            "reactjs",
+            "react.js"
+        ],
+        "nodejs": [
+            "node.js",
+            "node"
+        ],
+        "python": [
+            "python3",
+            "python 3"
+        ],
+        "microsoft excel": [
+            "ms excel",
+            "excel"
+        ],
+        "kubernetes": [
+            "k8s"
+        ],
+        "machine learning": [
+            "ml",
+            "pembelajaran mesin"
+        ],
+        "data science": [
+            "ilmuwan data madya",
+            "ilmuwan data",
+            "data scientist",
+            "data science"
+        ],
+        "pajak": [
+            "taxation",
+            "tax",
+            "perpajakan",
+            "tax compliance",
+            "kepatuhan pajak"
+        ],
+        "brevet pajak": [
+            "brevet pajak a & b",
+            "brevet pajak a",
+            "brevet pajak b",
+            "brevet",
+            "brevet pajak",
+            "brevet a",
+            "brevet b",
+            "brevet c"
+        ],
+        "power bi": [
+            "powerbi"
+        ],
+        "adobe photoshop": [
+            "photoshop"
+        ],
+        "golang": [
+            "go",
+            "go lang"
+        ],
+        "typescript": [
+            "ts"
+        ],
+        "mongodb": [
+            "mongo"
+        ],
+        "vuejs": [
+            "vue.js",
+            "vue"
+        ],
+        "html": [
+            "html5",
+            "html 5"
+        ],
+        "css": [
+            "css3",
+            "css 3"
+        ],
+        "amazon web services": [
+            "aws"
+        ],
+        "google cloud platform": [
+            "gcp"
+        ],
+        "microsoft azure": [
+            "azure"
+        ],
+        "cpp": [
+            "c++"
+        ],
+        "csharp": [
+            "c#"
+        ],
+        "dotnet": [
+            ".net"
+        ],
+        "aspnet": [
+            "asp.net"
+        ],
+        "nextjs": [
+            "next.js"
+        ],
+        "nuxtjs": [
+            "nuxt.js"
+        ],
+        "expressjs": [
+            "express.js"
+        ],
+        "nestjs": [
+            "nest.js"
+        ],
+        "fnb": [
+            "f&b",
+            "food and beverage",
+            "food & beverage"
+        ],
+        "first aid": [
+            "p3k",
+            "pertolongan pertama pada kecelakaan",
+            "pertolongan pertama"
+        ],
+        "job safety analysis": [
+            "jsa"
+        ],
+        "hazard identification risk assessment and determining control": [
+            "hiradc",
+            "hira"
+        ],
+        "rencana anggaran biaya": [
+            "rab",
+            "estimasi biaya",
+            "cost estimation",
+            "bill of quantity",
+            "boq",
+            "bq",
+            "bill of quantities"
+        ],
+        "autocad": [
+            "cad",
+            "auto cad",
+            "autocad 2d",
+            "autocad 3d",
+            "computer aided design"
+        ],
+        "3d modeling": [
+            "sketchup",
+            "3dmax",
+            "3ds max",
+            "sketch up",
+            "google sketchup",
+            "3d studio max"
+        ],
+        "structural analysis": [
+            "sap2000",
+            "etabs",
+            "tekla",
+            "sap 2000",
+            "etab",
+            "tekla structures",
+            "tekla structure"
+        ],
+        "project management": [
+            "ms project",
+            "ms. project",
+            "microsoft project",
+            "primavera",
+            "primavera p6"
+        ],
+        "perjanjian pengikatan jual beli": [
+            "ppjb"
+        ],
+        "akta jual beli": [
+            "ajb"
+        ],
+        "izin mendirikan bangunan": [
+            "imb"
+        ],
+        "persetujuan bangunan gedung": [
+            "pbg"
+        ],
+        "sertifikat hak guna bangunan": [
+            "shgb",
+            "hgb"
+        ],
+        "bea perolehan hak atas tanah dan bangunan": [
+            "bphtb",
+            "bea perolehan hak atas tanah"
+        ],
+        "accurate": [
+            "accurate online",
+            "accurate 5",
+            "accurate accounting"
+        ],
+        "myob": [
+            "myob premier",
+            "myob accounting"
+        ],
+        "quickbooks": [
+            "quickbooks online"
+        ],
+        "xero": [
+            "xero accounting"
+        ],
+        "jurnal": [
+            "jurnal.id",
+            "mekari jurnal"
+        ],
+        "cpa": [
+            "certified public accountant",
+            "cpa indonesia"
+        ],
+        "cfa": [
+            "chartered financial analyst"
+        ],
+        "ca": [
+            "chartered accountant"
+        ],
+        "cma": [
+            "certified management accountant"
+        ],
+        "cia": [
+            "certified internal auditor"
+        ],
+        "financial analysis": [
+            "financial modeling",
+            "financial projection",
+            "analisis keuangan",
+            "financial statement analysis",
+            "analisis laporan keuangan"
+        ],
+        "psak": [
+            "pernyataan standar akuntansi keuangan"
+        ],
+        "ifrs": [
+            "international financial reporting standards"
+        ],
+        "pembukuan": [
+            "bookkeeping"
+        ],
+        "cash flow management": [
+            "cash flow",
+            "arus kas"
+        ],
+        "budgeting": [
+            "penganggaran"
+        ],
+        "e-faktur": [
+            "efaktur"
+        ],
+        "e-spt": [
+            "espt"
+        ],
+        "djp online": [
+            "djponline"
+        ],
+        "e-bupot": [
+            "ebupot"
+        ],
+        "revit": [
+            "autodesk revit",
+            "revit architecture",
+            "revit structure"
+        ],
+        "solidworks": [
+            "solid works",
+            "solidwork"
+        ],
+        "archicad": [
+            "archi cad"
+        ],
+        "hvac": [
+            "heating ventilation and air conditioning"
+        ],
+        "plumbing": [
+            "sistem perpipaan",
+            "perpipaan"
+        ],
+        "mep": [
+            "mechanical electrical plumbing"
+        ],
+        "project supervision": [
+            "pengawasan proyek"
+        ],
+        "k3 umum": [
+            "ahli k3 umum",
+            "ak3u",
+            "sertifikat k3"
+        ],
+        "k3 konstruksi": [
+            "ahli k3 konstruksi"
+        ],
+        "ska": [
+            "sertifikat keahlian",
+            "skt",
+            "sertifikat keterampilan"
+        ],
+        "sbu": [
+            "sertifikat badan usaha"
+        ],
+        "slf": [
+            "sertifikat laik fungsi"
+        ],
+        "gis": [
+            "geographic information system",
+            "sistem informasi geografis",
+            "sig",
+            "arcgis",
+            "qgis"
+        ],
+        "farmasi": [
+            "pharmacy",
+            "pharmaceutical"
+        ],
+        "keperawatan": [
+            "nursing",
+            "perawat"
+        ],
+        "fisioterapi": [
+            "physiotherapy",
+            "physical therapy"
+        ],
+        "radiologi": [
+            "radiology",
+            "radiographer"
+        ],
+        "rekam medis": [
+            "medical record",
+            "medical records"
+        ],
+        "gizi": [
+            "nutrition",
+            "nutritionist",
+            "ahli gizi"
+        ],
+        "kesehatan masyarakat": [
+            "public health",
+            "kesmas"
+        ],
+        "bpjs": [
+            "bpjs kesehatan",
+            "bpjs ketenagakerjaan"
+        ],
+        "legal drafting": [
+            "penyusunan kontrak",
+            "contract drafting",
+            "drafting kontrak"
+        ],
+        "due diligence": [
+            "uji tuntas",
+            "legal due diligence"
+        ],
+        "notaris": [
+            "notary",
+            "notarial"
+        ],
+        "litigasi": [
+            "litigation"
+        ],
+        "perizinan": [
+            "licensing",
+            "permit",
+            "izin usaha"
+        ],
+        "rekrutmen": [
+            "recruitment",
+            "recruiting",
+            "talent acquisition"
+        ],
+        "penggajian": [
+            "payroll",
+            "gaji"
+        ],
+        "kompensasi dan benefit": [
+            "compensation & benefits",
+            "compensation and benefits",
+            "comben",
+            "c&b"
+        ],
+        "asesmen": [
+            "assessment",
+            "penilaian karyawan"
+        ],
+        "hris": [
+            "human resource information system"
+        ],
+        "bpjs ketenagakerjaan": [
+            "jamsostek"
+        ],
+        "kurikulum": [
+            "curriculum"
+        ],
+        "pedagogi": [
+            "pedagogy",
+            "teaching methodology"
+        ],
+        "paud": [
+            "pendidikan anak usia dini",
+            "early childhood education"
+        ],
+        "lms": [
+            "learning management system",
+            "moodle",
+            "google classroom"
+        ],
+        "korespondensi": [
+            "correspondence",
+            "surat menyurat"
+        ],
+        "pengarsipan": [
+            "filing",
+            "arsip",
+            "kearsipan"
+        ],
+        "notulensi": [
+            "minutes",
+            "notulen"
+        ],
+        "administrasi umum": [
+            "general affairs",
+            "general admin",
+            "ga"
+        ],
+        "purchasing": [
+            "pengadaan",
+            "procurement"
+        ],
+        "pengadaan barang": [
+            "procurement",
+            "purchasing"
+        ],
+        "gudang": [
+            "warehouse",
+            "warehousing"
+        ],
+        "inventory": [
+            "persediaan",
+            "stok",
+            "inventory management"
+        ],
+        "freight forwarding": [
+            "ekspedisi",
+            "shipping"
+        ],
+        "google ads": [
+            "adwords",
+            "google adwords"
+        ],
+        "facebook ads": [
+            "meta ads",
+            "fb ads"
+        ],
+        "seo": [
+            "search engine optimization"
+        ],
+        "sem": [
+            "search engine marketing"
+        ],
+        "google analytics": [
+            "ga4",
+            "analytics"
+        ],
+        "copywriting": [
+            "copy writing",
+            "penulisan naskah iklan"
+        ],
+        "crm": [
+            "customer relationship management",
+            "salesforce",
+            "hubspot"
+        ],
+        "negosiasi": [
+            "negotiation",
+            "teknik negosiasi",
+            "negotiating"
+        ],
+        "presentasi": [
+            "presentation",
+            "presenting",
+            "keterampilan presentasi"
+        ],
+        "lead generation": [
+            "mencari prospek",
+            "pencarian prospek",
+            "prospecting"
+        ],
+        "account management": [
+            "manajemen akun",
+            "client relationship"
+        ],
+        "telemarketing": [
+            "telesales",
+            "telemarketing staff",
+            "staf telemarketing"
+        ],
+        "digital marketing": [
+            "pemasaran digital",
+            "online marketing",
+            "internet marketing"
+        ],
+        "social media marketing": [
+            "manajemen media sosial",
+            "social media management",
+            "smm",
+            "social media handling"
+        ],
+        "content marketing": [
+            "pemasaran konten"
+        ],
+        "email marketing": [
+            "pemasaran email",
+            "mailchimp"
+        ],
+        "brand strategy": [
+            "strategi merek",
+            "branding",
+            "brand management"
+        ],
+        "market research": [
+            "riset pasar",
+            "analisis pasar",
+            "marketing research"
+        ],
+        "content writing": [
+            "content writer",
+            "penulisan konten"
+        ],
+        "data entry": [
+            "input data",
+            "entri data",
+            "pemasukan data"
+        ],
+        "document control": [
+            "pengendalian dokumen",
+            "pengarsipan dokumen",
+            "document controller"
+        ],
+        "microsoft office": [
+            "ms office",
+            "office suite"
+        ],
+        "google workspace": [
+            "gsuite",
+            "google docs",
+            "google sheets",
+            "google slides"
+        ],
+        "office administration": [
+            "administrasi kantor",
+            "administrasi",
+            "admin"
+        ],
+        "scheduling": [
+            "penjadwalan agenda",
+            "calendar management",
+            "penjadwalan"
+        ],
+        "receptionist": [
+            "resepsionis",
+            "front desk",
+            "penanganan telepon",
+            "customer service desk"
+        ],
+        "str": [
+            "surat tanda registrasi"
+        ],
+        "sip": [
+            "surat izin praktik"
+        ],
+        "btcls": [
+            "basic trauma cardiac life support"
+        ],
+        "acls": [
+            "advanced cardiac life support"
+        ],
+        "bls": [
+            "basic life support",
+            "cpr"
+        ],
+        "patient care": [
+            "perawatan pasien",
+            "home care"
+        ],
+        "corporate legal": [
+            "legal korporasi",
+            "hukum perusahaan"
+        ],
+        "hubungan industrial": [
+            "industrial relations",
+            "ketenagakerjaan"
+        ],
+        "upa": [
+            "ujian profesi advokat",
+            "peradi",
+            "lisensi advokat"
+        ],
+        "compliance": [
+            "kepatuhan",
+            "legal compliance"
+        ],
+        "ppg": [
+            "pendidikan profesi guru"
+        ],
+        "sertifikasi guru": [
+            "sertifikasi pendidik",
+            "serdik"
+        ],
+        "gada pratama": [
+            "sertifikat gada pratama",
+            "pelatihan gada pratama"
+        ],
+        "gada madya": [
+            "sertifikat gada madya"
+        ],
+        "gada utama": [
+            "sertifikat gada utama"
+        ],
+        "sim a": [
+            "surat izin mengemudi a"
+        ],
+        "sim b1": [
+            "surat izin mengemudi b1",
+            "sim b"
+        ],
+        "sim b2": [
+            "surat izin mengemudi b2"
+        ],
+        "sim c": [
+            "surat izin mengemudi c"
+        ],
+        "sio forklift": [
+            "surat izin operasional forklift"
+        ],
+        "housekeeping": [
+            "tata graha"
+        ],
+        "gardening": [
+            "berkebun",
+            "lanskap",
+            "pemeliharaan tanaman"
+        ],
+        "quality assurance": [
+            "qa",
+            "software quality assurance",
+            "sqa",
+            "software tester",
+            "penguji perangkat lunak"
+        ],
+        "system analyst": [
+            "analis sistem",
+            "systems analyst",
+            "sa"
+        ],
+        "business analyst": [
+            "analis bisnis",
+            "ba"
+        ],
+        "product manager": [
+            "manajer produk",
+            "pm"
+        ],
+        "scrum master": [
+            "agile coach"
+        ],
+        "user interface": [
+            "ui",
+            "desain ui",
+            "ui design"
+        ],
+        "user experience": [
+            "ux",
+            "desain ux",
+            "ux design"
+        ],
+        "cyber security": [
+            "keamanan siber",
+            "it security",
+            "network security",
+            "information security"
+        ],
+        "artificial intelligence": [
+            "kecerdasan buatan",
+            "ai",
+            "generative ai"
+        ],
+        "devops": [
+            "development operations",
+            "site reliability engineering",
+            "sre"
+        ],
+        "cloud computing": [
+            "komputasi awan",
+            "cloud architecture",
+            "arsitektur cloud"
+        ],
+        "quantity surveyor": [
+            "qs",
+            "surveyor kuantitas"
+        ],
+        "quality control": [
+            "qc",
+            "pengendalian mutu",
+            "pengendali mutu"
+        ],
+        "mekanika tanah": [
+            "geoteknik",
+            "soil mechanics"
+        ],
+        "manajemen konstruksi": [
+            "construction management",
+            "mk"
+        ],
+        "site manager": [
+            "manajer lapangan",
+            "kepala proyek"
+        ],
+        "hse": [
+            "health safety environment",
+            "k3l",
+            "kesehatan keselamatan kerja dan lingkungan"
+        ],
+        "rekonsiliasi bank": [
+            "bank reconciliation"
+        ],
+        "account payable": [
+            "ap",
+            "hutang dagang",
+            "utang usaha"
+        ],
+        "account receivable": [
+            "ar",
+            "piutang dagang",
+            "piutang usaha"
+        ],
+        "general ledger": [
+            "buku besar",
+            "gl"
+        ],
+        "petty cash": [
+            "kas kecil",
+            "dana kas kecil"
+        ],
+        "pajak penghasilan": [
+            "pph",
+            "pph 21",
+            "pph 23",
+            "pph badan"
+        ],
+        "pajak pertambahan nilai": [
+            "ppn",
+            "value added tax",
+            "vat"
+        ],
+        "audit internal": [
+            "internal audit",
+            "pemeriksaan internal"
+        ],
+        "audit eksternal": [
+            "external audit",
+            "audit akuntan publik",
+            "kap"
+        ],
+        "key performance indicator": [
+            "kpi",
+            "indikator kinerja utama"
+        ],
+        "standard operating procedure": [
+            "sop",
+            "prosedur operasional standar"
+        ],
+        "organization development": [
+            "pengembangan organisasi",
+            "od"
+        ],
+        "employee relations": [
+            "hubungan karyawan",
+            "industrial relations",
+            "er",
+            "ir"
+        ],
+        "training and development": [
+            "pelatihan dan pengembangan",
+            "t&d",
+            "learning and development",
+            "l&d"
+        ],
+        "applicant tracking system": [
+            "ats",
+            "sistem pelacakan pelamar"
+        ],
+        "manajemen arsip": [
+            "filing system",
+            "sistem kearsipan",
+            "document management"
+        ],
+        "business development": [
+            "pengembangan bisnis",
+            "bizdev",
+            "bd"
+        ],
+        "public relations": [
+            "hubungan masyarakat",
+            "humas",
+            "pr"
+        ],
+        "search engine optimization": [
+            "optimisasi mesin pencari",
+            "seo"
+        ],
+        "key account management": [
+            "kam",
+            "pengelolaan akun kunci"
+        ],
+        "customer satisfaction": [
+            "kepuasan pelanggan",
+            "csat"
+        ],
+        "point of sale": [
+            "pos",
+            "sistem kasir"
+        ],
+        "supply chain management": [
+            "scm",
+            "manajemen rantai pasok"
+        ],
+        "quality assurance qc": [
+            "qa/qc",
+            "qa qc"
+        ],
+        "fleet management": [
+            "manajemen armada",
+            "pengelolaan armada"
+        ],
+        "customer relationship": [
+            "hubungan pelanggan",
+            "customer care"
+        ],
+        "problem solving": [
+            "pemecahan masalah",
+            "penyelesaian masalah"
+        ],
+        "time management": [
+            "manajemen waktu",
+            "pengelolaan waktu"
+        ],
+        "leadership": [
+            "kepemimpinan",
+            "jiwa pemimpin"
+        ]
+    },
+    "SKILL_CLUSTERS": [
+        [
+            "cakephp",
+            "yii",
+            "codeigniter",
+            "laravel",
+            "symfony",
+            "phalcon"
+        ],
+        [
+            "nuxtjs",
+            "svelte",
+            "vuejs",
+            "vue",
+            "react",
+            "nextjs",
+            "reactjs",
+            "angularjs",
+            "angular"
+        ],
+        [
+            "ios sdk",
+            "kotlin",
+            "react native",
+            "android sdk",
+            "flutter",
+            "swift"
+        ],
+        [
+            "oracle",
+            "sql server",
+            "mssql",
+            "mongodb",
+            "redis",
+            "psql",
+            "sqlite",
+            "postgresql",
+            "mariadb",
+            "mysql",
+            "postgres"
+        ],
+        [
+            "google cloud",
+            "azure",
+            "amazon web services",
+            "gcp",
+            "google cloud platform",
+            "microsoft azure",
+            "aws"
+        ],
+        [
+            "keras",
+            "tf",
+            "tensorflow",
+            "pytorch"
+        ],
+        [
+            "flask",
+            "fastapi",
+            "django"
+        ],
+        [
+            "xero",
+            "sap",
+            "jurnal.id",
+            "myob",
+            "quickbooks",
+            "jurnal",
+            "accurate"
+        ],
+        [
+            "e-spt",
+            "e-faktur",
+            "efaktur",
+            "brevet a",
+            "brevet b",
+            "brevet pajak",
+            "espt",
+            "brevet c"
+        ],
+        [
+            "sketch up",
+            "revit architecture",
+            "archicad",
+            "revit structure",
+            "3d max",
+            "archi cad",
+            "auto cad",
+            "3d modeling",
+            "solidworks",
+            "3d studio max",
+            "autocad",
+            "3ds max",
+            "3dsmax",
+            "solid works",
+            "sketchup",
+            "autodesk revit",
+            "autocad 2d",
+            "computer aided design",
+            "solidwork",
+            "revit",
+            "autocad 3d"
+        ],
+        [
+            "sap 2000",
+            "etabs",
+            "tekla structures",
+            "structural analysis",
+            "etab",
+            "sap2000",
+            "tekla structure",
+            "tekla"
+        ],
+        [
+            "primavera p6",
+            "microsoft project",
+            "ms project",
+            "ms. project",
+            "project management",
+            "primavera"
+        ],
+        [
+            "photoshop",
+            "coreldraw",
+            "adobe illustrator",
+            "illustrator",
+            "canva",
+            "indesign",
+            "adobe photoshop"
+        ],
+        [
+            "adobe xd",
+            "sketch",
+            "figma"
+        ],
+        [
+            "after effects",
+            "adobe premiere",
+            "final cut",
+            "davinci resolve",
+            "premiere"
+        ],
+        [
+            "excel",
+            "microsoft excel",
+            "google sheets",
+            "ms excel"
+        ],
+        [
+            "ms word",
+            "google docs",
+            "microsoft word",
+            "word"
+        ],
+        [
+            "stata",
+            "epi info",
+            "epidemiologi",
+            "spss"
+        ],
+        [
+            "litigasi",
+            "contract drafting",
+            "due diligence",
+            "legal drafting"
+        ],
+        [
+            "workday",
+            "gadjian",
+            "bamboohr",
+            "hris",
+            "talenta"
+        ],
+        [
+            "bill of quantity",
+            "quantity surveyor",
+            "rencana anggaran biaya",
+            "estimasi biaya"
+        ],
+        [
+            "pemetaan",
+            "arcgis",
+            "qgis",
+            "google earth"
+        ],
+        [
+            "e-spt",
+            "e-faktur",
+            "efaktur",
+            "pajak",
+            "brevet a",
+            "kepatuhan pajak",
+            "perpajakan",
+            "audit",
+            "brevet b",
+            "brevet pajak",
+            "tax compliance",
+            "espt",
+            "brevet c"
+        ],
+        [
+            "microsoft dynamics",
+            "oracle erp",
+            "odoo",
+            "sap"
+        ],
+        [
+            "meta ads",
+            "seo",
+            "content writing",
+            "content marketing",
+            "digital marketing",
+            "social media marketing",
+            "copywriting",
+            "google analytics",
+            "sem",
+            "facebook ads",
+            "market research",
+            "google ads",
+            "brand strategy",
+            "email marketing"
+        ],
+        [
+            "content writing",
+            "adobe premiere",
+            "copywriting",
+            "canva",
+            "capcut"
+        ],
+        [
+            "forklift",
+            "inventory management",
+            "warehouse management",
+            "wms"
+        ],
+        [
+            "slf",
+            "sertifikat k3",
+            "k3 umum",
+            "ak3u",
+            "skt",
+            "ska",
+            "k3 konstruksi",
+            "sbu"
+        ],
+        [
+            "crm",
+            "presentasi",
+            "lead generation",
+            "sales",
+            "telemarketing",
+            "account management",
+            "negosiasi",
+            "business development"
+        ],
+        [
+            "excel",
+            "microsoft office",
+            "word",
+            "administrasi umum",
+            "korespondensi",
+            "office administration",
+            "pengarsipan",
+            "notulensi",
+            "google workspace",
+            "data entry",
+            "document control",
+            "scheduling",
+            "receptionist"
+        ],
+        [
+            "btcls",
+            "bls",
+            "acls",
+            "patient care",
+            "str",
+            "sip"
+        ],
+        [
+            "corporate legal",
+            "litigasi",
+            "upa",
+            "compliance",
+            "peradi",
+            "due diligence",
+            "hubungan industrial",
+            "legal drafting"
+        ],
+        [
+            "gada pratama",
+            "sim a",
+            "gardening",
+            "cleaning service",
+            "housekeeping",
+            "sim b1",
+            "sim b2",
+            "sio forklift",
+            "gada madya",
+            "sim c",
+            "gada utama"
+        ],
+        [
+            "sertifikasi guru",
+            "ppg",
+            "pedagogi",
+            "kurikulum"
+        ],
+        [
+            "manual testing",
+            "qc",
+            "qa",
+            "software testing",
+            "automated testing",
+            "software quality assurance",
+            "quality assurance"
+        ],
+        [
+            "linux",
+            "cloud computing",
+            "server administration",
+            "azure",
+            "docker",
+            "gcp",
+            "devops",
+            "aws",
+            "kubernetes"
+        ],
+        [
+            "reconciliation",
+            "pembukuan",
+            "general ledger",
+            "account receivable",
+            "rekonsiliasi bank",
+            "account payable",
+            "jurnal"
+        ],
+        [
+            "employee relations",
+            "rekrutmen",
+            "training and development",
+            "asesmen",
+            "talent acquisition",
+            "organization development"
+        ],
+        [
+            "teamwork",
+            "leadership",
+            "problem solving",
+            "komunikasi",
+            "time management",
+            "analytical thinking"
+        ]
+    ]
+}

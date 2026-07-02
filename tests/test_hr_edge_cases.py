@@ -120,10 +120,53 @@ def test_lifetime_employed_experience():
     exp1.endyear = None
     exp1.iscurrent = True
     
-    c1 = MockCandidate(requireid=301, work_experiences=[exp1])
-    
     exp_years = _get_total_experience_years([exp1])
     current_year = datetime.now().year
-    expected_years = current_year - 2020
+    expected_min = current_year - 2020 - 1  # Toleransi bawah (awal tahun)
+    expected_max = current_year - 2020 + 1  # Toleransi atas
     
-    assert exp_years == expected_years
+    assert expected_min <= exp_years <= expected_max
+
+# --- KASUS 6: Overlap Pengalaman Kerja (Timeline Merge) ---
+def test_overlapping_experience_not_double_counted():
+    """Kandidat bekerja di 2 tempat bersamaan: 2020-2023 & 2021-2024. Harus 4 tahun, bukan 7."""
+    exp1 = MockExperience(workid=1, joblevel="Staff", jobdesk="Dev")
+    exp1.startdate = datetime(2020, 1, 1)
+    exp1.enddate = datetime(2023, 1, 1)
+    
+    exp2 = MockExperience(workid=2, joblevel="Staff", jobdesk="QA")
+    exp2.startdate = datetime(2021, 1, 1)
+    exp2.enddate = datetime(2024, 1, 1)
+    
+    exp_years = _get_total_experience_years([exp1, exp2])
+    # Seharusnya 4 tahun (2020-01-01 s/d 2024-01-01), bukan 6 tahun (3+3)
+    assert 3.9 <= exp_years <= 4.1
+
+def test_non_overlapping_experience_summed():
+    """Dua pengalaman berurutan tanpa overlap: 2018-2020 & 2021-2023. Harus 4 tahun."""
+    exp1 = MockExperience(workid=1, joblevel="Staff", jobdesk="Dev")
+    exp1.startdate = datetime(2018, 1, 1)
+    exp1.enddate = datetime(2020, 1, 1)
+    
+    exp2 = MockExperience(workid=2, joblevel="Staff", jobdesk="QA")
+    exp2.startdate = datetime(2021, 1, 1)
+    exp2.enddate = datetime(2023, 1, 1)
+    
+    exp_years = _get_total_experience_years([exp1, exp2])
+    # 2 + 2 = 4 tahun (tidak ada overlap)
+    assert 3.9 <= exp_years <= 4.1
+
+def test_fully_contained_experience():
+    """Pengalaman B sepenuhnya di dalam pengalaman A: A=2019-2025, B=2020-2022. Harus 6 tahun."""
+    exp1 = MockExperience(workid=1, joblevel="Manager", jobdesk="Management")
+    exp1.startdate = datetime(2019, 1, 1)
+    exp1.enddate = datetime(2025, 1, 1)
+    
+    exp2 = MockExperience(workid=2, joblevel="Staff", jobdesk="Freelance")
+    exp2.startdate = datetime(2020, 1, 1)
+    exp2.enddate = datetime(2022, 1, 1)
+    
+    exp_years = _get_total_experience_years([exp1, exp2])
+    # B sepenuhnya di dalam A, jadi total tetap 6 tahun
+    assert 5.9 <= exp_years <= 6.1
+

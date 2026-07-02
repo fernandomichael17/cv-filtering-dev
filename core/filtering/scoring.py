@@ -110,13 +110,13 @@ def _score_experience_surplus(requirements: dict, taxonomy_result: dict, skills_
     raw_score = min(10.0, surplus * 3.33)
 
     # Terapkan discount factor berdasarkan skills_match_pct:
-    # - skills_match >= 60% -> surplus poin penuh (1.0x)
-    # - skills_match 30%-59% -> surplus poin setengah (0.5x)
-    # Pastikan jika keterampilan wajib tidak memenuhi threshold semantik yang toleran (0.60),
+    # - skills_match >= SIMILARITY_THRESHOLD_FALLBACK -> surplus poin penuh (1.0x)
+    # - 0.0 < skills_match < SIMILARITY_THRESHOLD_FALLBACK -> surplus poin hampir utuh (0.8x)
+    # - skills_match == 0.0 -> surplus poin dipotong berat (0.2x) untuk mencegah false positive taxonomy
     if skills_match_pct >= settings.SIMILARITY_THRESHOLD_FALLBACK:
         discount = 1.0
-    elif skills_match_pct >= 0.30:
-        discount = 0.5
+    elif skills_match_pct > 0.0:
+        discount = 0.8
     else:
         discount = 0.2
 
@@ -699,14 +699,14 @@ def calculate_candidate_score(candidate, requirements: dict, taxonomy_result: di
     # Bobot adaptif fresh graduate vs profesional
     if is_fresh_grad:
         total = (
-            tax_score * settings.SIMILARITY_THRESHOLD_FALLBACK +      # Taksonomi kurang relevan untuk FG
-            exp_score * 0.10 +      # Pengalaman minimal untuk FG
-            edu_score * 1.80 +      # Pendidikan ditingkatkan
-            major_score * 1.50 +     # Jurusan ditingkatkan
-            gpa_score * 2.40 +       # IPK sangat penting
-            cert_score * 1.20 +      # Sertifikasi ditingkatkan
-            skills_score * 1.80 +    # Keahlian ditingkatkan
-            jobdesk_score * 0.00     # Jobdesk tidak dihitung untuk FG
+            tax_score * settings.FG_WEIGHT_TAXONOMY +
+            exp_score * settings.FG_WEIGHT_EXPERIENCE +
+            edu_score * settings.FG_WEIGHT_EDUCATION +
+            major_score * settings.FG_WEIGHT_MAJOR +
+            gpa_score * settings.FG_WEIGHT_GPA +
+            cert_score * settings.FG_WEIGHT_CERTIFICATION +
+            skills_score * settings.FG_WEIGHT_SKILLS +
+            jobdesk_score * settings.FG_WEIGHT_JOBDESK
         )
         breakdown["fresh_graduate"] = True
     else:

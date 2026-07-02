@@ -7,6 +7,7 @@
 """
 
 import logging
+import os
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -76,5 +77,6 @@ app.include_router(filtering_router)
 app.include_router(candidates_router)
 app.include_router(portal_router)
 
-# Static files — serve index.html at /
-app.mount("/", StaticFiles(directory="static", html=True), name="static")
+# Static files — serve index.html at / if directory exists
+if os.path.isdir("static"):
+    app.mount("/", StaticFiles(directory="static", html=True), name="static")

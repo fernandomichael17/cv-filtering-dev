@@ -9,6 +9,7 @@ Menyediakan endpoint untuk:
 """
 
 import logging
+from typing import Union
 from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -29,10 +30,10 @@ router = APIRouter(prefix="/api/jobs", tags=["filtering"])
 filtering_service = FilteringService()
 
 
-@router.post("/{job_vacancy_id}/filter", response_model=FilterTaskResponse, dependencies=[Depends(verify_filtering_key)])
+@router.post("/{job_vacancy_id}/filter", response_model=Union[FilteringResponse, FilterTaskResponse], dependencies=[Depends(verify_filtering_key)])
 async def run_filtering(
     job_vacancy_id: int,
-    sync: bool = False,
+    sync: bool = True,
     db: AsyncSession = Depends(get_db),
 ):
     """
@@ -60,11 +61,7 @@ async def run_filtering(
         set_job_active(job_vacancy_id)
         try:
             res = await filtering_service.run_filtering(db, job_vacancy_id, mode="registered")
-            return FilterTaskResponse(
-                job_vacancy_id=job_vacancy_id,
-                status="completed",
-                message=f"Penyaringan pelamar terdaftar selesai secara sinkron. Ditemukan {res.total_candidates} kandidat, {res.after_taxonomy_filter} lolos.",
-            )
+            return res
         except Exception as e:
             logger.error("Penyaringan pelamar terdaftar sinkron gagal untuk Job #%d: %s", job_vacancy_id, e)
             raise HTTPException(status_code=500, detail=f"Penyaringan gagal: {str(e)}")
@@ -81,10 +78,10 @@ async def run_filtering(
     )
 
 
-@router.post("/{job_vacancy_id}/mix-match", response_model=FilterTaskResponse, dependencies=[Depends(verify_mix_match_key)])
+@router.post("/{job_vacancy_id}/mix-match", response_model=Union[FilteringResponse, FilterTaskResponse], dependencies=[Depends(verify_mix_match_key)])
 async def run_mix_match(
     job_vacancy_id: int,
-    sync: bool = False,
+    sync: bool = True,
     db: AsyncSession = Depends(get_db),
 ):
     """
@@ -112,11 +109,7 @@ async def run_mix_match(
         set_job_active(job_vacancy_id)
         try:
             res = await filtering_service.run_filtering(db, job_vacancy_id, mode="mixmatch")
-            return FilterTaskResponse(
-                job_vacancy_id=job_vacancy_id,
-                status="completed",
-                message=f"Penyaringan mix-match selesai secara sinkron. Ditemukan {res.total_candidates} kandidat, {res.after_taxonomy_filter} lolos.",
-            )
+            return res
         except Exception as e:
             logger.error("Penyaringan mix-match sinkron gagal untuk Job #%d: %s", job_vacancy_id, e)
             raise HTTPException(status_code=500, detail=f"Penyaringan gagal: {str(e)}")

@@ -62,7 +62,6 @@ async def parse_job(
         import time
         from core.llm.jd_parser import parse_job_description
         from app.repositories.filtering_repository import FilteringRepository
-        from app.repositories.local_metadata_repository import LocalMetadataRepository
         import asyncio
 
         start_time = time.time()
@@ -85,11 +84,9 @@ async def parse_job(
 
         # Bersihkan data hasil filtering lama karena kriteria lowongan berubah
         filtering_repo = FilteringRepository()
-        local_repo = LocalMetadataRepository()
         
         await filtering_repo.delete_results_by_job_vacancy_id(db, job.job_vacancy_id)
         await db.commit()
-        await asyncio.to_thread(local_repo.delete_metadata_by_job_id, job.job_vacancy_id)
 
         duration = time.time() - start_time
         logger.info("Job #%d JD berhasil di-parse sinkron. Waktu: %.2fs. Tags: %s", job.job_vacancy_id, duration, tags)

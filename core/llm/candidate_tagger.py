@@ -124,6 +124,15 @@ def validate_and_refine_candidate_tags(parsed: dict, profile_text: str) -> dict:
                         is_valid = True
                         break
             
+            # Fallback 3: Validasi Kamus (Dictionary Verification)
+            # Jika skill hasil inferensi LLM dikenali dalam kamus sistem, izinkan lolos
+            if not is_valid:
+                from core.utils.skill_synonyms import normalize_skill, SKILL_SYNONYMS
+                canonical = normalize_skill(skill_lower)
+                if canonical in SKILL_SYNONYMS:
+                    is_valid = True
+                    logger.info("Skill '%s' diizinkan lolos via inferensi (ditemukan di kamus)", skill)
+            
             if is_valid:
                 valid_skills.append(skill)
 
@@ -189,8 +198,8 @@ Rules:
      * Specific job role/title (e.g., "Backend Developer", "Accounting Staff").
      * Key technologies/skills used in that job (ONLY if explicitly mentioned).
      Example: "IT & Software, Web Developer, PHP, MySQL"
-6. CRITICAL: Only extract skills, certifications, and technologies that are EXPLICITLY mentioned in the text. Do NOT infer, guess, or assume any tools or technologies. If the work description is vague (e.g., "handles IT tasks") and there are no specific tools, certifications, or training mentioned in the entire profile, set hard_skill to empty string "" and only include the industry category and role in experience_tags.
-7. If no specific tools are mentioned in an experience, only include industry and role: "IT & Software, IT Staff" (no technology tags).
+6. Extract explicitly mentioned skills, tools, and certifications. If the description clearly implies specific technical skills but lacks explicit tool names, you MAY infer up to 3 core foundational tools universally required for those exact responsibilities.
+7. Only infer skills that are absolutely necessary for the role. Do not guess generic or unrelated tools.
 """
 
 def _build_profile_text(candidate) -> str:

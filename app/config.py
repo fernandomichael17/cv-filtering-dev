@@ -38,6 +38,16 @@ class Settings(BaseSettings):
     SIMILARITY_THRESHOLD_JOBDESK: float = 0.72                # Batas kemiripan untuk evaluasi free-text jobdesk
     SIMILARITY_THRESHOLD_FALLBACK: float = 0.60               # Batas longgar kemiripan fallback taksonomi/pengalaman
 
+    # Bobot Adaptif Fresh Graduate (digunakan di scoring.py)
+    FG_WEIGHT_TAXONOMY: float = 0.60       # Taksonomi kurang relevan untuk FG
+    FG_WEIGHT_EXPERIENCE: float = 0.10     # Pengalaman minimal untuk FG
+    FG_WEIGHT_EDUCATION: float = 1.80      # Pendidikan ditingkatkan
+    FG_WEIGHT_MAJOR: float = 1.50          # Jurusan ditingkatkan
+    FG_WEIGHT_GPA: float = 2.40            # IPK sangat penting
+    FG_WEIGHT_CERTIFICATION: float = 1.20  # Sertifikasi ditingkatkan
+    FG_WEIGHT_SKILLS: float = 1.80         # Keahlian ditingkatkan
+    FG_WEIGHT_JOBDESK: float = 0.00        # Jobdesk tidak dihitung untuk FG
+
     # Database Configuration
     DB_USER: str = ""
     DB_PASSWORD: str = ""
@@ -74,8 +84,9 @@ class Settings(BaseSettings):
     @property
     def DATABASE_URL(self) -> str:
         # Menghapus karakter spasi dan carriage return (\r) dari konfigurasi database
+        import urllib.parse
         db_user = self.DB_USER.strip()
-        db_pass = self.DB_PASSWORD.strip()
+        db_pass = urllib.parse.quote_plus(self.DB_PASSWORD.strip())
         db_host = self.DB_HOST.strip()
         db_name = self.DB_NAME.strip()
         return (

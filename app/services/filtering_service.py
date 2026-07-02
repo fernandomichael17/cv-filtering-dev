@@ -431,8 +431,24 @@ class FilteringService:
 
     async def _fetch_candidates_for_filtering(self, db: AsyncSession, job_id: int, mode: str):
         existing_results = await self.filtering_repo.get_results_by_job_vacancy_id(db, job_id)
-        already_filtered_ids = {res.require_id for res in existing_results}
-        logger.info("Ditemukan %d kandidat yang sudah pernah difilter sebelumnya untuk lowongan ini.", len(already_filtered_ids))
+        
+        valid_filtered_ids = set()
+        stale_result_ids = []
+        
+        for res in existing_results:
+            is_incomplete = False
+            if res.score_breakdown and isinstance(res.score_breakdown, dict):
+                if res.score_breakdown.get("incomplete_profile") is True:
+                    is_incomplete = True
+                    
+            if is_incomplete:
+                stale_result_ids.append(res.id)
+            else:
+                valid_filtered_ids.add(res.require_id)
+                
+        if stale_result_ids:
+            logger.info("Menghapus %d hasil filtering lama karena status incomplete_profile", len(stale_result_ids))
+            await self.filtering_repo.delete_results_by_ids(db, stale_result_ids)
 
         if mode == "registered":
             all_candidates = await self.filtering_repo.get_applied_candidates(db, job_id)
@@ -441,10 +457,29 @@ class FilteringService:
             all_candidates = await self.filtering_repo.get_active_candidates(db)
             logger.info("Berhasil mengambil seluruh %d kandidat aktif dari database untuk mix-match.", len(all_candidates))
 
-        all_candidates = [c for c in all_candidates if c.requireid not in already_filtered_ids]
-        logger.info("Jumlah kandidat baru yang akan diproses: %d (dari total %d kandidat)", len(all_candidates), len(all_candidates) + len(already_filtered_ids))
+        final_candidates = []
+        ids_to_refilter = []
         
-        return all_candidates
+        for c in all_candidates:
+            if c.requireid in valid_filtered_ids:
+                res = next((r for r in existing_results if r.require_id == c.requireid), None)
+                if res and hasattr(c, "updatedat") and c.updatedat and res.created_at:
+                    c_updated = c.updatedat.replace(tzinfo=None) if hasattr(c.updatedat, "replace") else c.updatedat
+                    r_created = res.created_at.replace(tzinfo=None) if hasattr(res.created_at, "replace") else res.created_at
+                    
+                    if c_updated > r_created:
+                        ids_to_refilter.append(res.id)
+                        final_candidates.append(c)
+                        continue
+            else:
+                final_candidates.append(c)
+                
+        if ids_to_refilter:
+            logger.info("Menghapus %d hasil filtering lama karena kandidat update profil", len(ids_to_refilter))
+            await self.filtering_repo.delete_results_by_ids(db, ids_to_refilter)
+            
+        logger.info("Jumlah kandidat baru/diperbarui yang akan diproses: %d", len(final_candidates))
+        return final_candidates
 
     async def _run_elimination_pipeline(self, all_candidates, requirements, job_tags, job_title, job_id):
         results_to_save = []

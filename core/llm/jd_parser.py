@@ -203,39 +203,44 @@ def validate_and_refine_jd(parsed: dict, jd_text: str) -> dict:
     
     required_skills = parsed.get("required_skills") or []
     preferred_skills = parsed.get("preferred_skills") or []
-    refined_required = []
-    
-    # Impor get_skill_synonyms untuk pencocokan sinonim keahlian
     from core.utils.skill_synonyms import get_skill_synonyms
     
-    for skill in required_skills:
-        skill_clean = skill.strip().lower()
-        if not skill_clean:
-            continue
-            
-        variations = get_skill_synonyms(skill)
-        found = False
-        
-        # Lakukan pengecekan pencocokan kata utuh untuk setiap sinonim keahlian
-        for var in variations:
-            var_clean = var.strip().lower()
-            if not var_clean:
+    def _validate_skills_against_jd(skills_list: list[str], is_required: bool) -> tuple[list[str], list[str]]:
+        refined = []
+        demoted = []
+        for skill in skills_list:
+            skill_clean = skill.strip().lower()
+            if not skill_clean:
                 continue
-            # Regex untuk mencocokkan kata utuh (symbol-safe word boundaries)
-            pattern = rf"(?<![a-zA-Z0-9]){re.escape(var_clean)}(?![a-zA-Z0-9])"
-            if re.search(pattern, jd_text_lower):
-                found = True
-                break
                 
-        if found:
-            refined_required.append(skill)
-        else:
-            logger.warning("Demoting skill '%s' to preferred_skills because it was not found in JD text", skill)
-            if skill not in preferred_skills:
-                preferred_skills.append(skill)
-                
-    parsed["required_skills"] = refined_required
-    parsed["preferred_skills"] = preferred_skills
+            variations = get_skill_synonyms(skill)
+            found = False
+            for var in variations:
+                var_clean = var.strip().lower()
+                if not var_clean:
+                    continue
+                # Regex word boundary
+                pattern = rf"(?<![a-zA-Z0-9]){re.escape(var_clean)}(?![a-zA-Z0-9])"
+                if re.search(pattern, jd_text_lower):
+                    found = True
+                    break
+                    
+            if found:
+                refined.append(skill)
+            else:
+                if is_required:
+                    logger.warning("Men-demote skill halusinasi '%s' ke preferred karena tidak ditemukan di teks JD eksplisit.", skill)
+                    demoted.append(skill)
+                else:
+                    logger.warning("Menghapus skill halusinasi '%s' dari preferred karena tidak ditemukan di teks JD.", skill)
+        return refined, demoted
+
+    valid_req, demoted_req = _validate_skills_against_jd(required_skills, is_required=True)
+    valid_pref, _ = _validate_skills_against_jd(preferred_skills, is_required=False)
+    
+    parsed["required_skills"] = valid_req
+    # Gabungkan preferred awal yang valid dengan required yang diturunkan
+    parsed["preferred_skills"] = list(set(valid_pref + demoted_req))
 
     # ── Validasi allowed_majors ──────────────────────────────────────────────
     # 1. Bersihkan output generik LLM (misal: "Semua Jurusan", "All Majors").

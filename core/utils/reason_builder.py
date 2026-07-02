@@ -21,9 +21,6 @@ def build_candidate_reason(breakdown: dict, decision: str) -> str:
     Return:
         str: Alasan keputusan dalam format teks terstruktur.
     """
-    if breakdown.get("incomplete_profile"):
-        return "Data profil kurang lengkap (kandidat belum diekstrak tagnya oleh sistem)."
-
     parts = []
 
     # 1. Kecocokan bidang (taxonomy)
@@ -68,7 +65,13 @@ def build_candidate_reason(breakdown: dict, decision: str) -> str:
     elif decision == "ALTERNATIF":
         parts.append("Kandidat dari bidang berdekatan, pertimbangkan jika pool utama kurang")
 
-    return ". ".join(parts) + "."
+    reason_str = ". ".join(parts) + "."
+    
+    # Tambahkan catatan jika profil masih dalam antrean ekstraksi latar belakang (incomplete)
+    if breakdown.get("incomplete_profile"):
+        reason_str += " [PERHATIAN: Proses ekstraksi keahlian dari CV masih berjalan di latar belakang (belum diekstrak). Skor akhir dikenakan penalti sementara 30% dan mungkin belum mencerminkan kualifikasi asli kandidat. Harap lakukan filter ulang dalam beberapa menit ke depan.]"
+        
+    return reason_str
 
 
 def _taxonomy_label(match_type: str) -> str:
